@@ -68,44 +68,83 @@ async def search_nodes(q: str = None, query: str = None):
 # Enhanced Template endpoints using massive template system
 @api_router.get("/templates/enhanced")
 async def get_enhanced_templates(category: str = None, industry: str = None, difficulty: str = None):
-    """Get enhanced templates with 50+ professional templates"""
+    """Get enhanced templates with 100+ professional templates"""
     if category:
-        return massive_template_system.get_templates_by_category(category)
+        return massive_templates_engine.get_templates_by_category(category)
     elif industry:
-        return massive_template_system.get_templates_by_industry(industry)
+        return massive_templates_engine.get_templates_by_industry(industry)
     else:
-        return massive_template_system.get_popular_templates(50)
+        return massive_templates_engine.get_popular_templates(50)
 
 @api_router.get("/templates/search/enhanced") 
 async def search_enhanced_templates(q: str = None, query: str = None, category: str = None, difficulty: str = None, industry: str = None):
     """Enhanced template search with multiple filters"""
     search_term = q or query
     return {
-        "results": massive_template_system.search_templates(search_term, category, difficulty, industry),
+        "results": massive_templates_engine.search_templates(search_term, category, difficulty, industry),
         "query": search_term,
         "filters": {
             "category": category,
             "difficulty": difficulty, 
             "industry": industry
         },
-        "categories": massive_template_system.get_categories(),
-        "stats": massive_template_system.get_template_stats()
+        "categories": massive_templates_engine.get_categories(),
+        "stats": massive_templates_engine.get_template_stats()
     }
 
 @api_router.get("/templates/categories/enhanced")
 async def get_enhanced_template_categories():
     """Get all template categories with enhanced statistics"""
-    return massive_template_system.get_categories()
+    return massive_templates_engine.get_categories()
 
 @api_router.get("/templates/trending")
 async def get_trending_templates(limit: int = 15):
     """Get trending templates"""
-    return massive_template_system.get_trending_templates(limit)
+    return massive_templates_engine.get_trending_templates(limit)
 
 @api_router.get("/templates/stats")
 async def get_template_statistics():
     """Get comprehensive template system statistics"""
-    return massive_template_system.get_template_stats()
+    return massive_templates_engine.get_template_stats()
+
+# Enhanced Integrations endpoints using massive integrations system
+@api_router.get("/integrations/enhanced") 
+async def get_enhanced_integrations(category: str = None, limit: int = 50):
+    """Get enhanced integrations with 200+ real integrations"""
+    if category:
+        return massive_integrations_engine.get_integrations_by_category(category)
+    else:
+        return massive_integrations_engine.get_all_integrations()[:limit]
+
+@api_router.get("/integrations/search/enhanced")
+async def search_enhanced_integrations(q: str = None, query: str = None, category: str = None):
+    """Enhanced integration search with 200+ integrations"""
+    search_term = q or query
+    if not search_term and not category:
+        return massive_integrations_engine.get_all_integrations()[:100]
+    
+    if search_term:
+        results = massive_integrations_engine.search_integrations(search_term)
+    else:
+        results = massive_integrations_engine.get_integrations_by_category(category)
+    
+    return {
+        "integrations": results,
+        "query": search_term,
+        "category": category,
+        "total_results": len(results),
+        "stats": massive_integrations_engine.get_integration_stats()
+    }
+
+@api_router.get("/integrations/categories/enhanced")
+async def get_enhanced_integration_categories():
+    """Get all integration categories with statistics"""
+    return massive_integrations_engine.categories
+
+@api_router.get("/integrations/stats/enhanced")
+async def get_enhanced_integration_stats():
+    """Get comprehensive integration statistics"""
+    return massive_integrations_engine.get_integration_stats()
 
 # Enhanced System Status endpoints
 @api_router.get("/enhanced/status")
