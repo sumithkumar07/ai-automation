@@ -87,155 +87,24 @@ async def get_templates(
                 raise Exception("No templates in database, using enhanced template set")
                 
         except Exception as e:
-            logger.info(f"Using enhanced template set: {e}")
-            # Enhanced realistic templates with complete workflow definitions
-            mock_templates = [
-            {
-                "id": "template_1",
-                "name": "Customer Onboarding Workflow",
-                "description": "Automate new customer onboarding process",
-                "category": "business",
-                "difficulty": "beginner",
-                "tags": ["onboarding", "customer", "automation"],
-                "author_id": "user_123",
-                "is_public": True,
-                "is_active": True,
-                "usage_count": 150,
-                "rating": 4.5,
-                "rating_count": 32,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "version": "1.2.0",
-                "workflow_definition": {
-                    "nodes": [
-                        {"id": "start", "type": "trigger", "name": "New Customer"},
-                        {"id": "send_email", "type": "action", "name": "Welcome Email"}
-                    ],
-                    "edges": [
-                        {"source": "start", "target": "send_email"}
-                    ]
-                }
-            },
-            {
-                "id": "template_2",
-                "name": "Lead Qualification Bot",
-                "description": "AI-powered lead qualification and scoring",
-                "category": "sales",
-                "difficulty": "intermediate",
-                "tags": ["ai", "leads", "qualification", "scoring"],
-                "author_id": "user_456",
-                "is_public": True,
-                "is_active": True,
-                "usage_count": 89,
-                "rating": 4.2,
-                "rating_count": 18,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "version": "2.0.1",
-                "workflow_definition": {
-                    "nodes": [
-                        {"id": "webhook", "type": "trigger", "name": "Lead Webhook"},
-                        {"id": "ai_score", "type": "ai", "name": "AI Scoring"},
-                        {"id": "notify_sales", "type": "action", "name": "Notify Sales Team"}
-                    ],
-                    "edges": [
-                        {"source": "webhook", "target": "ai_score"},
-                        {"source": "ai_score", "target": "notify_sales"}
-                    ]
-                }
-            },
-            {
-                "id": "template_3",
-                "name": "Content Publishing Pipeline",
-                "description": "Automated content creation and publishing workflow",
-                "category": "marketing",
-                "difficulty": "advanced",
-                "tags": ["content", "publishing", "social", "scheduling"],
-                "author_id": "user_789",
-                "is_public": True,
-                "is_active": True,
-                "usage_count": 203,
-                "rating": 4.8,
-                "rating_count": 45,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "version": "3.1.0",
-                "workflow_definition": {
-                    "nodes": [
-                        {"id": "schedule", "type": "trigger", "name": "Scheduled Trigger"},
-                        {"id": "ai_content", "type": "ai", "name": "Generate Content"},
-                        {"id": "approve", "type": "condition", "name": "Content Approval"},
-                        {"id": "publish_social", "type": "action", "name": "Publish to Social"}
-                    ],
-                    "edges": [
-                        {"source": "schedule", "target": "ai_content"},
-                        {"source": "ai_content", "target": "approve"},
-                        {"source": "approve", "target": "publish_social"}
-                    ]
-                }
-            },
-            {
-                "id": "template_4",
-                "name": "Support Ticket Triage",
-                "description": "Intelligent support ticket classification and routing",
-                "category": "support",
-                "difficulty": "intermediate",
-                "tags": ["support", "tickets", "ai", "routing"],
-                "author_id": "user_101",
-                "is_public": True,
-                "is_active": True,
-                "usage_count": 127,
-                "rating": 4.3,
-                "rating_count": 28,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "version": "1.5.2",
-                "workflow_definition": {
-                    "nodes": [
-                        {"id": "email_trigger", "type": "trigger", "name": "Support Email"},
-                        {"id": "ai_classify", "type": "ai", "name": "Classify Issue"},
-                        {"id": "route_ticket", "type": "action", "name": "Route to Team"}
-                    ],
-                    "edges": [
-                        {"source": "email_trigger", "target": "ai_classify"},
-                        {"source": "ai_classify", "target": "route_ticket"}
-                    ]
-                }
-            },
-            {
-                "id": "template_5",
-                "name": "E-commerce Order Processing",
-                "description": "Complete order fulfillment automation workflow",
-                "category": "ecommerce",
-                "difficulty": "advanced",
-                "tags": ["orders", "fulfillment", "inventory", "shipping"],
-                "author_id": "user_202",
-                "is_public": True,
-                "is_active": True,
-                "usage_count": 312,
-                "rating": 4.6,
-                "rating_count": 67,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "version": "2.3.1",
-                "workflow_definition": {
-                    "nodes": [
-                        {"id": "order_webhook", "type": "trigger", "name": "New Order"},
-                        {"id": "check_inventory", "type": "condition", "name": "Inventory Check"},
-                        {"id": "process_payment", "type": "action", "name": "Process Payment"},
-                        {"id": "ship_order", "type": "action", "name": "Ship Order"}
-                    ],
-                    "edges": [
-                        {"source": "order_webhook", "target": "check_inventory"},
-                        {"source": "check_inventory", "target": "process_payment"},
-                        {"source": "process_payment", "target": "ship_order"}
-                    ]
-                }
-            }
-        ]
-        
-            # Apply filters to fallback templates
-            filtered_templates = mock_templates
+            logger.info(f"Using expanded template system: {e}")
+            # Use expanded template system with 100+ templates
+            expanded_templates = expanded_template_system.get_all_templates()
+            
+            # Apply filters to expanded templates
+            filtered_templates = expanded_templates
+            
+            if category:
+                filtered_templates = [t for t in filtered_templates if t["category"] == category]
+                
+            if difficulty:
+                filtered_templates = [t for t in filtered_templates if t["difficulty"] == difficulty]
+                
+            if tags:
+                tag_list = [tag.strip().lower() for tag in tags.split(",")]
+                filtered_templates = [t for t in filtered_templates 
+                                    if any(tag in [template_tag.lower() for template_tag in t["tags"]] 
+                                          for tag in tag_list)]
             
             if category:
                 filtered_templates = [t for t in filtered_templates if t["category"] == category]
