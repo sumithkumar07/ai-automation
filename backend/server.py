@@ -167,9 +167,21 @@ app.add_middleware(
 # Database connection events
 @app.on_event("startup")
 async def startup_db_client():
-    """Initialize database connection"""
+    """Initialize database connection and enhanced systems"""
     await connect_to_mongo()
-    logging.info("Connected to MongoDB")
+    logging.info("✅ Connected to MongoDB")
+    
+    # Initialize comprehensive enhancement system
+    try:
+        from comprehensive_enhancement_system import ComprehensiveEnhancementSystem
+        enhancement_system = ComprehensiveEnhancementSystem()
+        await enhancement_system.initialize_all_enhancements()
+        logging.info("🚀 Comprehensive enhancement system initialized")
+    except ImportError:
+        logging.warning("⚠️ Enhanced systems not available - using basic functionality")
+    except Exception as e:
+        logging.error(f"❌ Enhanced system initialization failed: {e}")
+        logging.info("📱 Continuing with basic functionality")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
