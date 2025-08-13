@@ -6,7 +6,8 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPExce
 from typing import Dict, Any
 import json
 import logging
-from auth import get_current_active_user_ws
+from datetime import datetime
+from auth import get_current_active_user
 from websocket_manager import websocket_manager
 from database import get_database
 
