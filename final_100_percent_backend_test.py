@@ -17,7 +17,7 @@ import concurrent.futures
 import threading
 
 class FinalComprehensiveAPITester:
-    def __init__(self, base_url="https://fullstack-review-2.preview.emergentagent.com"):
+    def __init__(self, base_url="https://workflow-optimizer-2.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None

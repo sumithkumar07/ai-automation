@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://fullstack-review-2.preview.emergentagent.com/api"
+BACKEND_URL = "https://workflow-optimizer-2.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {
