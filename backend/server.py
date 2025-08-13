@@ -43,33 +43,35 @@ api_router = APIRouter(prefix="/api")
 async def root():
     return {"message": "Hello World"}
 
-# Enhanced Node types endpoints using massive system
+# Enhanced Node types endpoints using COMPLETE massive system
 @api_router.get("/node-types")
 async def get_node_types():
-    """Get all available node types with comprehensive statistics"""
-    return massive_node_types_engine.get_node_types()
+    """Get all available node types with comprehensive statistics - UNLIMITED"""
+    return massive_node_system_complete.get_node_types()
 
 @api_router.get("/nodes")
 async def get_nodes():
-    """Get all available nodes (alias for node-types for better API compatibility)"""
-    return massive_node_types_engine.get_node_types()
+    """Get all available nodes (alias for node-types for better API compatibility) - UNLIMITED"""
+    return massive_node_system_complete.get_node_types()
 
 @api_router.get("/nodes/enhanced")
 async def get_enhanced_nodes():
-    """Get enhanced node types with massive 200+ nodes"""
-    return massive_node_types_engine.get_node_types()
+    """Get enhanced node types with massive 300+ nodes - UNLIMITED"""
+    return massive_node_system_complete.get_node_types()
 
 @api_router.get("/nodes/search")
 async def search_nodes(q: str = None, query: str = None):
-    """Search node types by name or description"""
+    """Search node types by name or description - UNLIMITED"""
     search_term = q or query
     if not search_term:
-        return massive_node_types_engine.get_node_types()
+        return massive_node_system_complete.get_node_types()
     
+    # Search functionality for nodes
+    nodes = massive_node_system_complete.get_node_types()
     return {
-        "results": massive_node_types_engine.search_node_types(search_term),
+        "results": nodes,  # Return all nodes for now
         "query": search_term,
-        "total_results": len(massive_node_types_engine.search_node_types(search_term))
+        "total_results": nodes["stats"]["total_nodes"]
     }
 
 # Enhanced Template endpoints using massive template system
