@@ -4,6 +4,7 @@ from models import Integration, UserIntegration, IntegrationCategory
 from auth import get_current_active_user
 from database import get_database
 from integrations_engine import integrations_engine
+from cache_service import cache_service, cached, generate_cache_key, CACHE_CONFIGS
 from datetime import datetime
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
