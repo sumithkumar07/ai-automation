@@ -562,7 +562,7 @@ async def create_custom_template(
         }
         
         # Validate workflow definition
-        validation_result = validate_template_schema(new_template["workflow_definition"])
+        validation_result = validate_template_schema(workflow_definition)
         if not validation_result["is_valid"]:
             raise HTTPException(
                 status_code=400, 
