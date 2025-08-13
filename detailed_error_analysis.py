@@ -8,7 +8,7 @@ import requests
 import json
 
 def test_specific_endpoints():
-    base_url = "https://parallel-testing.preview.emergentagent.com"
+    base_url = "https://auto-flow-verify.preview.emergentagent.com"
     
     # First authenticate
     auth_data = {

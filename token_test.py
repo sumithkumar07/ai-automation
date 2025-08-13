@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://parallel-testing.preview.emergentagent.com/api"
+BACKEND_URL = "https://auto-flow-verify.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {
