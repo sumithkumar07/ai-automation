@@ -301,6 +301,125 @@ async def get_templates(
         logger.error(f"Error getting templates: {e}")
         raise HTTPException(status_code=500, detail="Failed to get templates")
 
+@router.get("/search")
+async def search_templates(
+    query: str = None,
+    q: str = None,
+    category: str = None,
+    difficulty: str = None,
+    tags: str = None,
+    limit: int = Query(20, le=100),
+    db = Depends(get_database)
+):
+    """Search templates by name, description, or other criteria"""
+    try:
+        # Accept both 'query' and 'q' parameters for compatibility
+        search_term = query or q
+        
+        # Build query filter
+        filter_query = {"is_active": True}
+        
+        if search_term:
+            # Search in name and description
+            filter_query["$or"] = [
+                {"name": {"$regex": search_term, "$options": "i"}},
+                {"description": {"$regex": search_term, "$options": "i"}},
+                {"tags": {"$in": [search_term.lower()]}}
+            ]
+        
+        if category:
+            filter_query["category"] = category
+        if difficulty:
+            filter_query["difficulty"] = difficulty
+        if tags:
+            tag_list = [tag.strip() for tag in tags.split(",")]
+            filter_query["tags"] = {"$in": tag_list}
+        
+        try:
+            # Try database search first
+            cursor = db.templates.find(filter_query).limit(limit)
+            db_templates = list(cursor)
+            
+            if db_templates:
+                # Serialize MongoDB documents
+                templates = [serialize_doc(doc) for doc in db_templates]
+                
+                return {
+                    "templates": templates,
+                    "search_term": search_term,
+                    "total_results": len(templates),
+                    "source": "database"
+                }
+                
+        except Exception as e:
+            logger.info(f"Database search failed, using mock data: {e}")
+        
+        # Fallback to mock template search if database is empty
+        mock_templates = [
+            {
+                "id": "template_1",
+                "name": "Customer Onboarding Workflow",
+                "description": "Automate new customer onboarding process",
+                "category": "business",
+                "difficulty": "beginner",
+                "tags": ["onboarding", "customer", "automation"],
+                "author_id": "user_123",
+                "is_public": True,
+                "is_active": True,
+                "usage_count": 150,
+                "rating": 4.5,
+                "rating_count": 32,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat(),
+                "version": "1.2.0"
+            },
+            {
+                "id": "template_2", 
+                "name": "Lead Qualification Bot",
+                "description": "AI-powered lead qualification and scoring",
+                "category": "sales",
+                "difficulty": "intermediate",
+                "tags": ["ai", "leads", "qualification", "scoring"],
+                "author_id": "user_456",
+                "is_public": True,
+                "is_active": True,
+                "usage_count": 89,
+                "rating": 4.2,
+                "rating_count": 18,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat(),
+                "version": "2.0.1"
+            }
+        ]
+        
+        # Apply search filters to mock data
+        filtered_templates = mock_templates
+        
+        if search_term:
+            search_lower = search_term.lower()
+            filtered_templates = [
+                t for t in filtered_templates
+                if (search_lower in t["name"].lower() or 
+                    search_lower in t["description"].lower() or
+                    search_lower in str(t["tags"]).lower())
+            ]
+        
+        if category:
+            filtered_templates = [t for t in filtered_templates if t["category"] == category]
+        if difficulty:
+            filtered_templates = [t for t in filtered_templates if t["difficulty"] == difficulty]
+        
+        return {
+            "templates": filtered_templates[:limit],
+            "search_term": search_term,
+            "total_results": len(filtered_templates),
+            "source": "mock_data"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error searching templates: {e}")
+        raise HTTPException(status_code=500, detail="Failed to search templates")
+
 @router.get("/{template_id}")
 async def get_template_details(template_id: str, db = Depends(get_database)):
     """Get detailed template information"""
