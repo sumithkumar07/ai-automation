@@ -86,6 +86,38 @@ class NodeTypesEngine:
                                 "max_size_mb": {"type": "number", "default": 10}
                             }
                         }
+                    },
+                    {
+                        "id": "ai_content_trigger",
+                        "name": "AI Content Detection",
+                        "description": "Trigger when AI detects specific content patterns",
+                        "type": "trigger",
+                        "category": "ai",
+                        "icon": "🤖",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "content_type": {"type": "string", "enum": ["sentiment", "keywords", "language"], "default": "sentiment"},
+                                "threshold": {"type": "number", "default": 0.7},
+                                "model": {"type": "string", "enum": ["groq", "openai", "anthropic"], "default": "groq"}
+                            }
+                        }
+                    },
+                    {
+                        "id": "data_threshold_trigger",
+                        "name": "Data Threshold",
+                        "description": "Trigger when data exceeds or falls below threshold",
+                        "type": "trigger",
+                        "category": "advanced",
+                        "icon": "📊",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "metric": {"type": "string", "default": "value"},
+                                "operator": {"type": "string", "enum": [">", "<", ">=", "<=", "=="], "default": ">"},
+                                "threshold": {"type": "number", "default": 100}
+                            }
+                        }
                     }
                 ],
                 "actions": [
