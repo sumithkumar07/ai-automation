@@ -32,6 +32,12 @@ api_router = APIRouter(prefix="/api")
 async def root():
     return {"message": "Hello World"}
 
+# Node types endpoint
+@api_router.get("/node-types")
+async def get_node_types():
+    """Get all available node types"""
+    return node_types_engine.get_node_types()
+
 # Legacy status check models and endpoints
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
