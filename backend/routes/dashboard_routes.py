@@ -96,7 +96,10 @@ async def get_activity_feed(current_user: dict = Depends(get_current_active_user
     executions = await cursor.to_list(length=limit // 2)
     
     for execution in executions:
+        execution.pop('_id', None)  # Clean ObjectId
         workflow = await db.workflows.find_one({"id": execution["workflow_id"]})
+        if workflow:
+            workflow.pop('_id', None)  # Clean ObjectId
         activities.append({
             "type": "execution",
             "timestamp": execution["started_at"],
@@ -110,6 +113,7 @@ async def get_activity_feed(current_user: dict = Depends(get_current_active_user
     workflows = await cursor.to_list(length=limit // 2)
     
     for workflow in workflows:
+        workflow.pop('_id', None)  # Clean ObjectId
         if workflow["created_at"] == workflow["updated_at"]:
             message = f"Created workflow '{workflow['name']}'"
         else:
