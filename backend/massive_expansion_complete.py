@@ -11,7 +11,7 @@ class MassiveTemplateSystemComplete:
     """Complete Template System with 100+ Professional Templates Across All Industries"""
     
     def __init__(self):
-        self.templates = self._initialize_complete_templates()
+        self.templates = COMPLETE_TEMPLATES  # Use the complete generated templates
         self.categories = self._initialize_comprehensive_categories()
         
     def _initialize_comprehensive_categories(self):
