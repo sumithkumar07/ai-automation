@@ -236,7 +236,13 @@ class ComprehensiveBackendVerificationTester:
         )
         
         if success:
-            integration_count = len(response.get('integrations', []))
+            if isinstance(response, list):
+                integration_count = len(response)
+            elif isinstance(response, dict):
+                integration_count = len(response.get('integrations', response.get('data', [])))
+            else:
+                integration_count = 0
+            
             print(f"   📊 Found {integration_count} integrations")
             
             if integration_count < 100:
