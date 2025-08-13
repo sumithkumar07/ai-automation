@@ -147,6 +147,10 @@ async def get_execution_trends(current_user: dict = Depends(get_current_active_u
     
     executions = await cursor.to_list(length=1000)
     
+    # Clean up MongoDB ObjectIds
+    for execution in executions:
+        execution.pop('_id', None)
+    
     # Group by day
     daily_stats = {}
     for execution in executions:
