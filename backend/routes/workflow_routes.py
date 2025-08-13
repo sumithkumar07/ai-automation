@@ -81,6 +81,9 @@ async def get_workflow(workflow_id: str, current_user: dict = Depends(get_curren
     if not workflow:
         raise HTTPException(status_code=404, detail="Workflow not found")
     
+    # Remove MongoDB ObjectId
+    workflow.pop('_id', None)
+    
     return workflow
 
 @router.put("/{workflow_id}")
