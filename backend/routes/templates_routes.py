@@ -232,34 +232,35 @@ async def get_templates(
             }
         ]
         
-        # Apply filters
-        filtered_templates = mock_templates
-        
-        if category:
-            filtered_templates = [t for t in filtered_templates if t["category"] == category]
+            # Apply filters to fallback templates
+            filtered_templates = mock_templates
             
-        if difficulty:
-            filtered_templates = [t for t in filtered_templates if t["difficulty"] == difficulty]
+            if category:
+                filtered_templates = [t for t in filtered_templates if t["category"] == category]
+                
+            if difficulty:
+                filtered_templates = [t for t in filtered_templates if t["difficulty"] == difficulty]
+                
+            if tags:
+                tag_list = [tag.strip().lower() for tag in tags.split(",")]
+                filtered_templates = [t for t in filtered_templates 
+                                    if any(tag in [template_tag.lower() for template_tag in t["tags"]] 
+                                          for tag in tag_list)]
             
-        if tags:
-            tag_list = [tag.strip().lower() for tag in tags.split(",")]
-            filtered_templates = [t for t in filtered_templates 
-                                if any(tag in [template_tag.lower() for template_tag in t["tags"]] 
-                                      for tag in tag_list)]
-        
-        # Apply sorting
-        if sort_by == "popular":
-            filtered_templates.sort(key=lambda x: x["usage_count"], reverse=True)
-        elif sort_by == "recent":
-            filtered_templates.sort(key=lambda x: x["created_at"], reverse=True)
-        elif sort_by == "rating":
-            filtered_templates.sort(key=lambda x: (x["rating"], x["rating_count"]), reverse=True)
-        elif sort_by == "name":
-            filtered_templates.sort(key=lambda x: x["name"])
-        
-        # Apply pagination
-        total_count = len(filtered_templates)
-        paginated_templates = filtered_templates[offset:offset + limit]
+            # Apply sorting
+            if sort_by == "popular":
+                filtered_templates.sort(key=lambda x: x["usage_count"], reverse=True)
+            elif sort_by == "recent":
+                filtered_templates.sort(key=lambda x: x["created_at"], reverse=True)
+            elif sort_by == "rating":
+                filtered_templates.sort(key=lambda x: (x["rating"], x["rating_count"]), reverse=True)
+            elif sort_by == "name":
+                filtered_templates.sort(key=lambda x: x["name"])
+            
+            # Apply pagination
+            total_count = len(filtered_templates)
+            paginated_templates = filtered_templates[offset:offset + limit]
+            templates = paginated_templates
         
         # Enhance templates with additional data
         enhanced_templates = []
