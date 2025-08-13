@@ -348,7 +348,7 @@ class AetherAutomationAPITester:
     def test_ai_generate_workflow(self):
         """Test AI workflow generation endpoint"""
         prompt_data = {
-            "prompt": "Create a workflow that sends a Slack notification when a new email arrives"
+            "description": "Create a workflow that sends a Slack notification when a new email arrives"
         }
         
         success, response = self.run_test(
@@ -358,6 +358,29 @@ class AetherAutomationAPITester:
             200,
             data=prompt_data
         )
+        
+        if success:
+            # Verify GROQ AI integration is working
+            if 'workflow' in response and 'confidence' in response:
+                confidence = response.get('confidence', 0)
+                print(f"   ✅ AI workflow generated with confidence: {confidence}")
+                
+                workflow = response['workflow']
+                if 'nodes' in workflow and 'connections' in workflow:
+                    node_count = len(workflow['nodes'])
+                    connection_count = len(workflow['connections'])
+                    print(f"   ✅ Generated workflow has {node_count} nodes and {connection_count} connections")
+                    
+                    # Check if GROQ AI is actually working (not just mock)
+                    if confidence > 0.8:
+                        print(f"   ✅ GROQ AI appears to be working (high confidence)")
+                    else:
+                        print(f"   ⚠️ GROQ AI may be using fallback (low confidence)")
+                else:
+                    print(f"   ⚠️ Generated workflow missing nodes or connections")
+            else:
+                print(f"   ⚠️ AI response missing expected fields")
+        
         return success
 
     def test_ai_chat(self):
