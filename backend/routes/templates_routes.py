@@ -515,11 +515,24 @@ async def create_custom_template(
 ):
     """Create a new custom template"""
     try:
-        # Validate required fields
-        required_fields = ["name", "description", "workflow_definition", "category"]
+        # Validate required fields - accept both 'nodes' and 'workflow_definition' formats
+        required_fields = ["name", "description", "category"]
         for field in required_fields:
             if field not in template_data:
                 raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        
+        # Handle both API formats: 'nodes' or 'workflow_definition'
+        workflow_definition = None
+        if "workflow_definition" in template_data:
+            workflow_definition = template_data["workflow_definition"]
+        elif "nodes" in template_data:
+            # Convert nodes format to workflow_definition format
+            workflow_definition = {
+                "nodes": template_data["nodes"],
+                "edges": template_data.get("connections", template_data.get("edges", []))
+            }
+        else:
+            raise HTTPException(status_code=400, detail="Missing required field: workflow_definition or nodes")
         
         # Generate template ID
         template_id = str(uuid.uuid4())
