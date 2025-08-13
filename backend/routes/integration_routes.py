@@ -6,6 +6,9 @@ from database import get_database
 from integrations_engine import integrations_engine
 from cache_service import cache_service, cached, generate_cache_key, CACHE_CONFIGS
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
 
