@@ -1,7 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
@@ -11,8 +10,8 @@ import uuid
 from datetime import datetime
 
 # Import new modules
-from .database import connect_to_mongo, close_mongo_connection
-from .routes import auth_routes, workflow_routes, integration_routes, ai_routes, dashboard_routes
+from database import connect_to_mongo, close_mongo_connection
+from routes import auth_routes, workflow_routes, integration_routes, ai_routes, dashboard_routes
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
