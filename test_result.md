@@ -402,11 +402,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All foundational systems are working"
-    - "Ready for core workflow automation features"
-  stuck_tasks: []
+    - "Template Management System - Fix ObjectId serialization issues"
+    - "Workflow authentication issues affecting collaboration testing"
+  stuck_tasks:
+    - "Template Management System"
   test_all: false
-  test_priority: "completed_initial_setup"
+  test_priority: "fix_critical_issues"
 
 agent_communication:
   - agent: "main"
