@@ -11,8 +11,22 @@ router = APIRouter(prefix="/integrations", tags=["integrations"])
 
 @router.get("/", response_model=List[Integration])
 async def get_all_integrations():
-    """Get all available integrations"""
-    return integrations_engine.get_all_integrations()
+    """Get all available integrations with caching."""
+    cache_key = generate_cache_key("integrations", "all")
+    
+    # Try to get from cache first
+    cached_integrations = await cache_service.get(cache_key)
+    if cached_integrations:
+        return [Integration(**integration) for integration in cached_integrations]
+    
+    # Get from engine and cache
+    integrations = integrations_engine.get_all_integrations()
+    integration_dicts = [integration.dict() for integration in integrations]
+    
+    # Cache for 30 minutes
+    await cache_service.set(cache_key, integration_dicts, CACHE_CONFIGS['integration_data']['ttl'])
+    
+    return integrations
 
 @router.get("/categories")
 async def get_integration_categories():
