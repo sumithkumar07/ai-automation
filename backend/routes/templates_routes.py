@@ -302,10 +302,25 @@ async def get_templates(
         raise HTTPException(status_code=500, detail="Failed to get templates")
 
 @router.get("/{template_id}")
-async def get_template_details(template_id: str):
+async def get_template_details(template_id: str, db = Depends(get_database)):
     """Get detailed template information"""
     try:
-        # Return mock template details for specific template ID
+        # Try to get from database first
+        try:
+            # Try ObjectId for MongoDB _id or string id
+            from bson import ObjectId as BSONObjectId
+            try:
+                query = {"_id": BSONObjectId(template_id)}
+            except:
+                query = {"id": template_id}
+            
+            db_template = db.templates.find_one(query)
+            if db_template:
+                return serialize_doc(db_template)
+        except Exception as e:
+            logger.info(f"Database query failed, using mock template: {e}")
+        
+        # Fallback to mock template details for specific template ID
         if template_id not in ["template_1", "template_2", "template_3", "template_4", "template_5"]:
             raise HTTPException(status_code=404, detail="Template not found")
         
