@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List, Optional
-from ..models import Integration, UserIntegration, IntegrationCategory
-from ..auth import get_current_active_user
-from ..database import get_database
-from ..integrations_engine import integrations_engine
+from models import Integration, UserIntegration, IntegrationCategory
+from auth import get_current_active_user
+from database import get_database
+from integrations_engine import integrations_engine
 from datetime import datetime
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])

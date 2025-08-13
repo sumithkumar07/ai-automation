@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from typing import List, Dict, Any
-from ..models import DashboardStats, WorkflowExecution
-from ..auth import get_current_active_user
-from ..database import get_database
+from models import DashboardStats, WorkflowExecution
+from auth import get_current_active_user
+from database import get_database
 from datetime import datetime, timedelta
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])

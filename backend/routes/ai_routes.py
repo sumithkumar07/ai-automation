@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
-from ..models import AIWorkflowRequest, AIWorkflowResponse
-from ..auth import get_current_active_user
-from ..ai_service import ai_service
-from ..database import get_database
+from models import AIWorkflowRequest, AIWorkflowResponse
+from auth import get_current_active_user
+from ai_service import ai_service
+from database import get_database
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 

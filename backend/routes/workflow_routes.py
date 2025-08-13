@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List, Optional
-from ..models import Workflow, WorkflowCreate, WorkflowUpdate, WorkflowExecution
-from ..auth import get_current_active_user
-from ..database import get_database
-from ..workflow_engine import workflow_engine
+from models import Workflow, WorkflowCreate, WorkflowUpdate, WorkflowExecution
+from auth import get_current_active_user
+from database import get_database
+from workflow_engine import workflow_engine
 from datetime import datetime
 
 router = APIRouter(prefix="/workflows", tags=["workflows"])
