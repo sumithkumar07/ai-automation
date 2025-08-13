@@ -1,8 +1,8 @@
 import asyncio
 from typing import Dict, Any, List, Optional
 from datetime import datetime
-from .models import Workflow, WorkflowExecution, ExecutionStatus, NodeType
-from .integrations_engine import integrations_engine
+from models import Workflow, WorkflowExecution, ExecutionStatus, NodeType
+from integrations_engine import integrations_engine
 import logging
 
 logger = logging.getLogger(__name__)
@@ -137,7 +137,7 @@ class WorkflowEngine:
             })
         
         elif node.type == NodeType.AI:
-            # AI processing (mock for now)
+            # AI processing using GROQ
             ai_result = await self._process_ai_node(node, context)
             result.update({
                 "type": "ai",
@@ -171,15 +171,25 @@ class WorkflowEngine:
         return False
     
     async def _process_ai_node(self, node, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Process an AI node (mock implementation)."""
-        # In a real implementation, this would use EMERGENT_LLM_KEY or other AI services
-        await asyncio.sleep(0.5)  # Simulate AI processing time
-        
-        return {
-            "ai_response": f"AI processed node '{node.name}' with context keys: {list(context.keys())}",
-            "confidence": 0.95,
-            "suggestions": ["Consider adding error handling", "Optimize for performance"]
-        }
+        """Process an AI node using GROQ."""
+        try:
+            from ai_service import ai_service
+            # Use the real AI service for processing
+            prompt = node.config.get("prompt", f"Process the following context: {context}")
+            ai_response = await ai_service.process_with_groq(prompt, context)
+            
+            return {
+                "ai_response": ai_response.get("response", "AI processing completed"),
+                "confidence": ai_response.get("confidence", 0.95),
+                "processing_time": ai_response.get("processing_time", 0.5)
+            }
+        except Exception as e:
+            logger.error(f"AI processing failed: {str(e)}")
+            return {
+                "ai_response": f"AI processing failed: {str(e)}",
+                "confidence": 0.0,
+                "error": str(e)
+            }
     
     def cancel_workflow(self, execution_id: str) -> bool:
         """Cancel a running workflow."""

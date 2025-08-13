@@ -5,7 +5,7 @@ from typing import Optional
 from fastapi import HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
-from .models import User
+from models import User
 
 # Security configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-this")
