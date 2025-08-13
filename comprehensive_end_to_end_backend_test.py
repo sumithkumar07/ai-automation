@@ -842,7 +842,8 @@ class ComprehensiveAetherTester:
         )
         
         if success:
-            if 'categories' in response and 'stats' in response:
+            # Handle both old and new response formats
+            if isinstance(response, dict) and 'categories' in response and 'stats' in response:
                 stats = response['stats']
                 categories = response['categories']
                 
@@ -864,7 +865,6 @@ class ComprehensiveAetherTester:
                     print(f"   ⚠️ Category count low: {category_count}")
                 
                 # Analyze node categories
-                expected_categories = ['triggers', 'actions', 'logic', 'ai']
                 for category_name, category_data in categories.items():
                     nodes = category_data.get('nodes', [])
                     print(f"   📂 {category_name}: {len(nodes)} nodes")
@@ -899,9 +899,29 @@ class ComprehensiveAetherTester:
                 else:
                     print(f"   ⚠️ Missing essential node types")
                     self.log_critical_failure("Node Types", "Missing essential node types")
+            
+            elif isinstance(response, list):
+                # Handle list format response
+                total_nodes = len(response)
+                print(f"   📊 Total node types: {total_nodes}")
+                
+                if total_nodes >= 25:
+                    print(f"   ✅ Node count meets promise (25+)")
+                else:
+                    print(f"   ⚠️ Node count below promise: {total_nodes}")
+                    self.log_critical_failure("Node Types", f"Only {total_nodes} node types, below 25+ promise")
+                
+                # Check for node structure
+                if response:
+                    sample_node = response[0]
+                    if isinstance(sample_node, dict) and 'type' in sample_node:
+                        print(f"   ✅ Node types have proper structure")
+                    else:
+                        print(f"   ⚠️ Node types structure unclear")
+            
             else:
-                print(f"   ⚠️ Node types response missing expected structure")
-                self.log_critical_failure("Node Types", "Node types endpoint response incomplete")
+                print(f"   ⚠️ Node types response format unexpected")
+                self.log_critical_failure("Node Types", "Node types endpoint response format unexpected")
         
         return success
 
