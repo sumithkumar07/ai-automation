@@ -12,11 +12,13 @@ def test_specific_endpoints():
     
     # First authenticate
     auth_data = {
-        "email": "test@example.com",
-        "password": "password123"
+        "email": f"test_error_analysis@example.com",
+        "password": "TestPass123!",
+        "first_name": "Test",
+        "last_name": "User"
     }
     
-    auth_response = requests.post(f"{base_url}/api/auth/login", json=auth_data)
+    auth_response = requests.post(f"{base_url}/api/auth/register", json=auth_data)
     if auth_response.status_code == 200:
         token = auth_response.json()['access_token']
         headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
