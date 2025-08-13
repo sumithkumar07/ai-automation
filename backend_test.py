@@ -76,7 +76,7 @@ class AetherAutomationAPITester:
         success, response = self.run_test(
             "User Signup",
             "POST",
-            "api/auth/signup",
+            "api/auth/register",
             200,
             data=test_user_data
         )
