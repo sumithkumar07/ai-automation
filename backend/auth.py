@@ -1,4 +1,4 @@
-import PyJWT as jwt
+import jwt
 import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional
