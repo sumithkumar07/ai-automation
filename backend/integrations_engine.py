@@ -328,6 +328,514 @@ class IntegrationsEngine:
                     {"id": "analyze_document", "name": "Analyze Document", "description": "Analyze documents with Claude"},
                 ],
             ),
+            
+            # Additional Communication & Collaboration
+            "zoom": Integration(
+                id="zoom",
+                name="Zoom",
+                description="Schedule meetings, manage webinars, and integrate video calls",
+                icon_url="https://d24cgw3uvb9a9h.cloudfront.net/static/93516/image/new/ZoomLogo_112x112.png",
+                category=IntegrationCategory.COMMUNICATION,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_meeting", "name": "Create Meeting", "description": "Schedule a Zoom meeting"},
+                    {"id": "start_webinar", "name": "Start Webinar", "description": "Start a webinar"},
+                ],
+            ),
+            "whatsapp": Integration(
+                id="whatsapp",
+                name="WhatsApp Business",
+                description="Send messages and manage WhatsApp Business communications",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
+                category=IntegrationCategory.COMMUNICATION,
+                auth_type="api_key",
+                actions=[
+                    {"id": "send_message", "name": "Send Message", "description": "Send WhatsApp message"},
+                    {"id": "send_template", "name": "Send Template", "description": "Send template message"},
+                ],
+            ),
+            "telegram": Integration(
+                id="telegram",
+                name="Telegram",
+                description="Send messages and manage Telegram bots",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
+                category=IntegrationCategory.COMMUNICATION,
+                auth_type="api_key",
+                actions=[
+                    {"id": "send_message", "name": "Send Message", "description": "Send Telegram message"},
+                    {"id": "send_photo", "name": "Send Photo", "description": "Send photo via Telegram"},
+                ],
+            ),
+            
+            # Project Management
+            "asana": Integration(
+                id="asana",
+                name="Asana",
+                description="Manage tasks, projects, and team collaboration",
+                icon_url="https://cdn.worldvectorlogo.com/logos/asana-logo.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_task", "name": "Create Task", "description": "Create a new task"},
+                    {"id": "update_task", "name": "Update Task", "description": "Update task details"},
+                ],
+            ),
+            "trello": Integration(
+                id="trello",
+                name="Trello",
+                description="Manage Kanban boards and organize projects",
+                icon_url="https://cdn.worldvectorlogo.com/logos/trello.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_card", "name": "Create Card", "description": "Create a new Trello card"},
+                    {"id": "move_card", "name": "Move Card", "description": "Move card between lists"},
+                ],
+            ),
+            "monday": Integration(
+                id="monday",
+                name="Monday.com",
+                description="Work operating system for managing teams and projects",
+                icon_url="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/uploads/Hidy/0085c7d8-6d77-4c5e-870e-24bb80f837b0_monday-logo-x.png",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_item", "name": "Create Item", "description": "Create new board item"},
+                    {"id": "update_status", "name": "Update Status", "description": "Update item status"},
+                ],
+            ),
+            "clickup": Integration(
+                id="clickup",
+                name="ClickUp",
+                description="All-in-one productivity and project management platform",
+                icon_url="https://clickup.com/landing/images/for-developers/clickup-symbol_color.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_task", "name": "Create Task", "description": "Create a new task"},
+                    {"id": "create_list", "name": "Create List", "description": "Create a new list"},
+                ],
+            ),
+            
+            # E-commerce & Payments
+            "shopify": Integration(
+                id="shopify",
+                name="Shopify",
+                description="E-commerce platform integration for orders and products",
+                icon_url="https://cdn.worldvectorlogo.com/logos/shopify.svg",
+                category=IntegrationCategory.ECOMMERCE,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_order", "name": "Create Order", "description": "Create a new order"},
+                    {"id": "update_inventory", "name": "Update Inventory", "description": "Update product inventory"},
+                ],
+            ),
+            "woocommerce": Integration(
+                id="woocommerce",
+                name="WooCommerce",
+                description="WordPress e-commerce plugin integration",
+                icon_url="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce@2x.png",
+                category=IntegrationCategory.ECOMMERCE,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_product", "name": "Create Product", "description": "Add new product"},
+                    {"id": "process_order", "name": "Process Order", "description": "Process new orders"},
+                ],
+            ),
+            "square": Integration(
+                id="square",
+                name="Square",
+                description="Payment processing and point-of-sale system",
+                icon_url="https://cdn.worldvectorlogo.com/logos/square-icon.svg",
+                category=IntegrationCategory.ECOMMERCE,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "process_payment", "name": "Process Payment", "description": "Process a payment"},
+                    {"id": "create_invoice", "name": "Create Invoice", "description": "Generate an invoice"},
+                ],
+            ),
+            
+            # Social Media
+            "facebook": Integration(
+                id="facebook",
+                name="Facebook",
+                description="Post to Facebook pages and manage social media presence",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_post", "name": "Create Post", "description": "Post to Facebook page"},
+                    {"id": "schedule_post", "name": "Schedule Post", "description": "Schedule a Facebook post"},
+                ],
+            ),
+            "twitter": Integration(
+                id="twitter",
+                name="Twitter/X",
+                description="Post tweets and manage Twitter presence",
+                icon_url="https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_tweet", "name": "Create Tweet", "description": "Post a new tweet"},
+                    {"id": "retweet", "name": "Retweet", "description": "Retweet a post"},
+                ],
+            ),
+            "instagram": Integration(
+                id="instagram",
+                name="Instagram",
+                description="Post photos and manage Instagram business accounts",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_post", "name": "Create Post", "description": "Post to Instagram"},
+                    {"id": "add_story", "name": "Add Story", "description": "Add Instagram story"},
+                ],
+            ),
+            "linkedin": Integration(
+                id="linkedin",
+                name="LinkedIn",
+                description="Professional networking and content sharing",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_post", "name": "Create Post", "description": "Post to LinkedIn"},
+                    {"id": "send_message", "name": "Send Message", "description": "Send LinkedIn message"},
+                ],
+            ),
+            "youtube": Integration(
+                id="youtube",
+                name="YouTube",
+                description="Upload videos and manage YouTube channel",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "upload_video", "name": "Upload Video", "description": "Upload video to YouTube"},
+                    {"id": "create_playlist", "name": "Create Playlist", "description": "Create new playlist"},
+                ],
+            ),
+            
+            # Cloud Storage & File Management
+            "onedrive": Integration(
+                id="onedrive",
+                name="OneDrive",
+                description="Microsoft cloud storage and file management",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/3/3c/Microsoft_Office_OneDrive_%282019%E2%80%93present%29.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "upload_file", "name": "Upload File", "description": "Upload file to OneDrive"},
+                    {"id": "create_folder", "name": "Create Folder", "description": "Create new folder"},
+                ],
+            ),
+            "box": Integration(
+                id="box",
+                name="Box",
+                description="Enterprise cloud content management",
+                icon_url="https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_96cf1de0d17bbdd980400dbb8c72ebe8/box.png",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "upload_file", "name": "Upload File", "description": "Upload file to Box"},
+                    {"id": "share_file", "name": "Share File", "description": "Share file with others"},
+                ],
+            ),
+            
+            # Marketing & Analytics
+            "google_analytics": Integration(
+                id="google_analytics",
+                name="Google Analytics",
+                description="Web analytics and traffic analysis",
+                icon_url="https://developers.google.com/analytics/images/terms/logo_lockup_analytics_icon_vertical_black_2x.png",
+                category=IntegrationCategory.ANALYTICS,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "track_event", "name": "Track Event", "description": "Track custom events"},
+                    {"id": "get_report", "name": "Get Report", "description": "Retrieve analytics data"},
+                ],
+            ),
+            "facebook_ads": Integration(
+                id="facebook_ads",
+                name="Facebook Ads",
+                description="Create and manage Facebook advertising campaigns",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_campaign", "name": "Create Campaign", "description": "Create ad campaign"},
+                    {"id": "update_budget", "name": "Update Budget", "description": "Modify campaign budget"},
+                ],
+            ),
+            "google_ads": Integration(
+                id="google_ads",
+                name="Google Ads",
+                description="Manage Google advertising campaigns and keywords",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg",
+                category=IntegrationCategory.MARKETING,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_campaign", "name": "Create Campaign", "description": "Create advertising campaign"},
+                    {"id": "manage_keywords", "name": "Manage Keywords", "description": "Add/remove keywords"},
+                ],
+            ),
+            
+            # CRM & Sales
+            "pipedrive": Integration(
+                id="pipedrive",
+                name="Pipedrive",
+                description="Sales CRM and pipeline management",
+                icon_url="https://cdn.worldvectorlogo.com/logos/pipedrive.svg",
+                category=IntegrationCategory.CRM,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_deal", "name": "Create Deal", "description": "Add new sales deal"},
+                    {"id": "add_contact", "name": "Add Contact", "description": "Add new contact"},
+                ],
+            ),
+            "zendesk": Integration(
+                id="zendesk",
+                name="Zendesk",
+                description="Customer support and helpdesk platform",
+                icon_url="https://d26toa8f6aheso.cloudfront.net/wp-content/uploads/2021/07/30142932/zendesk.png",
+                category=IntegrationCategory.SUPPORT,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_ticket", "name": "Create Ticket", "description": "Create support ticket"},
+                    {"id": "update_ticket", "name": "Update Ticket", "description": "Update ticket status"},
+                ],
+            ),
+            "freshdesk": Integration(
+                id="freshdesk",
+                name="Freshdesk",
+                description="Customer support and ticketing system",
+                icon_url="https://fv9-6.failory.com/logos/Freshdesk.svg",
+                category=IntegrationCategory.SUPPORT,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_ticket", "name": "Create Ticket", "description": "Create new support ticket"},
+                    {"id": "assign_agent", "name": "Assign Agent", "description": "Assign ticket to agent"},
+                ],
+            ),
+            
+            # Development & DevOps
+            "bitbucket": Integration(
+                id="bitbucket",
+                name="Bitbucket",
+                description="Git repository hosting and CI/CD pipeline",
+                icon_url="https://cdn.worldvectorlogo.com/logos/bitbucket-icon.svg",
+                category=IntegrationCategory.DEVELOPER,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_repo", "name": "Create Repository", "description": "Create new Git repository"},
+                    {"id": "create_pr", "name": "Create Pull Request", "description": "Create pull request"},
+                ],
+            ),
+            "docker": Integration(
+                id="docker",
+                name="Docker Hub",
+                description="Container registry and image management",
+                icon_url="https://cdn.worldvectorlogo.com/logos/docker-icon.svg",
+                category=IntegrationCategory.DEVELOPER,
+                auth_type="api_key",
+                actions=[
+                    {"id": "push_image", "name": "Push Image", "description": "Push Docker image"},
+                    {"id": "create_repo", "name": "Create Repository", "description": "Create Docker repository"},
+                ],
+            ),
+            "aws": Integration(
+                id="aws",
+                name="Amazon Web Services",
+                description="Cloud computing platform and services",
+                icon_url="https://cdn.worldvectorlogo.com/logos/aws-2.svg",
+                category=IntegrationCategory.DEVELOPER,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_ec2", "name": "Create EC2 Instance", "description": "Launch EC2 instance"},
+                    {"id": "upload_s3", "name": "Upload to S3", "description": "Upload file to S3 bucket"},
+                ],
+            ),
+            
+            # Additional Communication Tools
+            "mattermost": Integration(
+                id="mattermost",
+                name="Mattermost",
+                description="Open-source team collaboration platform",
+                icon_url="https://mattermost.com/wp-content/uploads/2022/02/icon.png",
+                category=IntegrationCategory.COMMUNICATION,
+                auth_type="api_key",
+                actions=[
+                    {"id": "send_message", "name": "Send Message", "description": "Send message to channel"},
+                    {"id": "create_channel", "name": "Create Channel", "description": "Create new channel"},
+                ],
+            ),
+            "rocketchat": Integration(
+                id="rocketchat",
+                name="Rocket.Chat",
+                description="Open-source team chat platform",
+                icon_url="https://rocket.chat/images/logo/logo-dark.svg",
+                category=IntegrationCategory.COMMUNICATION,
+                auth_type="api_key",
+                actions=[
+                    {"id": "send_message", "name": "Send Message", "description": "Send message to room"},
+                    {"id": "create_room", "name": "Create Room", "description": "Create chat room"},
+                ],
+            ),
+            
+            # AI & Machine Learning
+            "huggingface": Integration(
+                id="huggingface",
+                name="Hugging Face",
+                description="AI models and natural language processing",
+                icon_url="https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+                category=IntegrationCategory.AI,
+                auth_type="api_key",
+                actions=[
+                    {"id": "run_model", "name": "Run Model", "description": "Execute AI model"},
+                    {"id": "text_generation", "name": "Generate Text", "description": "Generate text with AI"},
+                ],
+            ),
+            "replicate": Integration(
+                id="replicate",
+                name="Replicate",
+                description="Run machine learning models in the cloud",
+                icon_url="https://replicate.com/favicon.ico",
+                category=IntegrationCategory.AI,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_prediction", "name": "Create Prediction", "description": "Run ML prediction"},
+                    {"id": "image_generation", "name": "Generate Image", "description": "Create AI images"},
+                ],
+            ),
+            
+            # Database & Analytics  
+            "postgresql": Integration(
+                id="postgresql",
+                name="PostgreSQL",
+                description="Advanced open-source relational database",
+                icon_url="https://cdn.worldvectorlogo.com/logos/postgresql.svg",
+                category=IntegrationCategory.DATABASE,
+                auth_type="credential",
+                actions=[
+                    {"id": "execute_query", "name": "Execute Query", "description": "Run SQL query"},
+                    {"id": "insert_data", "name": "Insert Data", "description": "Insert new records"},
+                ],
+            ),
+            "mysql": Integration(
+                id="mysql",
+                name="MySQL",
+                description="Popular open-source relational database",
+                icon_url="https://cdn.worldvectorlogo.com/logos/mysql-6.svg",
+                category=IntegrationCategory.DATABASE,
+                auth_type="credential",
+                actions=[
+                    {"id": "execute_query", "name": "Execute Query", "description": "Run SQL query"},
+                    {"id": "backup_database", "name": "Backup Database", "description": "Create database backup"},
+                ],
+            ),
+            "redis": Integration(
+                id="redis",
+                name="Redis",
+                description="In-memory data structure store and cache",
+                icon_url="https://cdn.worldvectorlogo.com/logos/redis.svg",
+                category=IntegrationCategory.DATABASE,
+                auth_type="credential",
+                actions=[
+                    {"id": "set_key", "name": "Set Key", "description": "Store key-value pair"},
+                    {"id": "get_key", "name": "Get Key", "description": "Retrieve stored value"},
+                ],
+            ),
+            
+            # Business & Finance
+            "quickbooks": Integration(
+                id="quickbooks",
+                name="QuickBooks",
+                description="Accounting and financial management software",
+                icon_url="https://plugin.intuitcdn.net/designsystem/assets/2023/01/12/qbo-app-icon.svg",
+                category=IntegrationCategory.FINANCE,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_invoice", "name": "Create Invoice", "description": "Generate customer invoice"},
+                    {"id": "add_expense", "name": "Add Expense", "description": "Record business expense"},
+                ],
+            ),
+            "xero": Integration(
+                id="xero",
+                name="Xero",
+                description="Cloud-based accounting software",
+                icon_url="https://developer.xero.com/static/images/documentation/xero_logo.png",
+                category=IntegrationCategory.FINANCE,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_contact", "name": "Create Contact", "description": "Add new contact"},
+                    {"id": "reconcile_transaction", "name": "Reconcile Transaction", "description": "Match transactions"},
+                ],
+            ),
+            
+            # Content Management
+            "wordpress": Integration(
+                id="wordpress",
+                name="WordPress",
+                description="Content management system and blogging platform",
+                icon_url="https://cdn.worldvectorlogo.com/logos/wordpress-blue.svg",
+                category=IntegrationCategory.CONTENT,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_post", "name": "Create Post", "description": "Publish new blog post"},
+                    {"id": "update_page", "name": "Update Page", "description": "Modify existing page"},
+                ],
+            ),
+            "drupal": Integration(
+                id="drupal",
+                name="Drupal",
+                description="Open-source content management framework",
+                icon_url="https://www.drupal.org/files/Drupal%20Drop_blue.png",
+                category=IntegrationCategory.CONTENT,
+                auth_type="api_key",
+                actions=[
+                    {"id": "create_node", "name": "Create Node", "description": "Create content node"},
+                    {"id": "update_content", "name": "Update Content", "description": "Modify existing content"},
+                ],
+            ),
+            
+            # Event & Calendar Management
+            "google_calendar": Integration(
+                id="google_calendar",
+                name="Google Calendar",
+                description="Schedule and manage calendar events",
+                icon_url="https://cdn.worldvectorlogo.com/logos/google-calendar.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_event", "name": "Create Event", "description": "Schedule new calendar event"},
+                    {"id": "update_event", "name": "Update Event", "description": "Modify existing event"},
+                ],
+            ),
+            "outlook_calendar": Integration(
+                id="outlook_calendar",
+                name="Outlook Calendar",
+                description="Microsoft calendar and scheduling service",
+                icon_url="https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_meeting", "name": "Create Meeting", "description": "Schedule Outlook meeting"},
+                    {"id": "send_invitation", "name": "Send Invitation", "description": "Send meeting invitation"},
+                ],
+            ),
+            "calendly": Integration(
+                id="calendly",
+                name="Calendly",
+                description="Automated scheduling and appointment booking",
+                icon_url="https://images.ctfassets.net/k0lk9kiuza3o/7HmJzCd8GYBjZKrRPVFPwm/0f1d6fe1c6c8a7dcc0a2b2a6c5b79b33/calendly-logo.png",
+                category=IntegrationCategory.PRODUCTIVITY,
+                auth_type="oauth2",
+                actions=[
+                    {"id": "create_meeting_type", "name": "Create Meeting Type", "description": "Set up meeting template"},
+                    {"id": "get_availability", "name": "Check Availability", "description": "Get available time slots"},
+                ],
+            ),
         }
         return integrations
     
