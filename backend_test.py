@@ -661,7 +661,31 @@ class AetherAutomationAPITester:
         
         return success
 
-    def test_ai_chat_with_session(self):
+    def test_ai_suggest_integrations(self):
+        """Test AI integration suggestions endpoint"""
+        success, response = self.run_test(
+            "AI Suggest Integrations",
+            "POST",
+            "api/ai/suggest-integrations",
+            200,
+            params={"description": "I want to send notifications when someone submits a form"}
+        )
+        
+        if success:
+            if 'suggestions' in response:
+                suggestions = response['suggestions']
+                print(f"   ✅ AI suggested {len(suggestions)} integrations")
+                
+                # Check if GROQ AI is working
+                ai_powered = response.get('ai_powered', False)
+                if ai_powered:
+                    print(f"   ✅ GROQ AI integration suggestions working")
+                else:
+                    print(f"   ⚠️ Using fallback integration suggestions")
+            else:
+                print(f"   ⚠️ Suggestions response missing expected fields")
+        
+        return success
         """Test AI chat with session memory"""
         # First message in session
         success1, response1 = self.run_test(
