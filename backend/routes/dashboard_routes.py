@@ -183,6 +183,10 @@ async def get_workflow_performance(current_user: dict = Depends(get_current_acti
     # Get workflows with their execution stats
     workflows = await db.workflows.find({"user_id": user_id}).to_list(length=100)
     
+    # Clean up MongoDB ObjectIds
+    for workflow in workflows:
+        workflow.pop('_id', None)
+    
     performance_data = []
     for workflow in workflows:
         # Get execution stats for this workflow
