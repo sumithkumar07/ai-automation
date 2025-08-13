@@ -68,9 +68,10 @@ class AetherAutomationAPITester:
     def test_signup(self):
         """Test user signup"""
         test_user_data = {
-            "name": f"Test User {datetime.now().strftime('%H%M%S')}",
             "email": f"test_{datetime.now().strftime('%H%M%S')}@example.com",
-            "password": "password123"
+            "password": "password123",
+            "first_name": f"Test",
+            "last_name": f"User {datetime.now().strftime('%H%M%S')}"
         }
         
         success, response = self.run_test(
@@ -81,8 +82,8 @@ class AetherAutomationAPITester:
             data=test_user_data
         )
         
-        if success and 'token' in response:
-            self.token = response['token']
+        if success and 'access_token' in response:
+            self.token = response['access_token']
             self.user_id = response['user']['id']
             print(f"   Token obtained: {self.token[:20]}...")
             return True
