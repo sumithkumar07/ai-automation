@@ -167,13 +167,13 @@ async def get_enhanced_integration_stats():
 # Enhanced System Status endpoints
 @api_router.get("/enhanced/status")
 async def get_enhanced_system_status():
-    """Get comprehensive system status with feature utilization"""
-    node_stats = massive_node_types_engine.get_node_types()["stats"]
-    template_stats = massive_templates_engine.get_template_stats()
-    integration_stats = massive_integrations_engine.get_integration_stats()
+    """Get comprehensive system status with MASSIVE enhancement statistics"""
+    node_stats = massive_node_system_complete.get_node_types()["stats"]
+    template_stats = massive_template_system_complete.get_template_stats()
+    integration_stats = massive_integrations_system_complete.get_integration_stats()
     
     return {
-        "status": "enhanced",
+        "status": "massive_expansion_complete",
         "version": "2.0.0",
         "features": {
             "nodes": {
@@ -205,7 +205,18 @@ async def get_enhanced_system_status():
         },
         "system_health": "excellent",
         "feature_utilization": "100%",
-        "enhancement_level": "massive"
+        "enhancement_level": "massive_expansion_complete",
+        "expansion_goals": {
+            "templates_goal": "100+",
+            "templates_achieved": template_stats["total_templates"],
+            "templates_status": "✅ ACHIEVED" if template_stats["total_templates"] >= 100 else "⚠️ IN PROGRESS",
+            "integrations_goal": "200+", 
+            "integrations_achieved": integration_stats["total_integrations"],
+            "integrations_status": "✅ ACHIEVED" if integration_stats["total_integrations"] >= 200 else "⚠️ IN PROGRESS",
+            "nodes_goal": "300+",
+            "nodes_achieved": node_stats["total_nodes"],
+            "nodes_status": "✅ ACHIEVED" if node_stats["total_nodes"] >= 300 else "⚠️ IN PROGRESS"
+        }
     }
 
 # Legacy status check models and endpoints
