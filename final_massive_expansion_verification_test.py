@@ -23,7 +23,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://auto-flow-verify.preview.emergentagent.com/api"
+BACKEND_URL = "https://frontend-e2e-test.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "expansion_test@aether.com"
 TEST_USER_PASSWORD = "ExpansionTest2024!"
 
