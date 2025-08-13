@@ -361,6 +361,18 @@ backend:
         agent: "testing"
         comment: "✅ MOSTLY FUNCTIONAL - /api/collaboration/stats endpoint working perfectly, returns real-time collaboration statistics with active_rooms, total_connections, and room details. WebSocket collaboration infrastructure appears operational. /api/collaboration/workflow/{workflow_id}/collaborators endpoint structure is correct but requires workflow creation to test fully (blocked by workflow authentication issues)."
 
+  - task: "Integration Count vs Homepage Promise"
+    implemented: true
+    working: false
+    file: "routes/integration_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL DISCREPANCY - Homepage promises '100+ integrations' but backend only provides 22 integrations. Actual count: 22 integrations across 8 categories (communication, ai, crm, development, finance, marketing, productivity, storage). Key integrations present: Slack, Gmail, GitHub, Stripe, Salesforce, HubSpot. Quality is good but quantity significantly below promise. RECOMMENDATION: Either add more integrations or update homepage claims to match reality."
+
 frontend:
   - task: "React App Setup and Configuration"
     implemented: true
