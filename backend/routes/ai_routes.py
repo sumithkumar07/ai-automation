@@ -148,7 +148,7 @@ Format as JSON list.
         
         return {
             "suggestions": final_suggestions[:5],  # Top 5 suggestions
-            "description_analyzed": description,
+            "description_analyzed": description_text,
             "ai_powered": False
         }
     
