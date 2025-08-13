@@ -418,12 +418,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Template Management System - Fix ObjectId serialization issues"
-    - "Workflow authentication issues affecting collaboration testing"
+    - "Template detail retrieval for newly created templates"
+    - "Workflow CRUD authentication issues"
+    - "Integration count vs homepage promise discrepancy"
   stuck_tasks:
-    - "Template Management System"
+    - "Template detail endpoint for new templates"
+    - "Workflow authentication preventing CRUD operations"
   test_all: false
-  test_priority: "fix_critical_issues"
+  test_priority: "fix_remaining_issues"
 
 agent_communication:
   - agent: "main"
