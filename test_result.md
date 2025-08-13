@@ -373,6 +373,18 @@ backend:
         agent: "testing"
         comment: "❌ CRITICAL DISCREPANCY - Homepage promises '100+ integrations' but backend only provides 22 integrations. Actual count: 22 integrations across 8 categories (communication, ai, crm, development, finance, marketing, productivity, storage). Key integrations present: Slack, Gmail, GitHub, Stripe, Salesforce, HubSpot. Quality is good but quantity significantly below promise. RECOMMENDATION: Either add more integrations or update homepage claims to match reality."
 
+  - task: "Workflow CRUD Authentication Issues"
+    implemented: true
+    working: false
+    file: "routes/workflow_routes.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ AUTHENTICATION FAILURE - Workflow CRUD operations failing with 403 'Not authenticated' errors despite valid JWT tokens. GET /api/workflows and POST /api/workflows both fail authentication. Auth system returns user_id correctly but workflow routes may have authentication dependency issues. This blocks core workflow functionality and affects collaboration testing. REQUIRES: Review workflow route authentication dependencies and ensure proper JWT token validation."
+
 frontend:
   - task: "React App Setup and Configuration"
     implemented: true
