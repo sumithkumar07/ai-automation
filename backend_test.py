@@ -664,17 +664,12 @@ class AetherAutomationAPITester:
     def test_ai_chat_with_session(self):
         """Test AI chat with session memory"""
         # First message in session
-        message1 = {
-            "message": "What is workflow automation?",
-            "session_id": self.session_id
-        }
-        
         success1, response1 = self.run_test(
             "AI Chat with Session - Message 1",
             "POST",
             "api/ai/chat",
             200,
-            data=message1
+            params={"message": "What is workflow automation?", "session_id": self.session_id}
         )
         
         if success1:
@@ -684,17 +679,12 @@ class AetherAutomationAPITester:
                 print(f"   ⚠️ Session ID not maintained")
         
         # Second message in same session
-        message2 = {
-            "message": "Can you give me an example?",
-            "session_id": self.session_id
-        }
-        
         success2, response2 = self.run_test(
             "AI Chat with Session - Message 2",
             "POST",
             "api/ai/chat",
             200,
-            data=message2
+            params={"message": "Can you give me an example?", "session_id": self.session_id}
         )
         
         return success1 and success2
