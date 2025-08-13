@@ -18,6 +18,13 @@ from enhanced_templates_massive import massive_template_system
 from expanded_integrations_massive import massive_integrations_engine
 from expanded_templates_massive import massive_templates_engine
 
+# Import MASSIVE EXPANSION COMPLETE SYSTEMS
+from massive_expansion_complete import (
+    massive_template_system_complete,
+    massive_integrations_system_complete,
+    massive_node_system_complete
+)
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
