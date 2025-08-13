@@ -8,7 +8,7 @@ import requests
 import json
 
 def test_specific_endpoints():
-    base_url = "https://integration-verify-1.preview.emergentagent.com"
+    base_url = "https://backend-first-1.preview.emergentagent.com"
     
     # First authenticate
     auth_data = {
