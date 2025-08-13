@@ -54,6 +54,11 @@ async def register(user_data: UserCreate):
         }
     }
 
+@router.post("/signup")
+async def signup(user_data: UserCreate):
+    """Sign up a new user (alias for register to match frontend expectations)"""
+    return await register(user_data)
+
 @router.post("/login")
 async def login(login_data: UserLogin):
     """Login user"""
