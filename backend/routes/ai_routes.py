@@ -61,14 +61,22 @@ async def get_workflow_insights(workflow_id: str, current_user: dict = Depends(g
         raise HTTPException(status_code=500, detail=f"Failed to generate insights: {str(e)}")
 
 @router.post("/suggest-integrations")
-async def suggest_integrations(description: str, current_user: dict = Depends(get_current_active_user)):
-    """Suggest integrations based on workflow description"""
+async def suggest_integrations(request_data: dict = None, description: str = None, current_user: dict = Depends(get_current_active_user)):
+    """Suggest integrations based on workflow description - accepts both JSON body and query parameter"""
     try:
+        # Handle both API formats: JSON body with 'description' field or query parameter
+        if request_data and isinstance(request_data, dict) and "description" in request_data:
+            description_text = request_data["description"]
+        elif description:
+            description_text = description
+        else:
+            raise HTTPException(status_code=400, detail="Description required in JSON body or as query parameter")
+        
         # Enhanced AI-powered suggestions using GROQ
         if ai_service.groq_client:
             suggestions_prompt = f"""
 Analyze this workflow description and suggest the best integrations:
-"{description}"
+"{description_text}"
 
 Available integrations: Gmail, Slack, Google Sheets, GitHub, Stripe, Twilio, Discord, Notion, Airtable, Google Drive, Dropbox, HubSpot, Salesforce, Mailchimp, OpenAI, GROQ AI
 
@@ -90,7 +98,7 @@ Format as JSON list.
                 if isinstance(ai_suggestions, list) and ai_suggestions:
                     return {
                         "suggestions": ai_suggestions,
-                        "description_analyzed": description,
+                        "description_analyzed": description_text,
                         "ai_powered": True,
                         "model": "llama-3.1-8b-instant"
                     }
@@ -98,7 +106,7 @@ Format as JSON list.
                 pass
         
         # Fallback to keyword-based suggestions
-        description_lower = description.lower()
+        description_lower = description_text.lower()
         suggestions = []
         
         # Enhanced keyword detection
