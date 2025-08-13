@@ -245,7 +245,7 @@ export const ResponsiveCard = ({ children, className = '', padding = 'default' }
 export const DeviceIndicator = () => {
   const { deviceType, screenSize } = useResponsive()
   
-  if (import.meta.env.MODE !== 'development') return null
+  if (process.env.NODE_ENV !== 'development') return null
 
   const getDeviceIcon = () => {
     switch (deviceType) {
