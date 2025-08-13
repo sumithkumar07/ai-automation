@@ -631,6 +631,40 @@ class MassiveTemplatesEngine:
     def _is_trending_template(self, template: Dict[str, Any]) -> bool:
         """Determine if template is trending"""
         return template.get("usage_count", 0) > 1500 and template.get("rating", 0) > 4.5
+    
+    def get_categories(self) -> Dict[str, Any]:
+        """Get all template categories with statistics"""
+        category_stats = {}
+        
+        # Calculate templates per category
+        for template in self.templates.values():
+            cat = template["category"]
+            if cat not in category_stats:
+                category_stats[cat] = {
+                    "name": self.categories.get(cat, {}).get("name", cat.replace("_", " ").title()),
+                    "description": self.categories.get(cat, {}).get("description", ""),
+                    "icon": self.categories.get(cat, {}).get("icon", "📁"),
+                    "color": self.categories.get(cat, {}).get("color", "gray"),
+                    "template_count": 0,
+                    "avg_rating": 0,
+                    "total_usage": 0
+                }
+            
+            category_stats[cat]["template_count"] += 1
+            category_stats[cat]["total_usage"] += template.get("usage_count", 0)
+        
+        # Calculate average ratings per category
+        for cat in category_stats:
+            templates_in_cat = [t for t in self.templates.values() if t["category"] == cat]
+            if templates_in_cat:
+                avg_rating = sum(t["rating"] for t in templates_in_cat) / len(templates_in_cat)
+                category_stats[cat]["avg_rating"] = round(avg_rating, 2)
+        
+        return {
+            "categories": list(category_stats.keys()),
+            "category_details": category_stats,
+            "total_categories": len(category_stats)
+        }
 
 # Initialize the massive templates engine
 massive_templates_engine = MassiveTemplatesEngine()
