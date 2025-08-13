@@ -1,360 +1,307 @@
-# Real-time WebSocket Manager for Live Updates
-import asyncio
+"""
+WebSocket Manager for Real-time Collaboration
+Supports multi-user workflow editing and live updates
+"""
 import json
-from typing import Dict, List, Set, Optional, Any
-from datetime import datetime
+import asyncio
 import logging
+from typing import Dict, List, Set, Any, Optional
 from fastapi import WebSocket, WebSocketDisconnect
-from dataclasses import dataclass, asdict
+from datetime import datetime
 import uuid
 
 logger = logging.getLogger(__name__)
 
-@dataclass
-class WebSocketMessage:
-    type: str
-    data: Dict[str, Any]
-    user_id: Optional[str] = None
-    workflow_id: Optional[str] = None
-    execution_id: Optional[str] = None
-    timestamp: str = None
+class CollaborationRoom:
+    """Manages a single workflow collaboration session"""
     
-    def __post_init__(self):
-        if self.timestamp is None:
-            self.timestamp = datetime.utcnow().isoformat()
-
-class WebSocketConnectionManager:
-    """Manage WebSocket connections for real-time updates"""
-    
-    def __init__(self):
-        # Store active connections by user
-        self.active_connections: Dict[str, Set[WebSocket]] = {}
-        # Store connection metadata
-        self.connection_metadata: Dict[WebSocket, Dict[str, Any]] = {}
-        # Store subscriptions (user_id -> set of topics they're subscribed to)
-        self.subscriptions: Dict[str, Set[str]] = {}
-        # Connection statistics
-        self.connection_stats = {
-            "total_connections": 0,
-            "current_connections": 0,
-            "messages_sent": 0,
-            "messages_received": 0
+    def __init__(self, workflow_id: str):
+        self.workflow_id = workflow_id
+        self.connections: Dict[str, WebSocket] = {}
+        self.user_cursors: Dict[str, Dict] = {}
+        self.active_editors: Dict[str, Dict] = {}
+        self.last_activity = datetime.utcnow()
+        
+    async def add_user(self, websocket: WebSocket, user_id: str, user_info: Dict):
+        """Add user to collaboration room"""
+        connection_id = str(uuid.uuid4())
+        self.connections[connection_id] = websocket
+        self.active_editors[connection_id] = {
+            "user_id": user_id,
+            "user_info": user_info,
+            "joined_at": datetime.utcnow(),
+            "connection_id": connection_id
         }
+        
+        # Notify other users about new collaborator
+        await self.broadcast_user_joined(connection_id, user_info)
+        
+        # Send current collaborators to new user
+        await self.send_current_collaborators(websocket, connection_id)
+        
+        return connection_id
     
-    async def connect(self, websocket: WebSocket, user_id: str, client_info: Dict = None):
-        """Accept a new WebSocket connection"""
-        try:
-            await websocket.accept()
+    async def remove_user(self, connection_id: str):
+        """Remove user from collaboration room"""
+        if connection_id in self.connections:
+            user_info = self.active_editors.get(connection_id, {}).get("user_info", {})
+            del self.connections[connection_id]
             
-            # Initialize user connections if not exists
-            if user_id not in self.active_connections:
-                self.active_connections[user_id] = set()
+            if connection_id in self.active_editors:
+                del self.active_editors[connection_id]
+                
+            if connection_id in self.user_cursors:
+                del self.user_cursors[connection_id]
             
-            # Add connection
-            self.active_connections[user_id].add(websocket)
-            
-            # Store metadata
-            self.connection_metadata[websocket] = {
-                "user_id": user_id,
-                "connected_at": datetime.utcnow().isoformat(),
-                "client_info": client_info or {},
-                "connection_id": str(uuid.uuid4())[:8]
+            # Notify other users
+            await self.broadcast_user_left(connection_id, user_info)
+    
+    async def broadcast_user_joined(self, new_connection_id: str, user_info: Dict):
+        """Notify all users about new collaborator"""
+        message = {
+            "type": "user_joined",
+            "user": user_info,
+            "connection_id": new_connection_id,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        await self.broadcast_to_others(new_connection_id, message)
+    
+    async def broadcast_user_left(self, left_connection_id: str, user_info: Dict):
+        """Notify all users about user leaving"""
+        message = {
+            "type": "user_left", 
+            "user": user_info,
+            "connection_id": left_connection_id,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        await self.broadcast_to_all(message)
+    
+    async def send_current_collaborators(self, websocket: WebSocket, excluding_connection_id: str):
+        """Send list of current collaborators to new user"""
+        collaborators = [
+            {
+                "connection_id": conn_id,
+                **editor_info
             }
-            
-            # Initialize subscriptions
-            if user_id not in self.subscriptions:
-                self.subscriptions[user_id] = set()
-            
-            # Update stats
-            self.connection_stats["total_connections"] += 1
-            self.connection_stats["current_connections"] += 1
-            
-            logger.info(f"WebSocket connected for user {user_id}. Total connections: {self.connection_stats['current_connections']}")
-            
-            # Send connection confirmation
-            await self.send_personal_message({
-                "type": "connection_established",
-                "data": {
-                    "connection_id": self.connection_metadata[websocket]["connection_id"],
-                    "server_time": datetime.utcnow().isoformat(),
-                    "supported_events": [
-                        "workflow_execution_started",
-                        "workflow_execution_progress", 
-                        "workflow_execution_completed",
-                        "workflow_execution_failed",
-                        "node_execution_update",
-                        "system_notification"
-                    ]
-                }
-            }, websocket)
-            
-        except Exception as e:
-            logger.error(f"Error connecting WebSocket for user {user_id}: {e}")
-            raise
-    
-    def disconnect(self, websocket: WebSocket):
-        """Remove a WebSocket connection"""
-        try:
-            metadata = self.connection_metadata.get(websocket)
-            if metadata:
-                user_id = metadata["user_id"]
-                
-                # Remove from active connections
-                if user_id in self.active_connections:
-                    self.active_connections[user_id].discard(websocket)
-                    
-                    # Clean up empty user connections
-                    if not self.active_connections[user_id]:
-                        del self.active_connections[user_id]
-                        if user_id in self.subscriptions:
-                            del self.subscriptions[user_id]
-                
-                # Remove metadata
-                del self.connection_metadata[websocket]
-                
-                # Update stats
-                self.connection_stats["current_connections"] -= 1
-                
-                logger.info(f"WebSocket disconnected for user {user_id}. Remaining connections: {self.connection_stats['current_connections']}")
-            
-        except Exception as e:
-            logger.error(f"Error disconnecting WebSocket: {e}")
-    
-    async def send_personal_message(self, message: Dict[str, Any], websocket: WebSocket):
-        """Send message to a specific WebSocket connection"""
+            for conn_id, editor_info in self.active_editors.items()
+            if conn_id != excluding_connection_id
+        ]
+        
+        message = {
+            "type": "current_collaborators",
+            "collaborators": collaborators,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
         try:
             await websocket.send_text(json.dumps(message))
-            self.connection_stats["messages_sent"] += 1
         except Exception as e:
-            logger.error(f"Error sending personal message: {e}")
-            self.disconnect(websocket)
+            logger.error(f"Failed to send collaborators list: {e}")
     
-    async def send_user_message(self, user_id: str, message: Dict[str, Any]):
-        """Send message to all connections for a specific user"""
-        if user_id in self.active_connections:
-            disconnected_connections = set()
-            
-            for websocket in self.active_connections[user_id]:
-                try:
-                    await websocket.send_text(json.dumps(message))
-                    self.connection_stats["messages_sent"] += 1
-                except Exception as e:
-                    logger.error(f"Error sending message to user {user_id}: {e}")
-                    disconnected_connections.add(websocket)
-            
-            # Clean up disconnected connections
-            for websocket in disconnected_connections:
-                self.disconnect(websocket)
-    
-    async def broadcast_to_subscribers(self, topic: str, message: Dict[str, Any]):
-        """Broadcast message to all users subscribed to a topic"""
-        for user_id, topics in self.subscriptions.items():
-            if topic in topics:
-                await self.send_user_message(user_id, message)
-    
-    async def subscribe_user_to_topic(self, user_id: str, topic: str):
-        """Subscribe a user to a specific topic"""
-        if user_id not in self.subscriptions:
-            self.subscriptions[user_id] = set()
+    async def handle_workflow_change(self, connection_id: str, change_data: Dict):
+        """Handle workflow changes from a user"""
+        user_info = self.active_editors.get(connection_id, {}).get("user_info", {})
         
-        self.subscriptions[user_id].add(topic)
-        
-        # Notify user about subscription
-        await self.send_user_message(user_id, {
-            "type": "subscription_confirmed",
-            "data": {
-                "topic": topic,
-                "subscribed_at": datetime.utcnow().isoformat()
-            }
-        })
-    
-    async def unsubscribe_user_from_topic(self, user_id: str, topic: str):
-        """Unsubscribe a user from a specific topic"""
-        if user_id in self.subscriptions:
-            self.subscriptions[user_id].discard(topic)
-    
-    def get_connection_stats(self) -> Dict[str, Any]:
-        """Get connection statistics"""
-        return {
-            **self.connection_stats,
-            "users_connected": len(self.active_connections),
-            "active_subscriptions": sum(len(topics) for topics in self.subscriptions.values()),
-            "connections_by_user": {
-                user_id: len(connections) 
-                for user_id, connections in self.active_connections.items()
-            }
+        message = {
+            "type": "workflow_change",
+            "change": change_data,
+            "user": user_info,
+            "connection_id": connection_id,
+            "timestamp": datetime.utcnow().isoformat()
         }
+        
+        # Broadcast to all other users
+        await self.broadcast_to_others(connection_id, message)
+        self.last_activity = datetime.utcnow()
     
-    def get_user_connections(self, user_id: str) -> List[Dict[str, Any]]:
-        """Get connection info for a specific user"""
-        connections = []
-        if user_id in self.active_connections:
-            for websocket in self.active_connections[user_id]:
-                metadata = self.connection_metadata.get(websocket, {})
-                connections.append({
-                    "connection_id": metadata.get("connection_id"),
-                    "connected_at": metadata.get("connected_at"),
-                    "client_info": metadata.get("client_info", {})
-                })
-        return connections
+    async def handle_cursor_update(self, connection_id: str, cursor_data: Dict):
+        """Handle cursor position updates"""
+        self.user_cursors[connection_id] = {
+            **cursor_data,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        user_info = self.active_editors.get(connection_id, {}).get("user_info", {})
+        
+        message = {
+            "type": "cursor_update",
+            "cursor": cursor_data,
+            "user": user_info,
+            "connection_id": connection_id,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        await self.broadcast_to_others(connection_id, message)
+    
+    async def broadcast_to_all(self, message: Dict):
+        """Broadcast message to all users in room"""
+        if not self.connections:
+            return
+            
+        message_json = json.dumps(message)
+        disconnected = []
+        
+        for connection_id, websocket in self.connections.items():
+            try:
+                await websocket.send_text(message_json)
+            except Exception as e:
+                logger.error(f"Failed to send message to {connection_id}: {e}")
+                disconnected.append(connection_id)
+        
+        # Clean up disconnected connections
+        for connection_id in disconnected:
+            await self.remove_user(connection_id)
+    
+    async def broadcast_to_others(self, sender_connection_id: str, message: Dict):
+        """Broadcast message to all users except sender"""
+        message_json = json.dumps(message)
+        disconnected = []
+        
+        for connection_id, websocket in self.connections.items():
+            if connection_id == sender_connection_id:
+                continue
+                
+            try:
+                await websocket.send_text(message_json)
+            except Exception as e:
+                logger.error(f"Failed to send message to {connection_id}: {e}")
+                disconnected.append(connection_id)
+        
+        # Clean up disconnected connections
+        for connection_id in disconnected:
+            await self.remove_user(connection_id)
+    
+    def is_empty(self) -> bool:
+        """Check if room has no active connections"""
+        return len(self.connections) == 0
 
-# Real-time Event Handlers
-class RealTimeEventHandler:
-    """Handle real-time events and notifications"""
+
+class WebSocketManager:
+    """Manages WebSocket connections for real-time collaboration"""
     
-    def __init__(self, connection_manager: WebSocketConnectionManager):
-        self.connection_manager = connection_manager
-        self.event_queue = asyncio.Queue()
-        self.is_processing = False
+    def __init__(self):
+        self.rooms: Dict[str, CollaborationRoom] = {}
+        self.connection_to_room: Dict[str, str] = {}
+        
+    async def connect_to_workflow(self, websocket: WebSocket, workflow_id: str, user_id: str, user_info: Dict) -> str:
+        """Connect user to workflow collaboration room"""
+        await websocket.accept()
+        
+        # Create room if it doesn't exist
+        if workflow_id not in self.rooms:
+            self.rooms[workflow_id] = CollaborationRoom(workflow_id)
+        
+        room = self.rooms[workflow_id]
+        connection_id = await room.add_user(websocket, user_id, user_info)
+        self.connection_to_room[connection_id] = workflow_id
+        
+        logger.info(f"User {user_id} connected to workflow {workflow_id} with connection {connection_id}")
+        return connection_id
     
-    async def start_event_processor(self):
-        """Start the event processing loop"""
-        if self.is_processing:
+    async def disconnect(self, connection_id: str):
+        """Disconnect user from collaboration"""
+        if connection_id not in self.connection_to_room:
+            return
+            
+        workflow_id = self.connection_to_room[connection_id]
+        room = self.rooms.get(workflow_id)
+        
+        if room:
+            await room.remove_user(connection_id)
+            
+            # Clean up empty rooms
+            if room.is_empty():
+                del self.rooms[workflow_id]
+                logger.info(f"Removed empty collaboration room for workflow {workflow_id}")
+        
+        del self.connection_to_room[connection_id]
+        logger.info(f"Disconnected connection {connection_id} from workflow {workflow_id}")
+    
+    async def handle_message(self, connection_id: str, message: Dict):
+        """Handle incoming WebSocket message"""
+        if connection_id not in self.connection_to_room:
+            logger.error(f"Message from unknown connection {connection_id}")
+            return
+            
+        workflow_id = self.connection_to_room[connection_id]
+        room = self.rooms.get(workflow_id)
+        
+        if not room:
+            logger.error(f"Room not found for workflow {workflow_id}")
             return
         
-        self.is_processing = True
-        logger.info("Real-time event processor started")
+        message_type = message.get("type")
         
-        while self.is_processing:
-            try:
-                # Wait for events with timeout
-                event = await asyncio.wait_for(self.event_queue.get(), timeout=1.0)
-                await self._process_event(event)
-                self.event_queue.task_done()
-            except asyncio.TimeoutError:
-                continue  # No events, continue loop
-            except Exception as e:
-                logger.error(f"Error processing real-time event: {e}")
+        if message_type == "workflow_change":
+            await room.handle_workflow_change(connection_id, message.get("data", {}))
+        elif message_type == "cursor_update":
+            await room.handle_cursor_update(connection_id, message.get("data", {}))
+        elif message_type == "ping":
+            # Respond to ping for connection health
+            await self.send_to_connection(connection_id, {"type": "pong"})
+        else:
+            logger.warning(f"Unknown message type: {message_type}")
     
-    async def stop_event_processor(self):
-        """Stop the event processing loop"""
-        self.is_processing = False
-        logger.info("Real-time event processor stopped")
-    
-    async def emit_event(self, event_type: str, data: Dict[str, Any], user_id: str = None, workflow_id: str = None):
-        """Emit a real-time event"""
-        event = WebSocketMessage(
-            type=event_type,
-            data=data,
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
-        await self.event_queue.put(event)
-    
-    async def _process_event(self, event: WebSocketMessage):
-        """Process a single event"""
-        try:
-            message = asdict(event)
+    async def send_to_connection(self, connection_id: str, message: Dict):
+        """Send message to specific connection"""
+        if connection_id not in self.connection_to_room:
+            return False
             
-            if event.user_id:
-                # Send to specific user
-                await self.connection_manager.send_user_message(event.user_id, message)
-            else:
-                # Broadcast to all subscribed users
-                topic = f"workflow_{event.workflow_id}" if event.workflow_id else "global"
-                await self.connection_manager.broadcast_to_subscribers(topic, message)
-                
-        except Exception as e:
-            logger.error(f"Error processing event {event.type}: {e}")
+        workflow_id = self.connection_to_room[connection_id]
+        room = self.rooms.get(workflow_id)
+        
+        if room and connection_id in room.connections:
+            try:
+                websocket = room.connections[connection_id]
+                await websocket.send_text(json.dumps(message))
+                return True
+            except Exception as e:
+                logger.error(f"Failed to send message to {connection_id}: {e}")
+                await self.disconnect(connection_id)
+                return False
+        
+        return False
     
-    # Specific event handlers
-    async def workflow_execution_started(self, user_id: str, workflow_id: str, execution_id: str, workflow_name: str = ""):
-        """Handle workflow execution started event"""
-        await self.emit_event(
-            "workflow_execution_started",
-            {
-                "execution_id": execution_id,
-                "workflow_id": workflow_id,
-                "workflow_name": workflow_name,
-                "status": "running",
-                "started_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
+    async def broadcast_workflow_execution_update(self, workflow_id: str, execution_data: Dict):
+        """Broadcast workflow execution updates to all collaborators"""
+        room = self.rooms.get(workflow_id)
+        if room:
+            message = {
+                "type": "workflow_execution_update",
+                "execution": execution_data,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            await room.broadcast_to_all(message)
     
-    async def workflow_execution_progress(self, user_id: str, workflow_id: str, execution_id: str, progress: Dict[str, Any]):
-        """Handle workflow execution progress event"""
-        await self.emit_event(
-            "workflow_execution_progress",
-            {
-                "execution_id": execution_id,
-                "workflow_id": workflow_id,
-                "progress": progress,
-                "updated_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
+    async def get_active_collaborators(self, workflow_id: str) -> List[Dict]:
+        """Get list of active collaborators for a workflow"""
+        room = self.rooms.get(workflow_id)
+        if room:
+            return [
+                {
+                    "connection_id": conn_id,
+                    **editor_info
+                }
+                for conn_id, editor_info in room.active_editors.items()
+            ]
+        return []
     
-    async def workflow_execution_completed(self, user_id: str, workflow_id: str, execution_id: str, result: Dict[str, Any]):
-        """Handle workflow execution completed event"""
-        await self.emit_event(
-            "workflow_execution_completed",
-            {
-                "execution_id": execution_id,
-                "workflow_id": workflow_id,
-                "status": "success",
-                "result": result,
-                "completed_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
-    
-    async def workflow_execution_failed(self, user_id: str, workflow_id: str, execution_id: str, error: str):
-        """Handle workflow execution failed event"""
-        await self.emit_event(
-            "workflow_execution_failed",
-            {
-                "execution_id": execution_id,
-                "workflow_id": workflow_id,
-                "status": "failed",
-                "error": error,
-                "failed_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
-    
-    async def node_execution_update(self, user_id: str, workflow_id: str, execution_id: str, node_id: str, node_data: Dict[str, Any]):
-        """Handle individual node execution update"""
-        await self.emit_event(
-            "node_execution_update",
-            {
-                "execution_id": execution_id,
-                "workflow_id": workflow_id,
-                "node_id": node_id,
-                "node_data": node_data,
-                "updated_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id,
-            workflow_id=workflow_id
-        )
-    
-    async def system_notification(self, user_id: str, notification_type: str, title: str, message: str, priority: str = "normal"):
-        """Send system notification to user"""
-        await self.emit_event(
-            "system_notification",
-            {
-                "notification_type": notification_type,
-                "title": title,
-                "message": message,
-                "priority": priority,
-                "created_at": datetime.utcnow().isoformat()
-            },
-            user_id=user_id
-        )
+    def get_stats(self) -> Dict:
+        """Get WebSocket connection statistics"""
+        total_connections = sum(len(room.connections) for room in self.rooms.values())
+        active_rooms = len(self.rooms)
+        
+        return {
+            "active_rooms": active_rooms,
+            "total_connections": total_connections,
+            "rooms": {
+                workflow_id: {
+                    "connections": len(room.connections),
+                    "last_activity": room.last_activity.isoformat()
+                }
+                for workflow_id, room in self.rooms.items()
+            }
+        }
 
-# Global instances
-websocket_manager = WebSocketConnectionManager()
-realtime_event_handler = RealTimeEventHandler(websocket_manager)
-
-# Start event processor on module load
-async def start_realtime_services():
-    """Start real-time services"""
-    await realtime_event_handler.start_event_processor()
-
-async def stop_realtime_services():
-    """Stop real-time services"""
-    await realtime_event_handler.stop_event_processor()
+# Global WebSocket manager instance
+websocket_manager = WebSocketManager()
