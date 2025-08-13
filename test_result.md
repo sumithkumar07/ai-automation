@@ -535,13 +535,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Comprehensive backend testing after distro dependency fix"
-    - "Minor template detail async issue fix"
-    - "AI integrations endpoint (404 error)"
-    - "Full end-to-end testing to ensure real vs demo data"
-  stuck_tasks: []
-  test_all: true
-  test_priority: "comprehensive_full_app_testing"
+    - "Workflow CRUD Authentication Issues (403 error blocking core functionality)"
+    - "Template detail retrieval async issue (500 error)"
+    - "AI endpoint route mapping corrections"
+    - "Real vs demo data implementation"
+  stuck_tasks:
+    - "Workflow CRUD Authentication Issues"
+  test_all: false
+  test_priority: "critical_workflow_authentication_first"
 
 agent_communication:
   - agent: "main"
