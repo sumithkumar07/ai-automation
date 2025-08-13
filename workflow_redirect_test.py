@@ -6,7 +6,7 @@ Test the workflow redirect issue
 import requests
 import time
 
-BASE_URL = "https://thorough-testing.preview.emergentagent.com/api"
+BASE_URL = "https://quality-assurance-3.preview.emergentagent.com/api"
 
 def test_workflow_redirect():
     """Test workflow redirect issue"""
