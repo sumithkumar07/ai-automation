@@ -245,6 +245,9 @@ async def duplicate_workflow(workflow_id: str, current_user: dict = Depends(get_
     duplicate_dict = duplicate.dict()
     await db.workflows.insert_one(duplicate_dict)
     
+    # Remove MongoDB ObjectId
+    duplicate_dict.pop('_id', None)
+    
     logger.info(f"Duplicated workflow {workflow_id} as {duplicate.id} for user {current_user['user_id']}")
     return duplicate_dict
 
