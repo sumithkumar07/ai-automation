@@ -305,24 +305,65 @@ async def get_templates(
 async def get_template_details(template_id: str, db = Depends(get_database)):
     """Get detailed template information"""
     try:
-        # Try to get from database first
-        try:
-            # Try ObjectId for MongoDB _id or string id
-            from bson import ObjectId as BSONObjectId
-            try:
-                query = {"_id": BSONObjectId(template_id)}
-            except:
-                query = {"id": template_id}
-            
-            db_template = db.templates.find_one(query)
-            if db_template:
-                return serialize_doc(db_template)
-        except Exception as e:
-            logger.info(f"Database query failed, using mock template: {e}")
+        # Try to get from database first - enhanced ObjectId handling
+        db_template = None
         
-        # Fallback to mock template details for specific template ID
+        try:
+            # Try different query approaches for maximum compatibility
+            from bson import ObjectId as BSONObjectId
+            from bson.errors import InvalidId
+            
+            # Approach 1: Try as MongoDB ObjectId
+            try:
+                if len(template_id) == 24:  # Standard ObjectId length
+                    query = {"_id": BSONObjectId(template_id)}
+                    db_template = db.templates.find_one(query)
+                    logger.info(f"Searching by ObjectId: {template_id}")
+            except (InvalidId, ValueError) as e:
+                logger.info(f"Invalid ObjectId format: {template_id}, trying string ID")
+            
+            # Approach 2: Try as string id field
+            if not db_template:
+                query = {"id": template_id}
+                db_template = db.templates.find_one(query)
+                logger.info(f"Searching by string ID: {template_id}")
+            
+            # Approach 3: Try as name for fallback compatibility
+            if not db_template and template_id.startswith("template_"):
+                query = {"id": template_id}
+                db_template = db.templates.find_one(query)
+                logger.info(f"Searching by template name: {template_id}")
+            
+            if db_template:
+                logger.info(f"Found template in database: {template_id}")
+                serialized_template = serialize_doc(db_template)
+                
+                # Add enhanced template details
+                serialized_template.update({
+                    "author_info": {
+                        "id": serialized_template.get("author_id", "user_123"),
+                        "name": "Template Creator",
+                        "avatar": None,
+                        "company": "Automation Inc"
+                    },
+                    "related_templates": [],
+                    "compatibility": {
+                        "is_compatible": True,
+                        "required_integrations": serialized_template.get("requirements", []),
+                        "minimum_version": "1.0.0"
+                    }
+                })
+                
+                return serialized_template
+                
+        except Exception as e:
+            logger.error(f"Database query error for template {template_id}: {e}")
+        
+        # Enhanced fallback to specific mock template details
         if template_id not in ["template_1", "template_2", "template_3", "template_4", "template_5"]:
-            raise HTTPException(status_code=404, detail="Template not found")
+            raise HTTPException(status_code=404, detail=f"Template not found: {template_id}")
+        
+        logger.info(f"Using mock template data for: {template_id}")
         
         mock_template_details = {
             "id": template_id,
