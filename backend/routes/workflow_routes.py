@@ -23,7 +23,10 @@ async def create_workflow(workflow_data: WorkflowCreate, current_user: dict = De
     )
     
     workflow_dict = workflow.dict()
-    await db.workflows.insert_one(workflow_dict)
+    result = await db.workflows.insert_one(workflow_dict)
+    
+    # Remove MongoDB ObjectId and return clean dict
+    workflow_dict.pop('_id', None)
     
     logger.info(f"Created workflow {workflow.id} for user {current_user['user_id']}")
     return workflow_dict
