@@ -166,8 +166,13 @@ class AetherPlatformAssessment:
         integration_data = self.run_test("All Integrations", "GET", "api/integrations", 200)
         
         if integration_data:
-            integrations = integration_data.get("integrations", [])
-            categories = integration_data.get("categories", [])
+            # Handle both list and dict responses
+            if isinstance(integration_data, list):
+                integrations = integration_data
+                categories = []
+            else:
+                integrations = integration_data.get("integrations", [])
+                categories = integration_data.get("categories", [])
             
             self.assessment_results["integrations"] = {
                 "total_count": len(integrations),
