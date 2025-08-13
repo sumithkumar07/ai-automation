@@ -83,7 +83,7 @@ class MassiveIntegrationsSystemComplete:
     """Complete Integration System with 200+ Real Integrations"""
     
     def __init__(self):
-        self.integrations = self._initialize_complete_integrations()
+        self.integrations = COMPLETE_INTEGRATIONS  # Use the complete generated integrations
         self.categories = self._initialize_categories()
         
     def _initialize_categories(self):
