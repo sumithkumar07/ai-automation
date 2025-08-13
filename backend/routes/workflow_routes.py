@@ -270,3 +270,116 @@ async def get_running_executions(current_user: dict = Depends(get_current_active
     """Get currently running workflow executions"""
     running_ids = workflow_engine.get_running_workflows()
     return {"running_executions": running_ids, "count": len(running_ids)}
+
+@router.get("/executions/{execution_id}/status")
+async def get_execution_status(execution_id: str, current_user: dict = Depends(get_current_active_user)):
+    """Get the status of a specific workflow execution"""
+    try:
+        db = get_database()
+        
+        # Get execution from database
+        execution = await db.workflow_executions.find_one({"id": execution_id})
+        if not execution:
+            # Check if it's a running execution
+            running_ids = workflow_engine.get_running_workflows()
+            if execution_id in running_ids:
+                return {
+                    "execution_id": execution_id,
+                    "status": "running",
+                    "progress": "in_progress",
+                    "started_at": datetime.utcnow().isoformat(),
+                    "is_running": True
+                }
+            else:
+                raise HTTPException(status_code=404, detail="Execution not found")
+        
+        # Verify user has access to this execution
+        workflow = await db.workflows.find_one({"id": execution["workflow_id"]})
+        if not workflow or workflow["user_id"] != current_user["user_id"]:
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        return {
+            "execution_id": execution_id,
+            "status": execution.get("status", "unknown"),
+            "progress": execution.get("progress", "unknown"),
+            "started_at": execution.get("started_at", "").isoformat() if execution.get("started_at") else None,
+            "completed_at": execution.get("completed_at", "").isoformat() if execution.get("completed_at") else None,
+            "duration": execution.get("duration", 0),
+            "result": execution.get("result", {}),
+            "error": execution.get("error"),
+            "is_running": execution.get("status") == "running"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting execution status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get execution status")
+
+@router.get("/user/executions/status")
+async def get_user_executions_status(current_user: dict = Depends(get_current_active_user)):
+    """Get status of all user's workflow executions"""
+    try:
+        db = get_database()
+        
+        # Get user's workflows first
+        workflows_cursor = db.workflows.find({"user_id": current_user["user_id"]})
+        workflows = await workflows_cursor.to_list(length=1000)
+        workflow_ids = [w["id"] for w in workflows]
+        
+        if not workflow_ids:
+            return {"executions": [], "summary": {"total": 0, "running": 0, "completed": 0, "failed": 0}}
+        
+        # Get executions for user's workflows
+        executions_cursor = db.workflow_executions.find(
+            {"workflow_id": {"$in": workflow_ids}}
+        ).sort([("started_at", -1)]).limit(100)
+        
+        executions = await executions_cursor.to_list(length=100)
+        
+        # Add running executions
+        running_ids = workflow_engine.get_running_workflows()
+        for running_id in running_ids:
+            # Check if this running execution belongs to user
+            found = False
+            for execution in executions:
+                if execution["id"] == running_id:
+                    execution["status"] = "running"
+                    found = True
+                    break
+            
+            if not found:
+                # Add running execution that might not be in DB yet
+                executions.append({
+                    "id": running_id,
+                    "status": "running",
+                    "started_at": datetime.utcnow(),
+                    "workflow_id": "unknown"
+                })
+        
+        # Calculate summary
+        summary = {
+            "total": len(executions),
+            "running": len([e for e in executions if e.get("status") == "running"]),
+            "completed": len([e for e in executions if e.get("status") == "completed"]),
+            "failed": len([e for e in executions if e.get("status") == "failed"])
+        }
+        
+        # Format executions for response
+        formatted_executions = []
+        for execution in executions:
+            formatted_executions.append({
+                "execution_id": execution["id"],
+                "workflow_id": execution["workflow_id"],
+                "status": execution.get("status", "unknown"),
+                "started_at": execution.get("started_at", "").isoformat() if execution.get("started_at") else None,
+                "completed_at": execution.get("completed_at", "").isoformat() if execution.get("completed_at") else None,
+                "duration": execution.get("duration", 0)
+            })
+        
+        return {
+            "executions": formatted_executions,
+            "summary": summary
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting user executions status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get executions status")
