@@ -151,7 +151,8 @@ async def get_enhanced_integration_stats():
 async def get_enhanced_system_status():
     """Get comprehensive system status with feature utilization"""
     node_stats = massive_node_types_engine.get_node_types()["stats"]
-    template_stats = massive_template_system.get_template_stats()
+    template_stats = massive_templates_engine.get_template_stats()
+    integration_stats = massive_integrations_engine.get_integration_stats()
     
     return {
         "status": "enhanced",
@@ -171,14 +172,17 @@ async def get_enhanced_system_status():
                 "average_rating": template_stats["average_rating"],
                 "total_deployments": template_stats["total_deployments"]
             },
+            "integrations": {
+                "total": integration_stats["total_integrations"],
+                "categories": integration_stats["total_categories"],
+                "oauth_integrations": integration_stats["oauth_integrations"],
+                "api_key_integrations": integration_stats["api_key_integrations"],
+                "average_popularity": integration_stats["average_popularity"]
+            },
             "ai_capabilities": {
                 "multi_provider_support": True,
-                "models": ["GROQ", "OpenAI", "Anthropic", "Google Gemini"],
+                "models": ["GROQ", "OpenAI", "Anthropic", "Google Gemini", "Mistral", "Cohere"],
                 "node_count": node_stats["ai_nodes"]
-            },
-            "integrations": {
-                "count": "103+",
-                "categories": 14
             }
         },
         "system_health": "excellent",
