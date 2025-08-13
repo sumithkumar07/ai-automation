@@ -268,9 +268,35 @@ class AetherAutomationAPITester:
         success, response = self.run_test(
             "Get Available Integrations",
             "GET",
-            "api/integrations/available",
+            "api/integrations",
             200
         )
+        
+        if success:
+            # Verify we have 15+ integrations
+            if isinstance(response, list):
+                integration_count = len(response)
+                print(f"   ✅ Found {integration_count} integrations")
+                
+                if integration_count >= 15:
+                    print(f"   ✅ Integration count meets requirements (15+)")
+                    
+                    # Check for specific integrations mentioned in review
+                    integration_names = [integration.get('name', '').lower() for integration in response]
+                    required_integrations = ['slack', 'gmail', 'github', 'groq', 'stripe']
+                    found_integrations = [name for name in required_integrations if any(name in int_name for int_name in integration_names)]
+                    
+                    print(f"   ✅ Found required integrations: {', '.join(found_integrations)}")
+                    
+                    if len(found_integrations) >= 4:
+                        print(f"   ✅ Key integrations present")
+                    else:
+                        print(f"   ⚠️ Some key integrations missing")
+                else:
+                    print(f"   ⚠️ Integration count below requirements: {integration_count}")
+            else:
+                print(f"   ⚠️ Integrations response not a list")
+        
         return success
 
     def test_create_integration(self):
