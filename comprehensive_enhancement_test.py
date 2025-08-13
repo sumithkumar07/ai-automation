@@ -13,7 +13,7 @@ import sys
 import os
 
 # Backend URL from environment
-BACKEND_URL = "https://complete-qa-suite.preview.emergentagent.com/api"
+BACKEND_URL = "https://integration-verify-1.preview.emergentagent.com/api"
 
 class AetherBackendTester:
     def __init__(self):

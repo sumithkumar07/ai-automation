@@ -19,7 +19,7 @@ from datetime import datetime
 import sys
 
 # Backend URL from frontend/.env
-BASE_URL = "https://complete-qa-suite.preview.emergentagent.com/api"
+BASE_URL = "https://integration-verify-1.preview.emergentagent.com/api"
 
 class AetherBackendTester:
     def __init__(self):

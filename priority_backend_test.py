@@ -16,7 +16,7 @@ import uuid
 from datetime import datetime
 
 class PriorityBackendTester:
-    def __init__(self, base_url="https://complete-qa-suite.preview.emergentagent.com"):
+    def __init__(self, base_url="https://integration-verify-1.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
