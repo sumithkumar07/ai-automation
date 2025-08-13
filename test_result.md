@@ -427,6 +427,18 @@ backend:
         agent: "testing"
         comment: "✅ INTEGRATION SEARCH & FILTERING - FULLY OPERATIONAL: All search functionality working perfectly. ✅ Search by term: 'slack' (1 result), 'google' (5 results), 'ai' (10 results), 'payment' (3 results) ✅ Category filtering working for all categories: communication (10), productivity (13), ai (5), ecommerce (3), analytics (1) ✅ 14 total categories available including new ones: ecommerce, analytics, support, database, content. Integration metadata is complete and search performance is excellent."
 
+  - task: "AI Endpoint Route Mapping Issues"
+    implemented: true
+    working: false
+    file: "routes/ai_routes.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ AI ENDPOINT ROUTING ISSUES - MINOR: Several AI endpoints return 404 errors indicating route mapping issues. ❌ GET /api/ai/integrations returns 404 (endpoint not found) ❌ GET /api/ai/integrations/suggestions returns 404 (endpoint not found) ❌ POST /api/ai/workflow/generate returns 404 (should be /api/ai/generate-workflow) ✅ WORKING AI ENDPOINTS: /api/ai/generate-workflow, /api/ai/suggest-integrations, /api/ai/explain-workflow, /api/ai/dashboard-insights, /api/ai/system-status, /api/ai/chat. The core AI functionality is operational but some endpoint routes need correction or these are missing endpoints that were expected."
+
 frontend:
   - task: "React App Setup and Configuration"
     implemented: true
