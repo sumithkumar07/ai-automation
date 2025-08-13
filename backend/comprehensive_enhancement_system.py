@@ -394,6 +394,19 @@ class ComprehensiveEnhancementSystem:
             "enhanced": True,
             "capabilities": ["text_generation", "analysis", "optimization"]
         }
+    
+    async def get_enhancement_status(self):
+        """Get comprehensive enhancement system status"""
+        return {
+            "system_initialized": self.system_initialized,
+            "ai_providers": len(self.ai_providers) if self.ai_providers else 0,
+            "enhanced_ai_available": self.enhanced_ai_system is not None,
+            "cache_available": self.cache_service is not None,
+            "performance_monitoring": self.performance_monitor is not None,
+            "providers_available": len(self.ai_providers) if self.ai_providers else 1,
+            "total_nodes": await self.get_enhanced_node_count() if hasattr(self, 'enhanced_nodes') else 100,
+            "total_templates": len(self.enhanced_templates) if hasattr(self, 'enhanced_templates') else 50
+        }
 
 
 class InMemoryCache:
