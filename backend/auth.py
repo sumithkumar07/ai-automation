@@ -44,7 +44,7 @@ def verify_token(token: str) -> dict:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token expired"
         )
-    except jwt.JWTError:
+    except jwt.InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
