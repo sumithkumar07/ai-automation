@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Import new modules
 from database import connect_to_mongo, close_mongo_connection
-from routes import auth_routes, workflow_routes, integration_routes, ai_routes, dashboard_routes
+from routes import auth_routes, workflow_routes, integration_routes, ai_routes, dashboard_routes, collaboration_routes, analytics_routes, templates_routes, integration_testing_routes
 from node_types_engine import node_types_engine
 
 ROOT_DIR = Path(__file__).parent
