@@ -31,6 +31,8 @@ class AetherAutomationAPITester:
         print(f"\n🔍 Testing {name}...")
         print(f"   URL: {url}")
         print(f"   Method: {method}")
+        if self.token:
+            print(f"   Auth: Bearer {self.token[:20]}...")
         
         try:
             if method == 'GET':
