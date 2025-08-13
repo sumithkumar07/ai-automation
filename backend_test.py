@@ -104,8 +104,8 @@ class AetherAutomationAPITester:
             data=login_data
         )
         
-        if success and 'token' in response:
-            self.token = response['token']
+        if success and 'access_token' in response:
+            self.token = response['access_token']
             self.user_id = response['user']['id']
             print(f"   Token obtained: {self.token[:20]}...")
             return True
