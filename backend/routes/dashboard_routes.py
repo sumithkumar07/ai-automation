@@ -43,6 +43,10 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_active_us
     cursor = db.workflow_executions.find({"user_id": user_id}).sort("started_at", -1).limit(10)
     recent_executions_data = await cursor.to_list(length=10)
     
+    # Clean up MongoDB ObjectIds
+    for execution in recent_executions_data:
+        execution.pop('_id', None)
+    
     return {
         "total_workflows": total_workflows,
         "active_workflows": active_workflows,
