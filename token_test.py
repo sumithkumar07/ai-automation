@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://quality-assurance-3.preview.emergentagent.com/api"
+BACKEND_URL = "https://complete-qa-suite.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {

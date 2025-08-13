@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 class AetherBackendTester:
-    def __init__(self, base_url: str = "https://quality-assurance-3.preview.emergentagent.com"):
+    def __init__(self, base_url: str = "https://complete-qa-suite.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
