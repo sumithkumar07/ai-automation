@@ -136,57 +136,6 @@ class MassiveNodeSystemComplete:
     def __init__(self):
         self.nodes = COMPLETE_NODES  # Use the complete generated nodes
         
-    def _initialize_complete_nodes(self):
-        """Initialize complete collection of 300+ node types"""
-        # Generate comprehensive node collection
-        triggers = {}
-        actions = {}
-        logic = {}
-        ai = {}
-        
-        # Generate 70 trigger nodes
-        for i in range(70):
-            node_id = f"trigger_{i+1}"
-            triggers[node_id] = {
-                "name": f"Trigger Node {i+1}",
-                "category": "triggers",
-                "description": f"Advanced trigger functionality {i+1}"
-            }
-        
-        # Generate 120 action nodes
-        for i in range(120):
-            node_id = f"action_{i+1}"
-            actions[node_id] = {
-                "name": f"Action Node {i+1}",
-                "category": "actions",
-                "description": f"Advanced action functionality {i+1}"
-            }
-        
-        # Generate 50 logic nodes
-        for i in range(50):
-            node_id = f"logic_{i+1}"
-            logic[node_id] = {
-                "name": f"Logic Node {i+1}",
-                "category": "logic",
-                "description": f"Advanced logic functionality {i+1}"
-            }
-        
-        # Generate 60 AI nodes
-        for i in range(60):
-            node_id = f"ai_{i+1}"
-            ai[node_id] = {
-                "name": f"AI Node {i+1}",
-                "category": "ai",
-                "description": f"Advanced AI functionality {i+1}"
-            }
-        
-        return {
-            "triggers": triggers,
-            "actions": actions,
-            "logic": logic,
-            "ai": ai
-        }
-    
     def get_node_types(self):
         """Get comprehensive node types with full statistics"""
         total_nodes = sum(len(category_nodes) for category_nodes in self.nodes.values())
