@@ -481,8 +481,593 @@ class MassiveTemplatesEngine:
         for template in education_templates:
             templates[template["id"]] = template
         
-        # Continue adding more templates to reach 100+...
-        # Real Estate, Legal, Manufacturing, Non-Profit, etc.
+        # Real Estate Templates (6)
+        real_estate_templates = [
+            {
+                "id": "property-listing-automation",
+                "name": "Multi-Platform Property Listing & Marketing Automation",
+                "description": "Automated property marketing with listing syndication, lead capture, and follow-up sequences",
+                "category": "real_estate",
+                "difficulty": "intermediate",
+                "rating": 4.8,
+                "usage_count": 950,
+                "tags": ["real-estate", "listings", "marketing", "leads", "follow-up"],
+                "estimated_time_savings": "8 hours per property",
+                "industry": ["real_estate", "property_management", "realtors"],
+                "workflow_data": {"nodes": 13, "complexity": "medium", "integrations": ["mls_api", "zillow_api", "mailchimp", "twilio", "google_drive"]}
+            },
+            {
+                "id": "tenant-management-system",
+                "name": "Comprehensive Tenant & Lease Management System",
+                "description": "Complete tenant lifecycle with application processing, lease management, payment tracking, and maintenance requests",
+                "category": "real_estate",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 720,
+                "tags": ["tenants", "leases", "payments", "maintenance", "management"],
+                "estimated_time_savings": "15 hours per week",
+                "industry": ["property_management", "real_estate", "landlords"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["stripe", "typeform", "gmail", "twilio", "google_calendar"]}
+            },
+            {
+                "id": "real-estate-lead-scoring",
+                "name": "AI-Powered Real Estate Lead Scoring & Qualification",
+                "description": "Intelligent lead qualification with behavior analysis, property matching, and automated nurturing campaigns",
+                "category": "real_estate",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 680,
+                "tags": ["leads", "scoring", "qualification", "ai", "nurturing"],
+                "estimated_time_savings": "12 hours per week",
+                "industry": ["real_estate", "brokerages", "agents"],
+                "workflow_data": {"nodes": 14, "complexity": "high", "integrations": ["openai", "hubspot", "zillow_api", "mailchimp", "twilio"]}
+            },
+            {
+                "id": "mortgage-application-automation",
+                "name": "Automated Mortgage Application Processing",
+                "description": "Streamlined mortgage processing with document collection, verification, status updates, and approval workflows",
+                "category": "finance_accounting",
+                "difficulty": "advanced",
+                "rating": 4.5,
+                "usage_count": 590,
+                "tags": ["mortgage", "loans", "verification", "documents", "approval"],
+                "estimated_time_savings": "6 hours per application",
+                "industry": ["lending", "banks", "mortgage_brokers"],
+                "workflow_data": {"nodes": 17, "complexity": "high", "integrations": ["docusign", "gmail", "google_drive", "slack", "compliance_api"]}
+            },
+            {
+                "id": "property-valuation-automation",
+                "name": "AI-Enhanced Property Valuation & Market Analysis",
+                "description": "Automated property valuation using AI with comparative market analysis and trend forecasting",
+                "category": "real_estate",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 520,
+                "tags": ["valuation", "market-analysis", "ai", "forecasting", "comparative"],
+                "estimated_time_savings": "4 hours per valuation",
+                "industry": ["appraisers", "real_estate", "investors"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["openai", "zillow_api", "google_sheets", "slack"]}
+            },
+            {
+                "id": "real-estate-investment-tracker",
+                "name": "Real Estate Investment Portfolio Tracker",
+                "description": "Comprehensive investment tracking with ROI analysis, expense management, and performance reporting",
+                "category": "real_estate",
+                "difficulty": "intermediate",
+                "rating": 4.4,
+                "usage_count": 470,
+                "tags": ["investment", "portfolio", "roi", "tracking", "reporting"],
+                "estimated_time_savings": "10 hours per month",
+                "industry": ["investors", "real_estate", "portfolio_managers"],
+                "workflow_data": {"nodes": 12, "complexity": "medium", "integrations": ["quickbooks", "google_sheets", "gmail", "slack"]}
+            }
+        ]
+        
+        for template in real_estate_templates:
+            templates[template["id"]] = template
+        
+        # Legal Templates (8)
+        legal_templates = [
+            {
+                "id": "contract-review-automation",
+                "name": "AI-Powered Contract Review & Analysis System",
+                "description": "Intelligent contract processing with clause analysis, risk assessment, and approval workflows",
+                "category": "legal",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 580,
+                "tags": ["legal", "contracts", "ai", "risk-assessment", "approval"],
+                "estimated_time_savings": "10 hours per contract",
+                "industry": ["law_firms", "corporate_legal", "compliance"],
+                "workflow_data": {"nodes": 14, "complexity": "high", "integrations": ["openai", "docusign", "gmail", "slack", "google_drive"]}
+            },
+            {
+                "id": "legal-document-automation",
+                "name": "Automated Legal Document Generation & Management",
+                "description": "Streamlined legal document creation with template generation, client data integration, and e-signature workflows",
+                "category": "legal",
+                "difficulty": "intermediate",
+                "rating": 4.6,
+                "usage_count": 690,
+                "tags": ["legal", "documents", "templates", "e-signature", "automation"],
+                "estimated_time_savings": "5 hours per document",
+                "industry": ["law_firms", "legal_services", "corporate"],
+                "workflow_data": {"nodes": 11, "complexity": "medium", "integrations": ["docusign", "google_docs", "typeform", "gmail", "google_drive"]}
+            },
+            {
+                "id": "litigation-case-management",
+                "name": "Comprehensive Litigation Case Management System",
+                "description": "End-to-end case management with deadline tracking, document organization, communication logs, and billing integration",
+                "category": "legal",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 450,
+                "tags": ["litigation", "case-management", "deadlines", "billing", "organization"],
+                "estimated_time_savings": "15 hours per case",
+                "industry": ["law_firms", "litigation", "corporate_legal"],
+                "workflow_data": {"nodes": 18, "complexity": "high", "integrations": ["google_calendar", "gmail", "google_drive", "quickbooks", "slack"]}
+            },
+            {
+                "id": "compliance-audit-automation",
+                "name": "Automated Compliance Audit & Reporting System",
+                "description": "Comprehensive compliance monitoring with automated audits, violation detection, and regulatory reporting",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 380,
+                "tags": ["compliance", "audit", "violations", "regulatory", "reporting"],
+                "estimated_time_savings": "30 hours per audit",
+                "industry": ["compliance", "financial_services", "healthcare"],
+                "workflow_data": {"nodes": 20, "complexity": "high", "integrations": ["compliance_api", "gmail", "slack", "google_sheets", "datadog"]}
+            },
+            {
+                "id": "client-intake-legal",
+                "name": "Automated Legal Client Intake & Onboarding",
+                "description": "Streamlined client onboarding with information collection, conflict checks, engagement letters, and billing setup",
+                "category": "legal",
+                "difficulty": "intermediate",
+                "rating": 4.5,
+                "usage_count": 620,
+                "tags": ["client-intake", "onboarding", "conflict-checks", "engagement", "billing"],
+                "estimated_time_savings": "3 hours per client",
+                "industry": ["law_firms", "legal_services", "solo_practitioners"],
+                "workflow_data": {"nodes": 13, "complexity": "medium", "integrations": ["typeform", "docusign", "gmail", "quickbooks", "google_drive"]}
+            },
+            {
+                "id": "ip-portfolio-management",
+                "name": "Intellectual Property Portfolio Management",
+                "description": "Comprehensive IP management with deadline tracking, renewal reminders, portfolio analysis, and competitive monitoring",
+                "category": "legal",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 320,
+                "tags": ["intellectual-property", "patents", "trademarks", "deadlines", "portfolio"],
+                "estimated_time_savings": "20 hours per month",
+                "industry": ["ip_law", "corporations", "inventors"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["uspto_api", "google_calendar", "gmail", "slack", "google_sheets"]}
+            },
+            {
+                "id": "legal-research-automation",
+                "name": "AI-Powered Legal Research & Brief Generation",
+                "description": "Automated legal research with case law analysis, precedent identification, and brief drafting assistance",
+                "category": "legal",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 290,
+                "tags": ["legal-research", "ai", "case-law", "briefs", "precedents"],
+                "estimated_time_savings": "8 hours per research project",
+                "industry": ["law_firms", "legal_research", "attorneys"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["openai", "westlaw_api", "google_docs", "slack"]}
+            },
+            {
+                "id": "legal-billing-automation",
+                "name": "Automated Legal Billing & Time Tracking System",
+                "description": "Comprehensive billing automation with time tracking, expense management, client invoicing, and payment processing",
+                "category": "legal",
+                "difficulty": "intermediate",
+                "rating": 4.4,
+                "usage_count": 510,
+                "tags": ["billing", "time-tracking", "invoicing", "expenses", "payments"],
+                "estimated_time_savings": "6 hours per week",
+                "industry": ["law_firms", "legal_services", "solo_practitioners"],
+                "workflow_data": {"nodes": 14, "complexity": "medium", "integrations": ["quickbooks", "stripe", "gmail", "google_calendar", "slack"]}
+            }
+        ]
+        
+        for template in legal_templates:
+            templates[template["id"]] = template
+        
+        # Manufacturing Templates (8)
+        manufacturing_templates = [
+            {
+                "id": "supply-chain-optimization",
+                "name": "AI-Driven Supply Chain Optimization & Monitoring",
+                "description": "Intelligent supply chain management with demand forecasting, supplier communication, and logistics optimization",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.9,
+                "usage_count": 450,
+                "tags": ["supply-chain", "forecasting", "logistics", "suppliers", "optimization"],
+                "estimated_time_savings": "25 hours per week",
+                "industry": ["manufacturing", "logistics", "retail"],
+                "workflow_data": {"nodes": 18, "complexity": "high", "integrations": ["openai", "erp_api", "gmail", "slack", "google_sheets"]}
+            },
+            {
+                "id": "quality-control-automation",
+                "name": "Automated Quality Control & Defect Tracking System",
+                "description": "Comprehensive quality management with inspection automation, defect tracking, and corrective action workflows",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 380,
+                "tags": ["quality-control", "inspection", "defects", "corrective-actions", "automation"],
+                "estimated_time_savings": "20 hours per week",
+                "industry": ["manufacturing", "automotive", "electronics"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["iot_sensors", "openai", "jira", "slack", "google_sheets"]}
+            },
+            {
+                "id": "production-scheduling-optimizer",
+                "name": "AI-Enhanced Production Scheduling & Resource Allocation",
+                "description": "Intelligent production planning with resource optimization, capacity planning, and real-time adjustments",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 340,
+                "tags": ["production", "scheduling", "resources", "capacity", "optimization"],
+                "estimated_time_savings": "15 hours per week",
+                "industry": ["manufacturing", "production", "industrial"],
+                "workflow_data": {"nodes": 17, "complexity": "high", "integrations": ["openai", "erp_api", "google_sheets", "slack"]}
+            },
+            {
+                "id": "equipment-maintenance-predictor",
+                "name": "Predictive Equipment Maintenance System",
+                "description": "AI-powered predictive maintenance with IoT monitoring, failure prediction, and maintenance scheduling",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 310,
+                "tags": ["maintenance", "predictive", "iot", "equipment", "monitoring"],
+                "estimated_time_savings": "30 hours per month",
+                "industry": ["manufacturing", "industrial", "utilities"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["iot_sensors", "openai", "google_calendar", "slack"]}
+            },
+            {
+                "id": "inventory-optimization-manufacturing",
+                "name": "Manufacturing Inventory Optimization System",
+                "description": "Advanced inventory management with demand planning, just-in-time ordering, and waste reduction",
+                "category": "manufacturing",
+                "difficulty": "intermediate",
+                "rating": 4.5,
+                "usage_count": 420,
+                "tags": ["inventory", "demand-planning", "jit", "waste-reduction", "optimization"],
+                "estimated_time_savings": "18 hours per week",
+                "industry": ["manufacturing", "warehousing", "distribution"],
+                "workflow_data": {"nodes": 14, "complexity": "medium", "integrations": ["erp_api", "google_sheets", "slack", "gmail"]}
+            },
+            {
+                "id": "vendor-quality-management",
+                "name": "Vendor Quality Management & Audit System",
+                "description": "Comprehensive vendor management with quality audits, performance tracking, and supplier scorecards",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.4,
+                "usage_count": 280,
+                "tags": ["vendor-management", "quality", "audits", "scorecards", "performance"],
+                "estimated_time_savings": "12 hours per week",
+                "industry": ["manufacturing", "procurement", "supply_chain"],
+                "workflow_data": {"nodes": 13, "complexity": "medium", "integrations": ["google_sheets", "gmail", "slack", "typeform"]}
+            },
+            {
+                "id": "manufacturing-compliance-tracker",
+                "name": "Manufacturing Compliance & Safety Monitoring",
+                "description": "Automated compliance monitoring with safety incident tracking, regulatory reporting, and audit preparation",
+                "category": "manufacturing",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 250,
+                "tags": ["compliance", "safety", "incidents", "regulatory", "audit"],
+                "estimated_time_savings": "25 hours per month",
+                "industry": ["manufacturing", "industrial", "chemicals"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["compliance_api", "gmail", "slack", "google_sheets"]}
+            },
+            {
+                "id": "production-analytics-dashboard",
+                "name": "Real-Time Production Analytics & KPI Dashboard",
+                "description": "Comprehensive production monitoring with real-time KPIs, performance analytics, and automated reporting",
+                "category": "analytics_reporting",
+                "difficulty": "intermediate",
+                "rating": 4.7,
+                "usage_count": 360,
+                "tags": ["analytics", "kpi", "dashboard", "production", "monitoring"],
+                "estimated_time_savings": "10 hours per week",
+                "industry": ["manufacturing", "production", "operations"],
+                "workflow_data": {"nodes": 12, "complexity": "medium", "integrations": ["iot_sensors", "google_sheets", "slack", "datadog"]}
+            }
+        ]
+        
+        for template in manufacturing_templates:
+            templates[template["id"]] = template
+        
+        # Non-Profit Templates (6)
+        nonprofit_templates = [
+            {
+                "id": "donor-management-system",
+                "name": "Comprehensive Donor Management & Fundraising System",
+                "description": "Complete donor lifecycle management with relationship tracking, campaign automation, and impact reporting",
+                "category": "non_profit",
+                "difficulty": "intermediate",
+                "rating": 4.8,
+                "usage_count": 520,
+                "tags": ["non-profit", "donors", "fundraising", "campaigns", "impact"],
+                "estimated_time_savings": "12 hours per week",
+                "industry": ["non_profits", "charities", "foundations"],
+                "workflow_data": {"nodes": 13, "complexity": "medium", "integrations": ["mailchimp", "stripe", "google_sheets", "twilio", "gmail"]}
+            },
+            {
+                "id": "volunteer-coordination",
+                "name": "Automated Volunteer Coordination & Management",
+                "description": "Streamlined volunteer management with recruitment, scheduling, training coordination, and appreciation workflows",
+                "category": "non_profit",
+                "difficulty": "intermediate",
+                "rating": 4.6,
+                "usage_count": 410,
+                "tags": ["volunteers", "coordination", "scheduling", "training", "appreciation"],
+                "estimated_time_savings": "8 hours per week",
+                "industry": ["non_profits", "community_organizations", "events"],
+                "workflow_data": {"nodes": 11, "complexity": "medium", "integrations": ["typeform", "google_calendar", "mailchimp", "twilio", "zoom"]}
+            },
+            {
+                "id": "grant-application-tracker",
+                "name": "Grant Application & Award Management System",
+                "description": "Comprehensive grant management with application tracking, deadline monitoring, reporting automation, and compliance management",
+                "category": "non_profit",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 350,
+                "tags": ["grants", "applications", "deadlines", "reporting", "compliance"],
+                "estimated_time_savings": "20 hours per grant",
+                "industry": ["non_profits", "research_institutions", "foundations"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["google_calendar", "gmail", "google_drive", "slack", "quickbooks"]}
+            },
+            {
+                "id": "impact-measurement-system",
+                "name": "Social Impact Measurement & Reporting System",
+                "description": "Automated impact tracking with data collection, outcome measurement, stakeholder reporting, and story generation",
+                "category": "non_profit",
+                "difficulty": "advanced",
+                "rating": 4.5,
+                "usage_count": 290,
+                "tags": ["impact", "measurement", "outcomes", "reporting", "stories"],
+                "estimated_time_savings": "15 hours per month",
+                "industry": ["non_profits", "social_enterprises", "foundations"],
+                "workflow_data": {"nodes": 14, "complexity": "medium", "integrations": ["typeform", "google_sheets", "mailchimp", "canva"]}
+            },
+            {
+                "id": "event-fundraising-automation",
+                "name": "Event-Based Fundraising Automation System",
+                "description": "Complete event fundraising with registration management, payment processing, communication automation, and follow-up campaigns",
+                "category": "non_profit",
+                "difficulty": "intermediate",
+                "rating": 4.6,
+                "usage_count": 380,
+                "tags": ["events", "fundraising", "registration", "payments", "campaigns"],
+                "estimated_time_savings": "25 hours per event",
+                "industry": ["non_profits", "charities", "community_groups"],
+                "workflow_data": {"nodes": 15, "complexity": "medium", "integrations": ["eventbrite", "stripe", "mailchimp", "zoom", "gmail"]}
+            },
+            {
+                "id": "nonprofit-financial-reporting",
+                "name": "Non-Profit Financial Reporting & Transparency System",
+                "description": "Automated financial reporting with expense tracking, program cost allocation, transparency reports, and board dashboards",
+                "category": "finance_accounting",
+                "difficulty": "advanced",
+                "rating": 4.4,
+                "usage_count": 260,
+                "tags": ["financial", "reporting", "transparency", "expenses", "allocation"],
+                "estimated_time_savings": "20 hours per month",
+                "industry": ["non_profits", "foundations", "charities"],
+                "workflow_data": {"nodes": 17, "complexity": "high", "integrations": ["quickbooks", "google_sheets", "gmail", "slack"]}
+            }
+        ]
+        
+        for template in nonprofit_templates:
+            templates[template["id"]] = template
+        
+        # Content Creation Templates (8)
+        content_templates = [
+            {
+                "id": "content-calendar-automation",
+                "name": "Multi-Platform Content Calendar & Publishing System",
+                "description": "Automated content planning with calendar management, multi-platform publishing, and performance tracking",
+                "category": "content_creation",
+                "difficulty": "intermediate",
+                "rating": 4.7,
+                "usage_count": 1800,
+                "tags": ["content", "calendar", "publishing", "multi-platform", "tracking"],
+                "estimated_time_savings": "15 hours per week",
+                "industry": ["content_creators", "marketing", "agencies"],
+                "workflow_data": {"nodes": 12, "complexity": "medium", "integrations": ["twitter", "linkedin", "instagram", "youtube", "google_sheets"]}
+            },
+            {
+                "id": "ai-blog-writer",
+                "name": "AI-Powered Blog Writing & SEO Optimization",
+                "description": "Automated blog creation with AI writing, SEO optimization, image generation, and publishing automation",
+                "category": "content_creation",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 2200,
+                "tags": ["blogging", "ai", "seo", "writing", "optimization"],
+                "estimated_time_savings": "10 hours per blog post",
+                "industry": ["bloggers", "content_marketers", "businesses"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["openai", "wordpress", "canva", "google_analytics"]}
+            },
+            {
+                "id": "video-content-pipeline",
+                "name": "YouTube Video Production & Distribution Pipeline",
+                "description": "Complete video workflow with script generation, thumbnail creation, publishing automation, and analytics tracking",
+                "category": "content_creation",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 1650,
+                "tags": ["video", "youtube", "production", "thumbnails", "analytics"],
+                "estimated_time_savings": "5 hours per video",
+                "industry": ["youtubers", "content_creators", "marketers"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["youtube", "openai", "canva", "google_analytics"]}
+            },
+            {
+                "id": "podcast-automation-suite",
+                "name": "Podcast Production & Distribution Automation",
+                "description": "End-to-end podcast automation with episode publishing, show notes generation, social promotion, and analytics",
+                "category": "content_creation",
+                "difficulty": "intermediate",
+                "rating": 4.5,
+                "usage_count": 890,
+                "tags": ["podcast", "publishing", "show-notes", "promotion", "analytics"],
+                "estimated_time_savings": "3 hours per episode",
+                "industry": ["podcasters", "content_creators", "media"],
+                "workflow_data": {"nodes": 13, "complexity": "medium", "integrations": ["spotify", "apple_podcasts", "openai", "twitter", "linkedin"]}
+            },
+            {
+                "id": "newsletter-automation-system",
+                "name": "AI-Enhanced Newsletter Creation & Distribution",
+                "description": "Automated newsletter creation with content curation, AI writing, audience segmentation, and performance optimization",
+                "category": "content_creation",
+                "difficulty": "intermediate",
+                "rating": 4.7,
+                "usage_count": 1340,
+                "tags": ["newsletter", "curation", "ai", "segmentation", "optimization"],
+                "estimated_time_savings": "6 hours per newsletter",
+                "industry": ["newsletter_writers", "marketers", "businesses"],
+                "workflow_data": {"nodes": 14, "complexity": "medium", "integrations": ["openai", "mailchimp", "substack", "google_analytics"]}
+            },
+            {
+                "id": "social-content-recycler",
+                "name": "Content Recycling & Repurposing System",
+                "description": "Intelligent content repurposing with format adaptation, platform optimization, and automated scheduling",
+                "category": "content_creation",
+                "difficulty": "intermediate",
+                "rating": 4.6,
+                "usage_count": 1120,
+                "tags": ["recycling", "repurposing", "optimization", "scheduling", "formats"],
+                "estimated_time_savings": "12 hours per week",
+                "industry": ["content_creators", "marketers", "agencies"],
+                "workflow_data": {"nodes": 11, "complexity": "medium", "integrations": ["openai", "twitter", "linkedin", "instagram", "canva"]}
+            },
+            {
+                "id": "influencer-content-collaboration",
+                "name": "Influencer Collaboration & Content Management",
+                "description": "Streamlined influencer partnerships with campaign management, content approval, and performance tracking",
+                "category": "content_creation",
+                "difficulty": "advanced",
+                "rating": 4.4,
+                "usage_count": 750,
+                "tags": ["influencer", "collaboration", "campaigns", "approval", "tracking"],
+                "estimated_time_savings": "20 hours per campaign",
+                "industry": ["brands", "marketing_agencies", "influencers"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["instagram", "tiktok", "gmail", "google_sheets", "stripe"]}
+            },
+            {
+                "id": "content-performance-optimizer",
+                "name": "AI-Driven Content Performance Optimization",
+                "description": "Intelligent content optimization with performance analysis, A/B testing automation, and recommendation generation",
+                "category": "content_creation",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 980,
+                "tags": ["optimization", "performance", "ab-testing", "ai", "recommendations"],
+                "estimated_time_savings": "8 hours per week",
+                "industry": ["content_marketers", "agencies", "businesses"],
+                "workflow_data": {"nodes": 17, "complexity": "high", "integrations": ["openai", "google_analytics", "facebook_ads", "linkedin", "mailchimp"]}
+            }
+        ]
+        
+        for template in content_templates:
+            templates[template["id"]] = template
+        
+        # Security & Compliance Templates (6)
+        security_templates = [
+            {
+                "id": "security-incident-response",
+                "name": "Automated Security Incident Response System",
+                "description": "Comprehensive incident response with threat detection, alert management, investigation automation, and recovery workflows",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.9,
+                "usage_count": 420,
+                "tags": ["security", "incident-response", "threats", "investigation", "recovery"],
+                "estimated_time_savings": "15 hours per incident",
+                "industry": ["cybersecurity", "enterprises", "government"],
+                "workflow_data": {"nodes": 19, "complexity": "high", "integrations": ["datadog", "slack", "gmail", "jira", "security_apis"]}
+            },
+            {
+                "id": "gdpr-compliance-monitor",
+                "name": "GDPR Compliance Monitoring & Data Privacy System",
+                "description": "Automated GDPR compliance with data inventory, consent management, breach detection, and reporting automation",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.7,
+                "usage_count": 350,
+                "tags": ["gdpr", "privacy", "compliance", "consent", "breaches"],
+                "estimated_time_savings": "40 hours per month",
+                "industry": ["enterprises", "saas", "ecommerce"],
+                "workflow_data": {"nodes": 18, "complexity": "high", "integrations": ["compliance_api", "gmail", "slack", "google_sheets"]}
+            },
+            {
+                "id": "vulnerability-management",
+                "name": "Automated Vulnerability Assessment & Patch Management",
+                "description": "Continuous vulnerability scanning with risk assessment, patch prioritization, and deployment automation",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.8,
+                "usage_count": 380,
+                "tags": ["vulnerability", "scanning", "patches", "risk", "deployment"],
+                "estimated_time_savings": "30 hours per month",
+                "industry": ["cybersecurity", "it_departments", "enterprises"],
+                "workflow_data": {"nodes": 16, "complexity": "high", "integrations": ["security_scanners", "jira", "slack", "github"]}
+            },
+            {
+                "id": "access-control-automation",
+                "name": "Identity & Access Management Automation",
+                "description": "Automated user provisioning with role-based access control, periodic reviews, and deprovisioning workflows",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.6,
+                "usage_count": 310,
+                "tags": ["access-control", "identity", "provisioning", "reviews", "rbac"],
+                "estimated_time_savings": "20 hours per month",
+                "industry": ["enterprises", "it_departments", "saas"],
+                "workflow_data": {"nodes": 15, "complexity": "high", "integrations": ["active_directory", "slack", "gmail", "jira"]}
+            },
+            {
+                "id": "security-training-automation",
+                "name": "Security Awareness Training & Phishing Simulation",
+                "description": "Automated security training with phishing simulations, progress tracking, and compliance reporting",
+                "category": "security_compliance",
+                "difficulty": "intermediate",
+                "rating": 4.5,
+                "usage_count": 480,
+                "tags": ["training", "awareness", "phishing", "simulation", "compliance"],
+                "estimated_time_savings": "15 hours per month",
+                "industry": ["enterprises", "government", "healthcare"],
+                "workflow_data": {"nodes": 12, "complexity": "medium", "integrations": ["lms_api", "gmail", "slack", "google_sheets"]}
+            },
+            {
+                "id": "audit-preparation-system",
+                "name": "Compliance Audit Preparation & Documentation System",
+                "description": "Automated audit preparation with evidence collection, documentation generation, and compliance gap analysis",
+                "category": "security_compliance",
+                "difficulty": "advanced",
+                "rating": 4.4,
+                "usage_count": 240,
+                "tags": ["audit", "preparation", "documentation", "evidence", "gaps"],
+                "estimated_time_savings": "50 hours per audit",
+                "industry": ["compliance", "enterprises", "regulated_industries"],
+                "workflow_data": {"nodes": 17, "complexity": "high", "integrations": ["compliance_api", "google_drive", "slack", "gmail"]}
+            }
+        ]
+        
+        for template in security_templates:
+            templates[template["id"]] = template
         
         return templates
     
