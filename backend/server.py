@@ -32,11 +32,28 @@ api_router = APIRouter(prefix="/api")
 async def root():
     return {"message": "Hello World"}
 
-# Node types endpoint
+# Node types endpoints
 @api_router.get("/node-types")
 async def get_node_types():
     """Get all available node types"""
     return node_types_engine.get_node_types()
+
+@api_router.get("/nodes")
+async def get_nodes():
+    """Get all available nodes (alias for node-types for better API compatibility)"""
+    return node_types_engine.get_node_types()
+
+@api_router.get("/nodes/search")
+async def search_nodes(q: str = None, query: str = None):
+    """Search node types by name or description"""
+    search_term = q or query
+    if not search_term:
+        return node_types_engine.get_node_types()
+    
+    return {
+        "results": node_types_engine.search_node_types(search_term),
+        "query": search_term
+    }
 
 # Legacy status check models and endpoints
 class StatusCheck(BaseModel):
