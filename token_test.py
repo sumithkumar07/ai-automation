@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://app-health-monitor-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://interface-analysis.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {

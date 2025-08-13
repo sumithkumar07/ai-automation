@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 
 class NewFeaturesAPITester:
-    def __init__(self, base_url="https://app-health-monitor-1.preview.emergentagent.com"):
+    def __init__(self, base_url="https://interface-analysis.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
@@ -568,7 +568,7 @@ def main():
     print("=" * 60)
     
     # Initialize tester
-    tester = NewFeaturesAPITester("https://app-health-monitor-1.preview.emergentagent.com")
+    tester = NewFeaturesAPITester("https://interface-analysis.preview.emergentagent.com")
     
     # Run authentication test first
     print("\n📝 AUTHENTICATION TESTS")
