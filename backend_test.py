@@ -298,9 +298,25 @@ class AetherAutomationAPITester:
         success, response = self.run_test(
             "Get Node Types",
             "GET",
-            "api/nodes",
+            "api/workflows/node-types",
             200
         )
+        
+        if success:
+            # Verify we have the expected 25 nodes across 4 categories
+            if 'categories' in response and 'stats' in response:
+                stats = response['stats']
+                total_nodes = stats.get('total_nodes', 0)
+                categories = stats.get('categories', 0)
+                print(f"   ✅ Found {total_nodes} nodes across {categories} categories")
+                
+                if total_nodes >= 25 and categories >= 4:
+                    print(f"   ✅ Node types meet requirements (25+ nodes, 4+ categories)")
+                else:
+                    print(f"   ⚠️ Node types below requirements: {total_nodes} nodes, {categories} categories")
+            else:
+                print(f"   ⚠️ Node types response missing expected structure")
+        
         return success
 
     def test_ai_generate_workflow(self):
