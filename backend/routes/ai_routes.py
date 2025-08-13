@@ -241,17 +241,41 @@ Make it easy to understand for non-technical users.
 
 @router.post("/chat")
 async def ai_chat(
-    message: str,
+    request_data: dict = None,
+    message: str = None,
     session_id: str = None,
     current_user: dict = Depends(get_current_active_user)
 ):
-    """Chat with AI assistant about workflows"""
+    """Chat with AI assistant about workflows - accepts both JSON body and query parameters"""
     try:
+        # Handle both JSON body and query parameter formats
+        chat_message = None
+        
+        if request_data and isinstance(request_data, dict):
+            chat_message = request_data.get("message") or request_data.get("text") or request_data.get("query")
+            # Extract session_id from request body if not provided as parameter
+            if not session_id and "session_id" in request_data:
+                session_id = request_data["session_id"]
+        
+        # Fallback to query parameter
+        if not chat_message:
+            chat_message = message
+        
+        # Validate message
+        if not chat_message:
+            raise HTTPException(status_code=400, detail="Message required. Provide 'message' field in JSON body or as query parameter")
+        
+        if not isinstance(chat_message, str) or len(chat_message.strip()) == 0:
+            raise HTTPException(status_code=400, detail="Message must be a non-empty string")
+        
+        if len(chat_message) > 2000:  # Reasonable limit
+            raise HTTPException(status_code=400, detail="Message too long (max 2000 characters)")
+        
         # Create a workflow-focused prompt
         chat_prompt = f"""
 You are an expert workflow automation assistant. Help the user with their workflow automation question:
 
-User question: {message}
+User question: {chat_message}
 
 Provide helpful, practical advice about workflow automation, integrations, and best practices.
 Keep your response concise but informative.
@@ -266,6 +290,9 @@ Keep your response concise but informative.
             "model": "llama-3.1-8b-instant"
         }
     
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
     except Exception as e:
         logger.error(f"AI chat failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"AI chat failed: {str(e)}")
