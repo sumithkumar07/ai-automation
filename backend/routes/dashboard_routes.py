@@ -4,11 +4,13 @@ from models import DashboardStats, WorkflowExecution
 from auth import get_current_active_user
 from database import get_database
 from datetime import datetime, timedelta
+import logging
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 @router.get("/stats")
-async def get_dashboard_stats(current_user: dict = Depends(get_current_active_user)) -> DashboardStats:
+async def get_dashboard_stats(current_user: dict = Depends(get_current_active_user)) -> Dict[str, Any]:
     """Get dashboard statistics for the current user"""
     db = get_database()
     user_id = current_user["user_id"]
@@ -23,6 +25,13 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_active_us
         "user_id": user_id, 
         "status": "success"
     })
+    failed_executions = await db.workflow_executions.count_documents({
+        "user_id": user_id,
+        "status": "failed"
+    })
+    
+    # Calculate success rate
+    success_rate = (successful_executions / total_executions * 100) if total_executions > 0 else 100
     
     # Get integration stats
     integrations_connected = await db.user_integrations.count_documents({
@@ -33,16 +42,41 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_active_us
     # Get recent executions
     cursor = db.workflow_executions.find({"user_id": user_id}).sort("started_at", -1).limit(10)
     recent_executions_data = await cursor.to_list(length=10)
-    recent_executions = [WorkflowExecution(**execution) for execution in recent_executions_data]
     
-    return DashboardStats(
-        total_workflows=total_workflows,
-        active_workflows=active_workflows,
-        total_executions=total_executions,
-        successful_executions=successful_executions,
-        integrations_connected=integrations_connected,
-        recent_executions=recent_executions
-    )
+    return {
+        "total_workflows": total_workflows,
+        "active_workflows": active_workflows,
+        "total_executions": total_executions,
+        "successful_executions": successful_executions,
+        "failed_executions": failed_executions,
+        "success_rate": round(success_rate, 1),
+        "integrations_connected": integrations_connected,
+        "recent_executions": recent_executions_data
+    }
+
+@router.get("/checklist")
+async def get_user_checklist(current_user: dict = Depends(get_current_active_user)) -> Dict[str, Any]:
+    """Get user onboarding checklist"""
+    db = get_database()
+    user_id = current_user["user_id"]
+    
+    # Check completion criteria
+    has_any_workflow = await db.workflows.count_documents({"user_id": user_id}) > 0
+    has_any_integration = await db.user_integrations.count_documents({"user_id": user_id, "is_active": True}) > 0
+    has_any_execution = await db.workflow_executions.count_documents({"user_id": user_id}) > 0
+    
+    # Calculate completion percentage
+    completed_items = sum([has_any_workflow, has_any_integration, has_any_execution])
+    completion_percentage = (completed_items / 3) * 100
+    
+    return {
+        "has_any_workflow": has_any_workflow,
+        "has_any_integration": has_any_integration,
+        "has_any_execution": has_any_execution,
+        "completion_percentage": completion_percentage,
+        "total_items": 3,
+        "completed_items": completed_items
+    }
 
 @router.get("/activity")
 async def get_activity_feed(current_user: dict = Depends(get_current_active_user), limit: int = 20):
@@ -187,7 +221,7 @@ async def get_integration_usage(current_user: dict = Depends(get_current_active_
                     }
                 
                 integration_usage[integration]["usage_count"] += 1
-                if workflow["id"] not in integration_usage[integration]["workflows"]:
+                if workflow["id"] not in [w["id"] for w in integration_usage[integration]["workflows"]]:
                     integration_usage[integration]["workflows"].append({
                         "id": workflow["id"],
                         "name": workflow["name"]
