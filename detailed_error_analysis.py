@@ -8,7 +8,7 @@ import requests
 import json
 
 def test_specific_endpoints():
-    base_url = "https://expansion-verify.preview.emergentagent.com"
+    base_url = "https://parallel-testing.preview.emergentagent.com"
     
     # First authenticate
     auth_data = {

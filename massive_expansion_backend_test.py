@@ -25,7 +25,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 # Configuration
-BACKEND_URL = "https://expansion-verify.preview.emergentagent.com/api"
+BACKEND_URL = "https://parallel-testing.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "expansion.tester@aether.com"
 TEST_USER_PASSWORD = "ExpansionTest2024!"
 TEST_USER_NAME = "Expansion Tester"

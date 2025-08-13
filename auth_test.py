@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://expansion-verify.preview.emergentagent.com/api"
+BACKEND_URL = "https://parallel-testing.preview.emergentagent.com/api"
 
 # Test data as specified in the review request
 TEST_USER_DATA = {
