@@ -94,9 +94,15 @@ class IntegrationCategory(str, Enum):
     CRM = "crm"
     MARKETING = "marketing"
     DEVELOPMENT = "development"
+    DEVELOPER = "developer"  # Alias for development
     FINANCE = "finance"
     STORAGE = "storage"
     AI = "ai"
+    ECOMMERCE = "ecommerce"
+    ANALYTICS = "analytics"
+    SUPPORT = "support"
+    DATABASE = "database"
+    CONTENT = "content"
 
 class Integration(BaseModel):
     id: str
