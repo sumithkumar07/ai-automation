@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 
 class AetherAutomationAPITester:
-    def __init__(self, base_url="https://aether-repair.preview.emergentagent.com"):
+    def __init__(self, base_url="https://app-health-monitor-1.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
@@ -921,7 +921,7 @@ def main():
     print("=" * 60)
     
     # Initialize tester
-    tester = AetherAutomationAPITester("https://aether-repair.preview.emergentagent.com")
+    tester = AetherAutomationAPITester("https://app-health-monitor-1.preview.emergentagent.com")
     
     # Run authentication tests
     print("\n📝 AUTHENTICATION TESTS")
