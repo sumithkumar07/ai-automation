@@ -44,9 +44,11 @@ async def get_workflows(
     cursor = db.workflows.find({"user_id": current_user["user_id"]}).skip(skip).limit(limit)
     workflows = await cursor.to_list(length=limit)
     
-    # Add execution statistics
+    # Clean up MongoDB ObjectIds
     for workflow in workflows:
-        # Get recent execution count and success rate
+        workflow.pop('_id', None)
+        
+        # Get execution statistics
         execution_count = await db.workflow_executions.count_documents({"workflow_id": workflow["id"]})
         successful_count = await db.workflow_executions.count_documents({
             "workflow_id": workflow["id"],
