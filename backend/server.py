@@ -139,6 +139,19 @@ api_router.include_router(templates_routes.router)
 api_router.include_router(integration_testing_routes.router)
 api_router.include_router(performance_routes.router)
 
+# Include enhanced router for new capabilities
+try:
+    from enhanced_api_routes import get_enhanced_router
+    enhanced_router = get_enhanced_router()
+    # Remove prefix since we're including it in api_router which already has /api prefix
+    enhanced_router.prefix = "/enhanced"  
+    api_router.include_router(enhanced_router)
+    logging.info("✅ Enhanced API routes loaded successfully")
+except ImportError as e:
+    logging.warning(f"⚠️ Enhanced API routes not available: {e}")
+except Exception as e:
+    logging.error(f"❌ Error loading enhanced API routes: {e}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
