@@ -220,7 +220,7 @@ class AetherBackendTester:
                     "is_active": True
                 }
                 
-                response = self.session.post(f"{self.base_url}/workflows", 
+                response = self.session.post(f"{self.base_url}/workflows/", 
                                            json=workflow_data, timeout=20)
                 response_time = (time.time() - start_time) * 1000
                 
