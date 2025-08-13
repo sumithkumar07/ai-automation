@@ -11,17 +11,52 @@ import logging
 logger = logging.getLogger(__name__)
 
 class AIService:
-    """AI service for workflow generation and optimization using GROQ."""
+    """Enhanced AI service supporting multiple AI providers for workflow generation and optimization."""
     
     def __init__(self):
+        # GROQ Configuration
         self.groq_api_key = os.getenv("GROQ_API_KEY") or os.getenv("EMERGENT_LLM_KEY")
         self.groq_client = None
         
+        # OpenAI Configuration  
+        self.openai_api_key = os.getenv("OPENAI_API_KEY") or os.getenv("EMERGENT_LLM_KEY")
+        self.openai_client = None
+        
+        # Anthropic Configuration
+        self.anthropic_api_key = os.getenv("ANTHROPIC_API_KEY") or os.getenv("EMERGENT_LLM_KEY")
+        self.anthropic_client = None
+        
+        # Google Gemini Configuration
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY") or os.getenv("EMERGENT_LLM_KEY")
+        self.gemini_client = None
+        
+        # Initialize available clients
+        self._initialize_clients()
+    
+    def _initialize_clients(self):
+        """Initialize available AI clients."""
+        # Initialize GROQ
         if self.groq_api_key:
-            self.groq_client = AsyncGroq(api_key=self.groq_api_key)
-            logger.info("GROQ AI service initialized successfully")
-        else:
-            logger.warning("GROQ API key not found, using mock responses")
+            try:
+                self.groq_client = AsyncGroq(api_key=self.groq_api_key)
+                logger.info("GROQ AI service initialized successfully")
+            except Exception as e:
+                logger.error(f"Failed to initialize GROQ: {e}")
+        
+        # Initialize OpenAI (will be added via emergent integrations)
+        if self.openai_api_key:
+            logger.info("OpenAI API key available - will initialize via emergent integrations")
+        
+        # Initialize Anthropic (will be added via emergent integrations)  
+        if self.anthropic_api_key:
+            logger.info("Anthropic API key available - will initialize via emergent integrations")
+        
+        # Initialize Gemini (will be added via emergent integrations)
+        if self.gemini_api_key:
+            logger.info("Gemini API key available - will initialize via emergent integrations")
+        
+        if not any([self.groq_api_key, self.openai_api_key, self.anthropic_api_key, self.gemini_api_key]):
+            logger.warning("No AI API keys found, using mock responses")
     
     async def process_with_groq(self, prompt: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """Process a prompt with GROQ AI."""
