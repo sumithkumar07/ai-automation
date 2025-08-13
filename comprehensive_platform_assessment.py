@@ -75,7 +75,7 @@ class AetherPlatformAssessment:
         print("\n🔐 AUTHENTICATION SETUP")
         
         # Create unique test user
-        test_email = f"assessment_{self.session_id[:8]}@aether.test"
+        test_email = f"assessment_{self.session_id[:8]}@example.com"
         test_password = "AssessmentTest123!"
         
         user_data = {
