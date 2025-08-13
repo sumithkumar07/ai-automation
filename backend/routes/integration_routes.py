@@ -46,10 +46,22 @@ async def get_integration_categories():
 
 @router.get("/category/{category}")
 async def get_integrations_by_category(category: str):
-    """Get integrations by category"""
+    """Get integrations by category with caching."""
+    cache_key = generate_cache_key("integrations", "category", category)
+    
+    # Try cache first
+    cached_integrations = await cache_service.get(cache_key)
+    if cached_integrations:
+        return [Integration(**integration) for integration in cached_integrations]
+    
     try:
         category_enum = IntegrationCategory(category)
         integrations = integrations_engine.get_integrations_by_category(category_enum)
+        integration_dicts = [integration.dict() for integration in integrations]
+        
+        # Cache for 30 minutes
+        await cache_service.set(cache_key, integration_dicts, CACHE_CONFIGS['integration_data']['ttl'])
+        
         return integrations
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid category")
