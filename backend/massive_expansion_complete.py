@@ -134,7 +134,7 @@ class MassiveNodeSystemComplete:
     """Complete Node System with 300+ Comprehensive Node Types"""
     
     def __init__(self):
-        self.nodes = self._initialize_complete_nodes()
+        self.nodes = COMPLETE_NODES  # Use the complete generated nodes
         
     def _initialize_complete_nodes(self):
         """Initialize complete collection of 300+ node types"""
