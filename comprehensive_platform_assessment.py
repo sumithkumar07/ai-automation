@@ -358,7 +358,10 @@ class AetherPlatformAssessment:
         
         # List workflows
         list_data = self.run_test("List Workflows", "GET", "api/workflows/", 200)
-        workflow_count = len(list_data.get("workflows", [])) if list_data else 0
+        if isinstance(list_data, list):
+            workflow_count = len(list_data)
+        else:
+            workflow_count = len(list_data.get("workflows", [])) if list_data else 0
         
         # Test workflow execution if we have a workflow
         execution_data = None
