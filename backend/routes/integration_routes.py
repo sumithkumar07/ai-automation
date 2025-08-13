@@ -30,8 +30,19 @@ async def get_all_integrations():
 
 @router.get("/categories")
 async def get_integration_categories():
-    """Get all integration categories"""
-    return [{"id": cat.value, "name": cat.value.replace("_", " ").title()} for cat in IntegrationCategory]
+    """Get all integration categories with caching."""
+    cache_key = generate_cache_key("integrations", "categories")
+    
+    # Try cache first
+    cached_categories = await cache_service.get(cache_key)
+    if cached_categories:
+        return cached_categories
+    
+    # Generate and cache
+    categories = [{"id": cat.value, "name": cat.value.replace("_", " ").title()} for cat in IntegrationCategory]
+    await cache_service.set(cache_key, categories, CACHE_CONFIGS['integration_data']['ttl'])
+    
+    return categories
 
 @router.get("/category/{category}")
 async def get_integrations_by_category(category: str):
