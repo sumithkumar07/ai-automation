@@ -843,7 +843,7 @@ def main():
     print("=" * 60)
     
     # Initialize tester
-    tester = AetherAutomationAPITester("http://localhost:8001")
+    tester = AetherAutomationAPITester("https://app-vision.preview.emergentagent.com")
     
     # Run authentication tests
     print("\n📝 AUTHENTICATION TESTS")
