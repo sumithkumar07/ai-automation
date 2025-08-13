@@ -206,6 +206,141 @@ class NodeTypesEngine:
                         }
                     },
                     {
+                        "id": "ai_text_generation",
+                        "name": "AI Text Generation",
+                        "description": "Generate text using AI models",
+                        "type": "action",
+                        "category": "ai",
+                        "icon": "🤖",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "model": {"type": "string", "enum": ["groq", "openai_gpt4", "anthropic_claude", "google_gemini"], "default": "groq"},
+                                "prompt": {"type": "string", "default": "Generate helpful content"},
+                                "max_tokens": {"type": "number", "default": 1000},
+                                "temperature": {"type": "number", "default": 0.7}
+                            }
+                        }
+                    },
+                    {
+                        "id": "ai_image_generation",
+                        "name": "AI Image Generation",
+                        "description": "Generate images using AI models",
+                        "type": "action",
+                        "category": "ai",
+                        "icon": "🎨",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "model": {"type": "string", "enum": ["dalle3", "midjourney", "stability_ai"], "default": "dalle3"},
+                                "prompt": {"type": "string", "default": "A beautiful landscape"},
+                                "size": {"type": "string", "enum": ["256x256", "512x512", "1024x1024"], "default": "512x512"},
+                                "style": {"type": "string", "enum": ["natural", "vivid", "artistic"], "default": "natural"}
+                            }
+                        }
+                    },
+                    {
+                        "id": "ai_document_processing",
+                        "name": "AI Document Processing",
+                        "description": "Process and analyze documents with AI",
+                        "type": "action",
+                        "category": "ai",
+                        "icon": "📄",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "operation": {"type": "string", "enum": ["ocr", "summarize", "extract_entities", "translate"], "default": "summarize"},
+                                "language": {"type": "string", "default": "auto"},
+                                "output_format": {"type": "string", "enum": ["text", "json", "markdown"], "default": "text"}
+                            }
+                        }
+                    },
+                    {
+                        "id": "ai_voice_synthesis",
+                        "name": "AI Voice Synthesis",
+                        "description": "Convert text to speech using AI",
+                        "type": "action",
+                        "category": "ai",
+                        "icon": "🗣️",
+                        "integration": "elevenlabs",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "text": {"type": "string", "default": "Hello, this is AI generated speech"},
+                                "voice": {"type": "string", "default": "default"},
+                                "model": {"type": "string", "enum": ["eleven_monolingual_v1", "eleven_multilingual_v2"], "default": "eleven_monolingual_v1"},
+                                "output_format": {"type": "string", "enum": ["mp3", "wav"], "default": "mp3"}
+                            }
+                        }
+                    },
+                    {
+                        "id": "data_transformation",
+                        "name": "Data Transformation",
+                        "description": "Transform and manipulate data",
+                        "type": "action",
+                        "category": "advanced",
+                        "icon": "🔄",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "operation": {"type": "string", "enum": ["filter", "map", "reduce", "sort", "group"], "default": "filter"},
+                                "field": {"type": "string", "default": ""},
+                                "condition": {"type": "string", "default": ""},
+                                "output_format": {"type": "string", "enum": ["json", "csv", "xml"], "default": "json"}
+                            }
+                        }
+                    },
+                    {
+                        "id": "file_processing",
+                        "name": "File Processing",
+                        "description": "Process and manipulate files",
+                        "type": "action",
+                        "category": "advanced",
+                        "icon": "🗂️",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "operation": {"type": "string", "enum": ["compress", "extract", "convert", "merge", "split"], "default": "compress"},
+                                "format": {"type": "string", "enum": ["zip", "pdf", "csv", "json", "xml"], "default": "zip"},
+                                "quality": {"type": "number", "default": 85}
+                            }
+                        }
+                    },
+                    {
+                        "id": "database_query",
+                        "name": "Database Query",
+                        "description": "Execute database queries",
+                        "type": "action",
+                        "category": "advanced",
+                        "icon": "🗄️",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "query_type": {"type": "string", "enum": ["SELECT", "INSERT", "UPDATE", "DELETE"], "default": "SELECT"},
+                                "table": {"type": "string", "default": ""},
+                                "conditions": {"type": "string", "default": ""},
+                                "limit": {"type": "number", "default": 100}
+                            }
+                        }
+                    },
+                    {
+                        "id": "send_webhook",
+                        "name": "Send Webhook",
+                        "description": "Send data to webhook endpoints",
+                        "type": "action",
+                        "category": "advanced",
+                        "icon": "📡",
+                        "config_schema": {
+                            "type": "object",
+                            "properties": {
+                                "url": {"type": "string", "default": "https://webhook.example.com"},
+                                "method": {"type": "string", "enum": ["POST", "PUT", "PATCH"], "default": "POST"},
+                                "headers": {"type": "object", "default": {"Content-Type": "application/json"}},
+                                "payload": {"type": "object", "default": {}}
+                            }
+                        }
+                    },
+                    {
                         "id": "send_sms",
                         "name": "Send SMS",
                         "description": "Send SMS message via Twilio",
