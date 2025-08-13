@@ -61,16 +61,35 @@ async def get_workflow_insights(workflow_id: str, current_user: dict = Depends(g
         raise HTTPException(status_code=500, detail=f"Failed to generate insights: {str(e)}")
 
 @router.post("/suggest-integrations")
-async def suggest_integrations(request_data: dict = None, description: str = None, current_user: dict = Depends(get_current_active_user)):
-    """Suggest integrations based on workflow description - accepts both JSON body and query parameter"""
+async def suggest_integrations(
+    request_data: dict = None, 
+    description: str = None,
+    workflow_description: str = None,
+    prompt: str = None,
+    query: str = None,
+    current_user: dict = Depends(get_current_active_user)
+):
+    """Suggest integrations based on workflow description - accepts multiple parameter formats for better compatibility"""
     try:
-        # Handle both API formats: JSON body with 'description' field or query parameter
-        if request_data and isinstance(request_data, dict) and "description" in request_data:
-            description_text = request_data["description"]
-        elif description:
-            description_text = description
-        else:
-            raise HTTPException(status_code=400, detail="Description required in JSON body or as query parameter")
+        # Handle multiple API formats for maximum compatibility
+        description_text = None
+        
+        # Priority order: JSON body fields, then query parameters
+        if request_data and isinstance(request_data, dict):
+            # Try multiple field names in JSON body
+            description_text = (request_data.get("description") or 
+                              request_data.get("workflow_description") or
+                              request_data.get("prompt") or
+                              request_data.get("query") or
+                              request_data.get("text"))
+        
+        # Fallback to query parameters if JSON body doesn't have description
+        if not description_text:
+            description_text = description or workflow_description or prompt or query
+        
+        # Final validation
+        if not description_text:
+            raise HTTPException(status_code=400, detail="Description required. Accepted fields: 'description', 'workflow_description', 'prompt', 'query' in JSON body or as query parameters")
         
         # Enhanced AI-powered suggestions using GROQ
         if ai_service.groq_client:
