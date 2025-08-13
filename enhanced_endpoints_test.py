@@ -31,7 +31,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 # Configuration
-BACKEND_URL = "https://backend-first-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://fullstack-review-2.preview.emergentagent.com/api"
 
 class EnhancedEndpointsTestSuite:
     def __init__(self):
