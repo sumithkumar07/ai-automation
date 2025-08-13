@@ -10,9 +10,9 @@ import logging
 
 # Import our enhanced systems
 try:
-    from .comprehensive_enhancement_system import ComprehensiveEnhancementSystem
-    from .enhanced_multi_ai_system import get_enhanced_ai_system, AIProvider, AITask
-    from .enhanced_performance_system import get_cache_service, cached_response
+    from comprehensive_enhancement_system import ComprehensiveEnhancementSystem
+    from enhanced_multi_ai_system import get_enhanced_ai_system, AIProvider, AITask
+    from enhanced_performance_system import get_cache_service, cached_response
     ENHANCEMENTS_AVAILABLE = True
 except ImportError as e:
     logging.warning(f"Enhanced systems not available: {e}")
