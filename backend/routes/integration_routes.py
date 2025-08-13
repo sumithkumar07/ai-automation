@@ -70,22 +70,61 @@ async def get_integrations_by_category(category: str):
         raise HTTPException(status_code=400, detail="Invalid category")
 
 @router.get("/search")
-async def search_integrations(q: str = None, query: str = None):
-    """Search integrations by name or description - accepts both 'q' and 'query' parameters"""
-    # Accept both parameter formats for better API compatibility
-    search_term = q or query
-    if not search_term:
-        raise HTTPException(status_code=400, detail="Search parameter required ('q' or 'query')")
+async def search_integrations(
+    q: str = None, 
+    query: str = None, 
+    search: str = None, 
+    term: str = None,
+    category: str = None
+):
+    """Search integrations by name or description - accepts multiple parameter formats for maximum compatibility"""
+    # Accept multiple parameter formats for better API compatibility
+    search_term = q or query or search or term
+    
+    # Handle category-only search
+    if category and not search_term:
+        try:
+            category_enum = IntegrationCategory(category.lower().replace(" ", "_"))
+            return integrations_engine.get_integrations_by_category(category_enum)
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Invalid category: {category}")
+    
+    # Require search term if no category provided
+    if not search_term and not category:
+        raise HTTPException(status_code=400, detail="Search parameter required ('q', 'query', 'search', 'term') or 'category' for category-only search")
     
     all_integrations = integrations_engine.get_all_integrations()
     
-    search_query = search_term.lower()
-    filtered = [
-        integration for integration in all_integrations
-        if search_query in integration.name.lower() or search_query in integration.description.lower()
-    ]
+    # If category filter is provided, apply it first
+    if category:
+        try:
+            category_enum = IntegrationCategory(category.lower().replace(" ", "_"))
+            category_integrations = integrations_engine.get_integrations_by_category(category_enum)
+            all_integrations = category_integrations
+        except ValueError:
+            # If invalid category, continue with all integrations but log warning
+            logger.warning(f"Invalid category filter: {category}, searching all integrations")
     
-    return filtered
+    # Apply search filter if search term provided
+    if search_term:
+        search_query = search_term.lower()
+        filtered = [
+            integration for integration in all_integrations
+            if (search_query in integration.name.lower() or 
+                search_query in integration.description.lower() or
+                search_query in str(integration.category.value).lower() or
+                any(search_query in tag.lower() for tag in getattr(integration, 'tags', [])))
+        ]
+    else:
+        # Category-only search, return all integrations in category
+        filtered = all_integrations
+    
+    return {
+        "integrations": filtered,
+        "search_term": search_term,
+        "category": category,
+        "total_results": len(filtered)
+    }
 
 @router.get("/{integration_id}")
 async def get_integration(integration_id: str):
