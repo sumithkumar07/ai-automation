@@ -165,7 +165,7 @@ class AetherBackendTester:
         for attempt in range(3):
             try:
                 start_time = time.time()
-                response = self.session.get(f"{self.base_url}/workflows", timeout=15)
+                response = self.session.get(f"{self.base_url}/workflows/", timeout=15)
                 response_time = (time.time() - start_time) * 1000
                 
                 if response.status_code == 200:
