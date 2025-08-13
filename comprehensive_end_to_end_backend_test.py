@@ -177,7 +177,7 @@ class ComprehensiveAetherTester:
         success, response = self.run_test(
             "Get Available Integrations",
             "GET",
-            "api/integrations/available",
+            "api/integrations/",
             200
         )
         
