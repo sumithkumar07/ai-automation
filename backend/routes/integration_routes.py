@@ -67,14 +67,19 @@ async def get_integrations_by_category(category: str):
         raise HTTPException(status_code=400, detail="Invalid category")
 
 @router.get("/search")
-async def search_integrations(q: str):
-    """Search integrations by name or description"""
+async def search_integrations(q: str = None, query: str = None):
+    """Search integrations by name or description - accepts both 'q' and 'query' parameters"""
+    # Accept both parameter formats for better API compatibility
+    search_term = q or query
+    if not search_term:
+        raise HTTPException(status_code=400, detail="Search parameter required ('q' or 'query')")
+    
     all_integrations = integrations_engine.get_all_integrations()
     
-    query = q.lower()
+    search_query = search_term.lower()
     filtered = [
         integration for integration in all_integrations
-        if query in integration.name.lower() or query in integration.description.lower()
+        if search_query in integration.name.lower() or search_query in integration.description.lower()
     ]
     
     return filtered
