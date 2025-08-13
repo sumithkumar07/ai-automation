@@ -542,7 +542,7 @@ async def create_custom_template(
             "id": template_id,
             "name": template_data["name"],
             "description": template_data["description"],
-            "workflow_definition": template_data["workflow_definition"],
+            "workflow_definition": workflow_definition,
             "category": template_data["category"],
             "difficulty": template_data.get("difficulty", "intermediate"),
             "tags": template_data.get("tags", []),
