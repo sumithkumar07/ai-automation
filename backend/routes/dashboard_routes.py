@@ -222,6 +222,10 @@ async def get_integration_usage(current_user: dict = Depends(get_current_active_
     # Get all user's workflows
     workflows = await db.workflows.find({"user_id": user_id}).to_list(length=100)
     
+    # Clean up MongoDB ObjectIds
+    for workflow in workflows:
+        workflow.pop('_id', None)
+    
     integration_usage = {}
     
     for workflow in workflows:
