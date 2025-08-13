@@ -100,7 +100,7 @@ class ErrorBoundary extends React.Component {
     console.error('Application error:', error, errorInfo)
     
     // In production, you might want to send this to an error reporting service
-    if (import.meta.env.MODE === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       // Log to error reporting service
     }
   }
