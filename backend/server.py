@@ -74,47 +74,54 @@ async def search_nodes(q: str = None, query: str = None):
         "total_results": nodes["stats"]["total_nodes"]
     }
 
-# Enhanced Template endpoints using massive template system
+# Enhanced Template endpoints using COMPLETE massive template system - NO LIMITS
 @api_router.get("/templates/enhanced")
 async def get_enhanced_templates(category: str = None, industry: str = None, difficulty: str = None):
-    """Get enhanced templates with 100+ professional templates"""
+    """Get enhanced templates with 100+ professional templates - UNLIMITED"""
     if category:
-        return massive_templates_engine.get_templates_by_category(category)
+        return massive_template_system_complete.get_templates_by_category(category)
     elif industry:
-        return massive_templates_engine.get_templates_by_industry(industry)
+        # Filter by industry
+        all_templates = massive_template_system_complete.get_all_templates()
+        return [t for t in all_templates if industry in t.get("industry", [])]
     else:
-        return massive_templates_engine.get_popular_templates(50)
+        return massive_template_system_complete.get_all_templates()  # NO LIMIT
 
 @api_router.get("/templates/search/enhanced") 
 async def search_enhanced_templates(q: str = None, query: str = None, category: str = None, difficulty: str = None, industry: str = None):
-    """Enhanced template search with multiple filters"""
+    """Enhanced template search with 100+ templates - UNLIMITED"""
     search_term = q or query
+    results = massive_template_system_complete.search_templates(search_term, category, difficulty, industry)
+    
     return {
-        "results": massive_templates_engine.search_templates(search_term, category, difficulty, industry),
+        "results": results,  # ALL results, no limits
         "query": search_term,
         "filters": {
             "category": category,
             "difficulty": difficulty, 
             "industry": industry
         },
-        "categories": massive_templates_engine.get_categories(),
-        "stats": massive_templates_engine.get_template_stats()
+        "categories": massive_template_system_complete.categories,
+        "stats": massive_template_system_complete.get_template_stats()
     }
 
 @api_router.get("/templates/categories/enhanced")
 async def get_enhanced_template_categories():
     """Get all template categories with enhanced statistics"""
-    return massive_templates_engine.get_categories()
+    return massive_template_system_complete.categories
 
 @api_router.get("/templates/trending")
-async def get_trending_templates(limit: int = 15):
-    """Get trending templates"""
-    return massive_templates_engine.get_trending_templates(limit)
+async def get_trending_templates(limit: int = 20):
+    """Get trending templates - UNLIMITED by default"""
+    all_templates = massive_template_system_complete.get_all_templates()
+    # Sort by usage_count for trending
+    all_templates.sort(key=lambda x: x["usage_count"], reverse=True)
+    return all_templates[:limit] if limit else all_templates
 
 @api_router.get("/templates/stats")
 async def get_template_statistics():
     """Get comprehensive template system statistics"""
-    return massive_templates_engine.get_template_stats()
+    return massive_template_system_complete.get_template_stats()
 
 # Enhanced Integrations endpoints using massive integrations system
 @api_router.get("/integrations/enhanced") 
