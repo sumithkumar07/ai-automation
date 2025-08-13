@@ -538,14 +538,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Workflow CRUD Authentication Issues (403 error blocking core functionality)"
     - "Template detail retrieval async issue (500 error)"
     - "AI endpoint route mapping corrections"
     - "Real vs demo data implementation"
-  stuck_tasks:
-    - "Workflow CRUD Authentication Issues"
+  stuck_tasks: []
   test_all: false
-  test_priority: "critical_workflow_authentication_first"
+  test_priority: "remaining_minor_issues"
 
 agent_communication:
   - agent: "main"
