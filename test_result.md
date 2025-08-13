@@ -475,14 +475,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Template detail retrieval for newly created templates"
-    - "Workflow CRUD authentication issues"
-    - "Integration count vs homepage promise discrepancy"
-  stuck_tasks:
-    - "Template detail endpoint for new templates"
-    - "Workflow authentication preventing CRUD operations"
+    - "Minor template detail async issue fix"
+    - "AI integrations endpoint (404 error)"
+  stuck_tasks: []
   test_all: false
-  test_priority: "fix_remaining_issues"
+  test_priority: "minor_issues_only"
 
 agent_communication:
   - agent: "main"
