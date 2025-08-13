@@ -28,8 +28,8 @@ logger = logging.getLogger(__name__)
 
 # Import our enhanced systems
 try:
-    from .enhanced_multi_ai_system import get_enhanced_ai_system, AIProvider, AITask
-    from .enhanced_performance_system import get_cache_service, get_performance_monitor
+    from enhanced_multi_ai_system import get_enhanced_ai_system, AIProvider, AITask
+    from enhanced_performance_system import get_cache_service, get_performance_monitor
     AI_ENHANCEMENTS_AVAILABLE = True
 except ImportError as e:
     logger.warning(f"Enhanced AI system not available: {e}")
