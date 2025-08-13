@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from datetime import timedelta
-from ..models import UserCreate, UserLogin, User
-from ..auth import hash_password, verify_password, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES
-from ..database import get_database
+from models import UserCreate, UserLogin, User
+from auth import hash_password, verify_password, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES
+from database import get_database
 import uuid
 from datetime import datetime
 
