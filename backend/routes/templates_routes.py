@@ -264,7 +264,7 @@ async def get_templates(
         
         # Enhance templates with additional data
         enhanced_templates = []
-        for template in paginated_templates:
+        for template in templates:
             enhanced_template = {
                 **template,
                 "author_info": {
@@ -277,6 +277,10 @@ async def get_templates(
                 "last_updated": template["updated_at"]
             }
             enhanced_templates.append(enhanced_template)
+        
+        # Calculate total count for pagination
+        if 'total_count' not in locals():
+            total_count = len(templates)
         
         return {
             "templates": enhanced_templates,
