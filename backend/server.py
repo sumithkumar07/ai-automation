@@ -63,6 +63,10 @@ api_router.include_router(workflow_routes.router)
 api_router.include_router(integration_routes.router)
 api_router.include_router(ai_routes.router)
 api_router.include_router(dashboard_routes.router)
+api_router.include_router(collaboration_routes.router)
+api_router.include_router(analytics_routes.router)
+api_router.include_router(templates_routes.router)
+api_router.include_router(integration_testing_routes.router)
 
 # Include the router in the main app
 app.include_router(api_router)
