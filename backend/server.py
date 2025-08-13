@@ -123,44 +123,46 @@ async def get_template_statistics():
     """Get comprehensive template system statistics"""
     return massive_template_system_complete.get_template_stats()
 
-# Enhanced Integrations endpoints using massive integrations system
+# Enhanced Integrations endpoints using COMPLETE massive integrations system - NO LIMITS
 @api_router.get("/integrations/enhanced") 
-async def get_enhanced_integrations(category: str = None, limit: int = 50):
-    """Get enhanced integrations with 200+ real integrations"""
+async def get_enhanced_integrations(category: str = None):
+    """Get enhanced integrations with 200+ real integrations - UNLIMITED"""
     if category:
-        return massive_integrations_engine.get_integrations_by_category(category)
+        return massive_integrations_system_complete.get_integrations_by_category(category)
     else:
-        return massive_integrations_engine.get_all_integrations()[:limit]
+        return massive_integrations_system_complete.get_all_integrations()  # NO LIMIT
 
 @api_router.get("/integrations/search/enhanced")
 async def search_enhanced_integrations(q: str = None, query: str = None, category: str = None):
-    """Enhanced integration search with 200+ integrations"""
+    """Enhanced integration search with 200+ integrations - UNLIMITED"""
     search_term = q or query
-    if not search_term and not category:
-        return massive_integrations_engine.get_all_integrations()[:100]
     
-    if search_term:
-        results = massive_integrations_engine.search_integrations(search_term)
+    if category and not search_term:
+        results = massive_integrations_system_complete.get_integrations_by_category(category)
+    elif search_term:
+        results = massive_integrations_system_complete.search_integrations(search_term)
+        if category:
+            results = [r for r in results if r["category"] == category]
     else:
-        results = massive_integrations_engine.get_integrations_by_category(category)
+        results = massive_integrations_system_complete.get_all_integrations()  # NO LIMIT
     
     return {
-        "integrations": results,
+        "integrations": results,  # ALL results, no limits
         "query": search_term,
         "category": category,
         "total_results": len(results),
-        "stats": massive_integrations_engine.get_integration_stats()
+        "stats": massive_integrations_system_complete.get_integration_stats()
     }
 
 @api_router.get("/integrations/categories/enhanced")
 async def get_enhanced_integration_categories():
     """Get all integration categories with statistics"""
-    return massive_integrations_engine.categories
+    return massive_integrations_system_complete.categories
 
 @api_router.get("/integrations/stats/enhanced")
 async def get_enhanced_integration_stats():
     """Get comprehensive integration statistics"""
-    return massive_integrations_engine.get_integration_stats()
+    return massive_integrations_system_complete.get_integration_stats()
 
 # Enhanced System Status endpoints
 @api_router.get("/enhanced/status")
