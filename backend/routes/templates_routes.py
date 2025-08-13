@@ -469,12 +469,11 @@ async def deploy_template(
 @router.post("/create")
 async def create_custom_template(
     template_data: Dict[str, Any],
-    current_user: dict = Depends(get_current_active_user)
+    current_user: dict = Depends(get_current_active_user),
+    db = Depends(get_database)
 ):
     """Create a new custom template"""
     try:
-        db = get_database()
-        
         # Validate required fields
         required_fields = ["name", "description", "workflow_definition", "category"]
         for field in required_fields:
@@ -516,8 +515,8 @@ async def create_custom_template(
                 detail=f"Invalid workflow definition: {validation_result['errors']}"
             )
         
-        # Insert template
-        await db.workflow_templates.insert_one(new_template)
+        # Insert template (synchronous call)
+        result = db.templates.insert_one(new_template)
         
         return {
             "message": "Template created successfully",
