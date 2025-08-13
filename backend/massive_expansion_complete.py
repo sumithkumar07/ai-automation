@@ -4,6 +4,9 @@ from datetime import datetime
 import uuid
 import json
 
+# Import the complete generated data
+from complete_massive_data import COMPLETE_TEMPLATES, COMPLETE_INTEGRATIONS, COMPLETE_NODES
+
 class MassiveTemplateSystemComplete:
     """Complete Template System with 100+ Professional Templates Across All Industries"""
     
