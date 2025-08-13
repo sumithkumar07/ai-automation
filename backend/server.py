@@ -15,6 +15,8 @@ from routes import auth_routes, workflow_routes, integration_routes, ai_routes, 
 from node_types_engine import node_types_engine
 from enhanced_nodes_massive import massive_node_types_engine
 from enhanced_templates_massive import massive_template_system
+from expanded_integrations_massive import massive_integrations_engine
+from expanded_templates_massive import massive_templates_engine
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
