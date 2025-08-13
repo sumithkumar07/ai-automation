@@ -197,6 +197,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FULLY FUNCTIONAL - User registration, login, get current user, and update user all working perfectly. JWT token authentication implemented correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ AUTHENTICATION ENDPOINTS VERIFIED - All authentication endpoints working perfectly: 1) POST /api/auth/signup (newly added) ✅ 2) POST /api/auth/register (existing) ✅ 3) POST /api/auth/login ✅ 4) Both signup and register have identical functionality ✅ 5) Token authentication via /api/auth/me ✅. Fixed missing 'distro' dependency for GROQ integration. All tests pass with valid user data."
 
   - task: "Workflow Management System"
     implemented: true
