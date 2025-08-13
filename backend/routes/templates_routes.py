@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from database import get_database
 from auth import get_current_active_user
 from enhanced_templates_massive import massive_template_system
+from expanded_templates_system import expanded_template_system
 import logging
 import json
 import uuid
