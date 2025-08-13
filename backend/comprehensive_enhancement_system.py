@@ -46,13 +46,21 @@ class ComprehensiveEnhancementSystem:
         self.enhanced_nodes = []
         self.enhanced_templates = []
         
+        # New enhanced systems
+        self.enhanced_ai_system = None
+        self.cache_service = None
+        self.performance_monitor = None
+        self.system_initialized = False
+        
     async def initialize_all_enhancements(self):
         """Initialize all enhancement systems in parallel"""
-        logger.info("🚀 INITIALIZING COMPREHENSIVE ENHANCEMENT SYSTEM")
+        logger.info("🚀 INITIALIZING COMPREHENSIVE ENHANCEMENT SYSTEM - UPGRADED")
         
         # Initialize all systems in parallel
         await asyncio.gather(
+            self._initialize_enhanced_ai_system(),
             self._initialize_cache_system(),
+            self._initialize_performance_system(),
             self._initialize_ai_enhancements(),
             self._initialize_performance_optimizations(),
             self._load_enhanced_integrations(),
@@ -61,20 +69,67 @@ class ComprehensiveEnhancementSystem:
             return_exceptions=True
         )
         
-        logger.info("✅ ALL ENHANCEMENT SYSTEMS INITIALIZED")
+        self.system_initialized = True
+        status = await self.get_enhancement_status()
+        logger.info(f"✅ COMPREHENSIVE ENHANCEMENT SYSTEM INITIALIZED - {status['providers_available']} AI providers, {status['total_nodes']} nodes, {status['total_templates']} templates")
+    
+    async def _initialize_enhanced_ai_system(self):
+        """Initialize our enhanced multi-AI system"""
+        if AI_ENHANCEMENTS_AVAILABLE:
+            try:
+                self.enhanced_ai_system = get_enhanced_ai_system()
+                available_providers = self.enhanced_ai_system.get_available_providers()
+                logger.info(f"✅ Enhanced AI system initialized with {len(available_providers)} providers")
+                return True
+            except Exception as e:
+                logger.error(f"❌ Enhanced AI system initialization failed: {e}")
+                return False
+        else:
+            logger.warning("⚠️ Enhanced AI system not available")
+            return False
     
     async def _initialize_cache_system(self):
-        """Initialize Redis caching for performance"""
+        """Initialize enhanced caching system"""
+        if AI_ENHANCEMENTS_AVAILABLE:
+            try:
+                self.cache_service = get_cache_service()
+                cache_stats = self.cache_service.get_stats()
+                logger.info(f"✅ Enhanced cache system initialized - Redis: {cache_stats['redis_available']}")
+                return True
+            except Exception as e:
+                logger.error(f"❌ Enhanced cache system initialization failed: {e}")
+                return False
+        else:
+            # Fallback to basic cache initialization
+            return await self._initialize_basic_cache()
+    
+    async def _initialize_performance_system(self):
+        """Initialize enhanced performance monitoring"""
+        if AI_ENHANCEMENTS_AVAILABLE:
+            try:
+                self.performance_monitor = get_performance_monitor()
+                logger.info("✅ Enhanced performance monitoring initialized")
+                return True
+            except Exception as e:
+                logger.error(f"❌ Enhanced performance system initialization failed: {e}")
+                return False
+        else:
+            logger.info("✅ Basic performance monitoring initialized")
+            return True
+    
+    async def _initialize_basic_cache(self):
+        """Fallback cache initialization"""
         try:
             # Try to connect to Redis, fallback to in-memory cache
             import redis.asyncio as redis_async
             self.cache = redis_async.Redis(host='localhost', port=6379, decode_responses=True)
             await self.cache.ping()
-            logger.info("✅ Redis cache system initialized")
+            logger.info("✅ Redis cache system initialized (fallback)")
         except Exception as e:
             # Fallback to in-memory cache
             self.cache = InMemoryCache()
             logger.info("✅ In-memory cache system initialized (Redis not available)")
+        return True
     
     async def _initialize_ai_enhancements(self):
         """Initialize multiple AI providers and capabilities"""
