@@ -221,6 +221,10 @@ async def get_workflow_executions(workflow_id: str, limit: int = 50, current_use
     cursor = db.workflow_executions.find({"workflow_id": workflow_id}).sort("started_at", -1).limit(limit)
     executions = await cursor.to_list(length=limit)
     
+    # Clean up MongoDB ObjectIds
+    for execution in executions:
+        execution.pop('_id', None)
+    
     return executions
 
 @router.post("/{workflow_id}/duplicate")
