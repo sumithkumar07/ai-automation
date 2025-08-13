@@ -10,7 +10,7 @@ import { initWebVitalsTracking, logBundleSize, useResourceMonitor } from './comp
 import LoadingSpinner from './components/LoadingSpinner'
 
 // Lazy load components for better performance
-const Homepage = lazy(() => import('./pages/Homepage'))
+import Homepage from './pages/Homepage'
 const AuthPage = lazy(() => import('./pages/AuthPage'))
 const EnhancedDashboard = lazy(() => import('./components/EnhancedDashboard'))
 const EnhancedWorkflowEditor = lazy(() => import('./components/EnhancedWorkflowEditor'))
