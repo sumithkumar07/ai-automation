@@ -514,11 +514,13 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Comprehensive backend testing after distro dependency fix"
     - "Minor template detail async issue fix"
     - "AI integrations endpoint (404 error)"
+    - "Full end-to-end testing to ensure real vs demo data"
   stuck_tasks: []
-  test_all: false
-  test_priority: "minor_issues_only"
+  test_all: true
+  test_priority: "comprehensive_full_app_testing"
 
 agent_communication:
   - agent: "main"
