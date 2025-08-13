@@ -42,7 +42,7 @@ class StatusCheckCreate(BaseModel):
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
-    from .database import get_database
+    from database import get_database
     db = get_database()
     status_dict = input.dict()
     status_obj = StatusCheck(**status_dict)
@@ -51,7 +51,7 @@ async def create_status_check(input: StatusCheckCreate):
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
-    from .database import get_database
+    from database import get_database
     db = get_database()
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
