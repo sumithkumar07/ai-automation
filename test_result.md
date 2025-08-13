@@ -384,11 +384,11 @@ backend:
 
   - task: "Workflow CRUD Authentication Issues"
     implemented: true
-    working: true
+    working: false
     file: "routes/workflow_routes.py"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: false
         agent: "testing"
@@ -396,6 +396,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ WORKFLOW SYSTEM VERIFICATION - ACCESSIBLE: Workflow endpoints are now accessible (GET /api/workflows returns 403 which is expected behavior for empty workflow list with proper authentication). Core workflow system is operational and no longer blocking other functionality. Authentication issues resolved."
+      - working: false
+        agent: "testing"
+        comment: "❌ WORKFLOW AUTHENTICATION ISSUE PERSISTS - CRITICAL: After comprehensive testing, workflow creation still returns 403 'Not authenticated' errors despite valid JWT tokens. GET /api/workflows works (returns empty list), but POST /api/workflows fails with 403. This blocks core workflow functionality including workflow creation, execution, and management. Authentication system works for other endpoints but workflow routes have specific authentication dependency issues. REQUIRES: Review workflow route authentication middleware and JWT token validation logic."
 
   - task: "Backend Fixes Verification & Integration Count Test"
     implemented: true
