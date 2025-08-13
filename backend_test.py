@@ -387,16 +387,12 @@ class AetherAutomationAPITester:
 
     def test_ai_chat(self):
         """Test AI chat endpoint"""
-        message_data = {
-            "message": "How do I create a workflow that processes CSV files?"
-        }
-        
         success, response = self.run_test(
             "AI Chat",
             "POST",
             "api/ai/chat",
             200,
-            data=message_data
+            params={"message": "How do I create a workflow that processes CSV files?"}
         )
         return success
 
