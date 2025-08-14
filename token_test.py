@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://feature-explorer-11.preview.emergentagent.com/api"
+BACKEND_URL = "https://feature-verify-2.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {

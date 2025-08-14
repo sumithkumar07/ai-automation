@@ -13,7 +13,7 @@ from datetime import datetime
 import uuid
 
 # Configuration
-BACKEND_URL = "https://feature-explorer-11.preview.emergentagent.com/api"
+BACKEND_URL = "https://feature-verify-2.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "final.automation.tester@aether.com"
 TEST_USER_PASSWORD = "FinalTest2024!"
 TEST_USER_NAME = "Final Automation Tester"

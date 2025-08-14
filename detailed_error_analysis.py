@@ -8,7 +8,7 @@ import requests
 import json
 
 def test_specific_endpoints():
-    base_url = "https://feature-explorer-11.preview.emergentagent.com"
+    base_url = "https://feature-verify-2.preview.emergentagent.com"
     
     # First authenticate
     auth_data = {

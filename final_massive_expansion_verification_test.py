@@ -23,7 +23,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://feature-explorer-11.preview.emergentagent.com/api"
+BACKEND_URL = "https://feature-verify-2.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "expansion_test@aether.com"
 TEST_USER_PASSWORD = "ExpansionTest2024!"
 
