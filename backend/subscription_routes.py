@@ -20,7 +20,7 @@ from emergentintegrations.payments.stripe.checkout import CheckoutStatusResponse
 logger = logging.getLogger(__name__)
 
 # Create router
-router = APIRouter(prefix="/api/subscription", tags=["Subscription"])
+router = APIRouter(prefix="/subscription", tags=["Subscription"])
 
 # Request/Response Models
 class SubscriptionUpgradeRequest(BaseModel):
