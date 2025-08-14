@@ -337,6 +337,19 @@ async def startup_db_client():
     await connect_to_mongo()
     logging.info("✅ Connected to MongoDB")
     
+    # Initialize subscription system
+    try:
+        from database import get_database
+        from subscription_system import initialize_subscription_manager
+        import os
+        
+        db = get_database()
+        stripe_api_key = os.getenv("STRIPE_API_KEY", "sk_test_emergent")
+        initialize_subscription_manager(db, stripe_api_key)
+        logging.info("✅ Subscription Manager initialized successfully")
+    except Exception as e:
+        logging.error(f"❌ Subscription system initialization failed: {e}")
+    
     # Initialize comprehensive enhancement system
     try:
         from comprehensive_enhancement_system import ComprehensiveEnhancementSystem
