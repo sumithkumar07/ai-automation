@@ -45,7 +45,7 @@ const BillingPage = () => {
       
       // Fetch subscription and usage data in parallel
       const [subResponse, usageResponse] = await Promise.all([
-        fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/api/subscription/current`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/current`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
         fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/api/subscription/usage`, {
