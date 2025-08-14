@@ -75,7 +75,7 @@ const BillingPage = () => {
     
     try {
       const token = localStorage.getItem('auth_token');
-      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/api/subscription/payment/status`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/payment/status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
