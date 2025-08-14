@@ -72,9 +72,26 @@ ai_sessions_collection = db.ai_sessions
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
+# Stripe API setup
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
+if not STRIPE_API_KEY:
+    logger.warning("⚠️ STRIPE_API_KEY not found in environment variables")
+
 # JWT setup
 JWT_SECRET = os.getenv("JWT_SECRET", "your-secret-key-here")
 security = HTTPBearer()
+
+# Initialize subscription manager
+if STRIPE_API_KEY:
+    try:
+        subscription_manager = initialize_subscription_manager(db, STRIPE_API_KEY)
+        logger.info("✅ Subscription system initialized successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize subscription system: {e}")
+        subscription_manager = None
+else:
+    subscription_manager = None
+    logger.warning("⚠️ Subscription system disabled - no Stripe API key")
 
 # Enhanced Pydantic models
 class StandardError(BaseModel):
