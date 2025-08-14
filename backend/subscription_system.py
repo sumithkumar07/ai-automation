@@ -378,7 +378,9 @@ class SubscriptionManager:
                 metadata=metadata
             )
             
-            session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
+            # Note: This should be called from an async context
+            # session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
+            # For now, we'll return the request data - this will be handled in the async route
             
             # Create payment transaction record
             transaction_doc = {
