@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://frontend-e2e-test.preview.emergentagent.com/api"
+BACKEND_URL = "https://workflow-tester.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {
