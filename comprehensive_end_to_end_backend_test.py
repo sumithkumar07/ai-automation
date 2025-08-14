@@ -24,7 +24,7 @@ import random
 import string
 
 class ComprehensiveAetherTester:
-    def __init__(self, base_url="https://workflow-tester.preview.emergentagent.com"):
+    def __init__(self, base_url="https://sub-plan-info.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None

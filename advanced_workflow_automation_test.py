@@ -16,7 +16,7 @@ import concurrent.futures
 from typing import Dict, List, Any
 
 class AdvancedWorkflowAutomationTester:
-    def __init__(self, base_url="https://workflow-tester.preview.emergentagent.com"):
+    def __init__(self, base_url="https://sub-plan-info.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
