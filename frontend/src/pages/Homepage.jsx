@@ -63,7 +63,13 @@ const Homepage = () => {
               </div>
               <span className="text-xl font-bold text-gray-900">Aether Automation</span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
+              <Link
+                to="/pricing"
+                className="text-gray-600 hover:text-gray-900 font-medium"
+              >
+                Pricing
+              </Link>
               <Link
                 to="/auth"
                 className="text-gray-600 hover:text-gray-900 font-medium"
@@ -74,7 +80,7 @@ const Homepage = () => {
                 to="/auth"
                 className="btn-primary"
               >
-                Get Started Free
+                Start Free Trial
               </Link>
             </div>
           </div>
