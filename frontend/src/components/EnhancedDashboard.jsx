@@ -17,11 +17,13 @@ import {
   BoltIcon,
   SparklesIcon,
   UsersIcon,
-  CodeBracketIcon
+  CodeBracketIcon,
+  CreditCardIcon
 } from '@heroicons/react/24/outline'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from 'recharts'
 import Navbar from '../components/EnhancedNavbar'
 import LoadingSpinner from '../components/LoadingSpinner'
+import SubscriptionIndicator from '../components/SubscriptionIndicator'
 import toast from 'react-hot-toast'
 
 const EnhancedDashboard = () => {
