@@ -20,6 +20,10 @@ from dotenv import load_dotenv
 import orjson
 from collections import defaultdict, deque
 
+# Import subscription system
+from subscription_system import initialize_subscription_manager
+from subscription_routes import router as subscription_router, create_user_trial_subscription
+
 # Load environment variables from .env file
 load_dotenv()
 
