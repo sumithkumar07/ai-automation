@@ -14,7 +14,7 @@ const SubscriptionIndicator = ({ user }) => {
 
   const fetchSubscription = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/current`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
