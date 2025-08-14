@@ -22,7 +22,7 @@ from typing import Dict, List, Any
 
 class ComprehensiveExpansionTester:
     def __init__(self):
-        self.base_url = "https://subscription-model.preview.emergentagent.com/api"
+        self.base_url = "https://pricing-flow-test.preview.emergentagent.com/api"
         self.session = None
         self.auth_token = None
         self.test_results = {

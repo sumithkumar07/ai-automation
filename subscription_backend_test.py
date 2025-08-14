@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Configuration
-BASE_URL = "https://subscription-model.preview.emergentagent.com/api"
+BASE_URL = "https://pricing-flow-test.preview.emergentagent.com/api"
 TEST_USER_EMAIL = f"subscription.test.{int(time.time())}@aether.com"
 TEST_USER_PASSWORD = "SubscriptionTest123!"
 TEST_USER_NAME = "Subscription Tester"
@@ -212,7 +212,7 @@ class SubscriptionTester:
             upgrade_data = {
                 "tier": "pro",
                 "billing_cycle": "monthly",
-                "origin_url": "https://subscription-model.preview.emergentagent.com"
+                "origin_url": "https://pricing-flow-test.preview.emergentagent.com"
             }
             
             response = self.session.post(f"{self.base_url}/subscription/upgrade", json=upgrade_data)

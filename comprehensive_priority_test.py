@@ -12,7 +12,7 @@ import uuid
 from datetime import datetime
 
 class AetherPriorityTester:
-    def __init__(self, base_url="https://subscription-model.preview.emergentagent.com"):
+    def __init__(self, base_url="https://pricing-flow-test.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None

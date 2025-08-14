@@ -7,7 +7,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://subscription-model.preview.emergentagent.com/api"
+BACKEND_URL = "https://pricing-flow-test.preview.emergentagent.com/api"
 
 # Test data
 TEST_USER_DATA = {

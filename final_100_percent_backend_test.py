@@ -17,7 +17,7 @@ import concurrent.futures
 import threading
 
 class FinalComprehensiveAPITester:
-    def __init__(self, base_url="https://subscription-model.preview.emergentagent.com"):
+    def __init__(self, base_url="https://pricing-flow-test.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
