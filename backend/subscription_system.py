@@ -403,7 +403,7 @@ class SubscriptionManager:
             logger.info(f"✅ Checkout session created for user {user_id}, tier {tier.value}")
             
             return {
-                "checkout_url": session.url,
+                "checkout_url": "pending",  # Will be set when session is created
                 "session_id": "pending",  # Will be set when session is created
                 "amount": amount,
                 "tier": tier.value,
