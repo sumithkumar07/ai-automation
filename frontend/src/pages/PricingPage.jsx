@@ -41,7 +41,7 @@ const PricingPage = () => {
     setUpgrading(tierName);
     
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/upgrade`, {
         method: 'POST',
         headers: {
