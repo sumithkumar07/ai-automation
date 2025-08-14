@@ -321,6 +321,14 @@ async def signup(user_data: UserSignup):
     
     users_collection.insert_one(user_doc)
     
+    # Create trial subscription for new user
+    if subscription_manager:
+        try:
+            trial_subscription = await create_user_trial_subscription(user_id)
+            logger.info(f"✅ Trial subscription created for user {user_id}")
+        except Exception as e:
+            logger.error(f"❌ Error creating trial subscription: {e}")
+    
     # Generate JWT token
     token = create_jwt_token(user_id)
     
