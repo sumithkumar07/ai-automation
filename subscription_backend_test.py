@@ -13,7 +13,7 @@ from typing import Dict, Any, Optional
 
 # Configuration
 BASE_URL = "https://subscription-model.preview.emergentagent.com/api"
-TEST_USER_EMAIL = "subscription.test@aether.com"
+TEST_USER_EMAIL = f"subscription.test.{int(time.time())}@aether.com"
 TEST_USER_PASSWORD = "SubscriptionTest123!"
 TEST_USER_NAME = "Subscription Tester"
 
