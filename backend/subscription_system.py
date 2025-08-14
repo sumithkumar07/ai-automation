@@ -404,7 +404,7 @@ class SubscriptionManager:
             
             return {
                 "checkout_url": session.url,
-                "session_id": session.session_id,
+                "session_id": "pending",  # Will be set when session is created
                 "amount": amount,
                 "tier": tier.value,
                 "billing_cycle": billing_cycle.value
