@@ -995,6 +995,13 @@ async def get_execution_status(execution_id: str, user_id: str = Depends(verify_
     execution["id"] = execution.pop("_id")
     return execution
 
+# Include subscription routes
+if subscription_manager:
+    app.include_router(subscription_router)
+    logger.info("✅ Subscription routes included")
+else:
+    logger.warning("⚠️ Subscription routes not included - system disabled")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
