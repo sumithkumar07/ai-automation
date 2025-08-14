@@ -385,7 +385,7 @@ class SubscriptionManager:
             # Create payment transaction record
             transaction_doc = {
                 "_id": str(uuid.uuid4()),
-                "session_id": session.session_id,
+                "session_id": "pending",  # Will be set when session is created
                 "user_id": user_id,
                 "amount": amount,
                 "currency": "usd",
