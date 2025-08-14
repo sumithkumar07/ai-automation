@@ -333,7 +333,7 @@ class SubscriptionManager:
         webhook_url = f"{host_url.rstrip('/')}/api/webhook/stripe"
         return StripeCheckout(api_key=self.stripe_api_key, webhook_url=webhook_url)
     
-    def create_subscription_checkout(
+    async def create_subscription_checkout(
         self, 
         user_id: str, 
         tier: SubscriptionTier, 
