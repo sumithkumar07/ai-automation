@@ -170,28 +170,28 @@ export const apiMethods = {
   
   // Feature Management
   async getEnhancementFeatures() {
-    const response = await api.get('/api/enhanced/features/available')
+    const response = await api.get('/enhanced/features/available')
     return response.data
   },
 
   async updateEnhancementPreference(data) {
-    const response = await api.post('/api/enhanced/features/preference', data)
+    const response = await api.post('/enhanced/features/preference', data)
     return response.data
   },
 
   // Phase 2: AI Intelligence & Automation
   async getAIInsights() {
-    const response = await api.get('/api/enhanced/ai/dashboard-insights')
+    const response = await api.get('/enhanced/ai/dashboard-insights')
     return response.data
   },
 
   async getSmartSuggestions() {
-    const response = await api.post('/api/enhanced/ai/smart-suggestions')
+    const response = await api.post('/enhanced/ai/smart-suggestions')
     return response.data
   },
 
   async generateAIWorkflow(prompt, complexity = 'intermediate', category = 'general') {
-    const response = await api.post('/api/enhanced/ai/generate-workflow', {
+    const response = await api.post('/enhanced/ai/generate-workflow', {
       prompt,
       complexity,
       category
@@ -200,35 +200,35 @@ export const apiMethods = {
   },
 
   async optimizeWorkflowWithAI(workflowId) {
-    const response = await api.post(`/api/enhanced/ai/optimize-workflow/${workflowId}`)
+    const response = await api.post(`/enhanced/ai/optimize-workflow/${workflowId}`)
     return response.data
   },
 
   // Phase 3: Enterprise Collaboration & Scale
   async getUserWorkspaces(organizationId = null) {
     const params = organizationId ? `?organization_id=${organizationId}` : ''
-    const response = await api.get(`/api/enhanced/collaboration/workspaces${params}`)
+    const response = await api.get(`/enhanced/collaboration/workspaces${params}`)
     return response.data
   },
 
   async createTeamWorkspace(data) {
-    const response = await api.post('/api/enhanced/collaboration/workspaces', data)
+    const response = await api.post('/enhanced/collaboration/workspaces', data)
     return response.data
   },
 
   async getWorkspaceActivity(workspaceId, limit = 50) {
-    const response = await api.get(`/api/enhanced/collaboration/workspaces/${workspaceId}/activity?limit=${limit}`)
+    const response = await api.get(`/enhanced/collaboration/workspaces/${workspaceId}/activity?limit=${limit}`)
     return response.data
   },
 
   async getWorkspaceAnalytics(workspaceId) {
-    const response = await api.get(`/api/enhanced/collaboration/workspaces/${workspaceId}/analytics`)
+    const response = await api.get(`/enhanced/collaboration/workspaces/${workspaceId}/analytics`)
     return response.data
   },
 
   // Phase 4: Next-Generation Platform Features
   async getAdvancedAnalytics(options = {}) {
-    const response = await api.post('/api/enhanced/analytics/advanced', {
+    const response = await api.post('/enhanced/analytics/advanced', {
       time_range: options.time_range || '30d',
       metrics: options.metrics || [],
       include_predictions: options.include_predictions || false
@@ -237,50 +237,50 @@ export const apiMethods = {
   },
 
   async getBusinessIntelligence() {
-    const response = await api.get('/api/enhanced/analytics/business-intelligence')
+    const response = await api.get('/enhanced/analytics/business-intelligence')
     return response.data
   },
 
   // Phase 5: Innovation & Future Technologies
   async getFutureTechCapabilities() {
-    const response = await api.get('/api/enhanced/future-tech/capabilities')
+    const response = await api.get('/enhanced/future-tech/capabilities')
     return response.data
   },
 
   async getIoTIntegrationInfo() {
-    const response = await api.get('/api/enhanced/future-tech/iot-devices')
+    const response = await api.get('/enhanced/future-tech/iot-devices')
     return response.data
   },
 
   async getBlockchainVerificationInfo() {
-    const response = await api.get('/api/enhanced/future-tech/blockchain-verification')
+    const response = await api.get('/enhanced/future-tech/blockchain-verification')
     return response.data
   },
 
   async getQuantumProcessingInfo() {
-    const response = await api.get('/api/enhanced/future-tech/quantum-processing')
+    const response = await api.get('/enhanced/future-tech/quantum-processing')
     return response.data
   },
 
   // System Status
   async getEnhancementSystemStatus() {
-    const response = await api.get('/api/enhanced/system/status')
+    const response = await api.get('/enhanced/system/status')
     return response.data
   },
 
   async getEnhancementHealthCheck() {
-    const response = await api.get('/api/enhanced/system/health')
+    const response = await api.get('/enhanced/system/health')
     return response.data
   },
 
   // AI
   async chatWithAI(message, sessionId = null) {
-    const response = await api.post('/api/ai/chat', { message, session_id: sessionId })
+    const response = await api.post('/ai/chat', { message, session_id: sessionId })
     return response.data
   },
 
   async generateWorkflow(prompt, structured = false, sessionId = null) {
-    const response = await api.post('/api/ai/generate-workflow', { 
+    const response = await api.post('/ai/generate-workflow', { 
       prompt, 
       structured, 
       session_id: sessionId 
@@ -290,34 +290,34 @@ export const apiMethods = {
 
   // Nodes and Templates
   async getNodeTypes() {
-    const response = await api.get('/api/nodes')
+    const response = await api.get('/nodes')
     return response.data
   },
 
   async getTemplates() {
-    const response = await api.get('/api/templates')
+    const response = await api.get('/templates')
     return response.data
   },
 
   async searchTemplates(query = '', category = '', difficulty = '') {
-    const response = await api.get(`/api/templates/search?query=${query}&category=${category}&difficulty=${difficulty}`)
+    const response = await api.get(`/templates/search?query=${query}&category=${category}&difficulty=${difficulty}`)
     return response.data
   },
 
   async deployTemplate(templateId) {
-    const response = await api.post(`/api/templates/${templateId}/deploy`)
+    const response = await api.post(`/templates/${templateId}/deploy`)
     return response.data
   },
 
   // Executions
   async getExecutionStatus(executionId) {
-    const response = await api.get(`/api/executions/${executionId}`)
+    const response = await api.get(`/executions/${executionId}`)
     return response.data
   },
 
   // Health
   async getHealth() {
-    const response = await api.get('/api/health')
+    const response = await api.get('/health')
     return response.data
   }
 }
