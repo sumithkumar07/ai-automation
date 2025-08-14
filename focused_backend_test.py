@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 
 class FocusedAPITester:
-    def __init__(self, base_url="https://pricing-flow-test.preview.emergentagent.com"):
+    def __init__(self, base_url="https://feature-explorer-11.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_id = None
@@ -315,7 +315,7 @@ def main():
     print("=" * 70)
     
     # Initialize tester
-    tester = FocusedAPITester("https://pricing-flow-test.preview.emergentagent.com")
+    tester = FocusedAPITester("https://feature-explorer-11.preview.emergentagent.com")
     
     # Authenticate first
     if not tester.authenticate():
