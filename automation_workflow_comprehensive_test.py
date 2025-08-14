@@ -29,7 +29,7 @@ import os
 from typing import Dict, List, Any
 
 # Configuration
-BACKEND_URL = "https://sub-plan-info.preview.emergentagent.com/api"
+BACKEND_URL = "https://subscription-model.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "automation.tester@aether.com"
 TEST_USER_PASSWORD = "AutomationTest2024!"
 TEST_USER_NAME = "Automation Tester"

@@ -8,7 +8,7 @@ import requests
 import json
 
 def test_specific_endpoints():
-    base_url = "https://sub-plan-info.preview.emergentagent.com"
+    base_url = "https://subscription-model.preview.emergentagent.com"
     
     # First authenticate
     auth_data = {

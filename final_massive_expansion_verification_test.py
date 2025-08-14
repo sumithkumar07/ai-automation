@@ -23,7 +23,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://sub-plan-info.preview.emergentagent.com/api"
+BACKEND_URL = "https://subscription-model.preview.emergentagent.com/api"
 TEST_USER_EMAIL = "expansion_test@aether.com"
 TEST_USER_PASSWORD = "ExpansionTest2024!"
 

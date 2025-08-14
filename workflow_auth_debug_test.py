@@ -9,7 +9,7 @@ import json
 import time
 from datetime import datetime
 
-BASE_URL = "https://sub-plan-info.preview.emergentagent.com/api"
+BASE_URL = "https://subscription-model.preview.emergentagent.com/api"
 
 def debug_workflow_auth():
     """Debug workflow authentication issues"""

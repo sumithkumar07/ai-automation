@@ -12,7 +12,7 @@ import uuid
 from datetime import datetime
 
 class FocusedIssueTester:
-    def __init__(self, base_url="https://sub-plan-info.preview.emergentagent.com"):
+    def __init__(self, base_url="https://subscription-model.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None
