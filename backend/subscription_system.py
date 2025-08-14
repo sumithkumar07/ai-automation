@@ -360,7 +360,7 @@ class SubscriptionManager:
             success_url = f"{origin_url}/billing/success?session_id={{CHECKOUT_SESSION_ID}}"
             cancel_url = f"{origin_url}/pricing"
             
-            # Prepare checkout session
+            # Create Stripe checkout session
             stripe_checkout = self.get_stripe_checkout(host_url)
             
             metadata = {
@@ -378,9 +378,7 @@ class SubscriptionManager:
                 metadata=metadata
             )
             
-            # Note: This should be called from an async context
-            # session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
-            # For now, we'll return the request data - this will be handled in the async route
+            session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
             
             # Create payment transaction record
             transaction_doc = {
