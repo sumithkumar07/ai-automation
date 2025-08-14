@@ -12,6 +12,7 @@ from datetime import datetime
 # Import new modules
 from database import connect_to_mongo, close_mongo_connection
 from routes import auth_routes, workflow_routes, integration_routes, ai_routes, dashboard_routes, collaboration_routes, analytics_routes, templates_routes, integration_testing_routes, performance_routes
+from subscription_routes import router as subscription_router
 from node_types_engine import node_types_engine
 from enhanced_nodes_massive import massive_node_types_engine
 from enhanced_templates_massive import massive_template_system
