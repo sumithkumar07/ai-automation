@@ -660,15 +660,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "🎯 COMPREHENSIVE END-TO-END FRONTEND TESTING WITH SCREENSHOTS"
-    - "Automation workflow build, run and execution testing"
-    - "Page-by-page screenshot verification (homepage, auth, dashboard, editor, integrations, docs, help, academy, account, settings)"
-    - "Subscription plan functionality testing"
+    - "🎯 COMPREHENSIVE END-TO-END FRONTEND TESTING WITH SUBSCRIPTION FOCUS"
+    - "Pricing page functionality - Verify it loads plans and displays correctly"
+    - "Subscription indicators testing - Check dashboard badges and usage displays"  
+    - "Complete subscription flow - pricing page → upgrade → billing page"
+    - "Demo account creation and navigation to every page"
     - "Verify all functionality is REAL (not fake/demo)"
-    - "Test complete user journey with automation workflow creation"
+    - "Test complete user journey with subscription upgrade process"
   stuck_tasks: []
   test_all: true
-  test_priority: "comprehensive_frontend_screenshot_testing"
+  test_priority: "comprehensive_subscription_flow_testing"
 
 agent_communication:
   - agent: "main"
