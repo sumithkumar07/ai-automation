@@ -48,7 +48,7 @@ const BillingPage = () => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/current`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/api/subscription/usage`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/usage`, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);
