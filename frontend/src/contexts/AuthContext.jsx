@@ -39,9 +39,9 @@ export const AuthProvider = ({ children }) => {
         password
       })
       
-      const { token, user: userData } = response.data
+      const { access_token, user: userData } = response.data
       
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', access_token)
       localStorage.setItem('user', JSON.stringify(userData))
       setUser(userData)
       
