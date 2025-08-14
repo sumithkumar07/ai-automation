@@ -173,11 +173,22 @@ function App() {
                           <AuthPage />
                         </PublicRoute>
                       } />
+                      <Route path="/pricing" element={<PricingPage />} />
                       
                       {/* Protected routes */}
                       <Route path="/dashboard" element={
                         <ProtectedRoute>
                           <EnhancedDashboard />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/billing" element={
+                        <ProtectedRoute>
+                          <BillingPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/billing/success" element={
+                        <ProtectedRoute>
+                          <BillingPage />
                         </ProtectedRoute>
                       } />
                       <Route path="/editor" element={
