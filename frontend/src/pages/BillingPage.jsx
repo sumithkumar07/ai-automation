@@ -41,7 +41,7 @@ const BillingPage = () => {
 
   const fetchSubscriptionData = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('token');
       
       // Fetch subscription and usage data in parallel
       const [subResponse, usageResponse] = await Promise.all([
