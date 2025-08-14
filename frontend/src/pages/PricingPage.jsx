@@ -19,7 +19,7 @@ const PricingPage = () => {
 
   const fetchPlans = async () => {
     try {
-      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/api/subscription/plans`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription/plans`);
       if (response.ok) {
         const data = await response.json();
         setPlans(data.plans);
