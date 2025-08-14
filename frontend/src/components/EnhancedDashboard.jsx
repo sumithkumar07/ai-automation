@@ -169,7 +169,8 @@ const EnhancedDashboard = () => {
                 Here's what's happening with your automations today.
               </p>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
+              <SubscriptionIndicator user={user} />
               <div className="text-sm text-gray-500">
                 <span className="inline-flex items-center">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
