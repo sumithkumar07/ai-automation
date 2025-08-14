@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       const first_name = nameParts[0] || ''
       const last_name = nameParts.slice(1).join(' ') || ''
       
-      const response = await api.post('/api/auth/signup', {
+      const response = await api.post('/auth/signup', {
         first_name,
         last_name,
         email,
