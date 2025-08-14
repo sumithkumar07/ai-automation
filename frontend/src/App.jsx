@@ -17,6 +17,8 @@ const EnhancedWorkflowEditor = lazy(() => import('./components/EnhancedWorkflowE
 const EnhancedIntegrations = lazy(() => import('./pages/EnhancedIntegrations'))
 const Learning = lazy(() => import('./pages/Learning'))
 const AccountSettings = lazy(() => import('./pages/AccountSettings'))
+const PricingPage = lazy(() => import('./pages/PricingPage'))
+const BillingPage = lazy(() => import('./pages/BillingPage'))
 
 // Initialize performance monitoring
 if (typeof window !== 'undefined') {
