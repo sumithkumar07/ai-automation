@@ -383,7 +383,7 @@ class SubscriptionManager:
             # Create payment transaction record
             transaction_doc = {
                 "_id": str(uuid.uuid4()),
-                "session_id": "pending",  # Will be set when session is created
+                "session_id": session.session_id,
                 "user_id": user_id,
                 "amount": amount,
                 "currency": "usd",
@@ -401,8 +401,8 @@ class SubscriptionManager:
             logger.info(f"✅ Checkout session created for user {user_id}, tier {tier.value}")
             
             return {
-                "checkout_url": "pending",  # Will be set when session is created
-                "session_id": "pending",  # Will be set when session is created
+                "checkout_url": session.url,
+                "session_id": session.session_id,
                 "amount": amount,
                 "tier": tier.value,
                 "billing_cycle": billing_cycle.value
