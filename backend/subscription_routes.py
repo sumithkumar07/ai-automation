@@ -14,7 +14,7 @@ from subscription_system import (
     get_subscription_manager, SubscriptionTier, BillingCycle, 
     SUBSCRIPTION_PLANS, SubscriptionStatus
 )
-from simple_server import verify_jwt_token
+from auth import get_current_active_user
 from emergentintegrations.payments.stripe.checkout import CheckoutStatusResponse
 
 logger = logging.getLogger(__name__)
@@ -52,9 +52,10 @@ async def get_subscription_plans():
         raise HTTPException(status_code=500, detail="Failed to retrieve subscription plans")
 
 @router.get("/current")
-async def get_current_subscription(user_id: str = Depends(verify_jwt_token)):
+async def get_current_subscription(current_user: dict = Depends(get_current_active_user)):
     """Get user's current subscription details"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         subscription = manager.get_user_subscription(user_id)
         usage_stats = manager.get_usage_stats(user_id)
@@ -102,9 +103,10 @@ async def get_current_subscription(user_id: str = Depends(verify_jwt_token)):
         raise HTTPException(status_code=500, detail="Failed to retrieve subscription details")
 
 @router.get("/usage")
-async def get_usage_statistics(user_id: str = Depends(verify_jwt_token)):
+async def get_usage_statistics(current_user: dict = Depends(get_current_active_user)):
     """Get user's current usage statistics"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         usage_stats = manager.get_usage_stats(user_id)
         
@@ -122,10 +124,11 @@ async def get_usage_statistics(user_id: str = Depends(verify_jwt_token)):
 async def create_subscription_upgrade(
     upgrade_request: SubscriptionUpgradeRequest,
     request: Request,
-    user_id: str = Depends(verify_jwt_token)
+    current_user: dict = Depends(get_current_active_user)
 ):
     """Create Stripe checkout session for subscription upgrade"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         
         # Validate subscription tier
@@ -160,10 +163,11 @@ async def create_subscription_upgrade(
 async def check_payment_status(
     status_request: PaymentStatusRequest,
     background_tasks: BackgroundTasks,
-    user_id: str = Depends(verify_jwt_token)
+    current_user: dict = Depends(get_current_active_user)
 ):
     """Check payment status and process successful payments"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         
         # Get Stripe checkout instance
@@ -205,10 +209,11 @@ async def check_payment_status(
 @router.get("/check-limits/{usage_type}")
 async def check_usage_limits(
     usage_type: str,
-    user_id: str = Depends(verify_jwt_token)
+    current_user: dict = Depends(get_current_active_user)
 ):
     """Check if user has reached usage limits for specific resource"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         limit_check = manager.check_usage_limit(user_id, usage_type)
         
@@ -225,10 +230,11 @@ async def check_usage_limits(
 @router.post("/track-usage")
 async def track_resource_usage(
     usage_data: Dict[str, Any],
-    user_id: str = Depends(verify_jwt_token)
+    current_user: dict = Depends(get_current_active_user)
 ):
     """Track user's resource usage (internal API)"""
     try:
+        user_id = current_user["user_id"]
         manager = get_subscription_manager()
         
         usage_type = usage_data.get("usage_type")
