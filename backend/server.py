@@ -303,6 +303,7 @@ api_router.include_router(analytics_routes.router)
 api_router.include_router(templates_routes.router)
 api_router.include_router(integration_testing_routes.router)
 api_router.include_router(performance_routes.router)
+api_router.include_router(subscription_router)
 
 # Include enhanced router for new capabilities
 try:
