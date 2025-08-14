@@ -83,54 +83,54 @@ api.interceptors.response.use(
 export const apiMethods = {
   // Auth
   async login(email, password) {
-    const response = await api.post('/api/auth/login', { email, password })
+    const response = await api.post('/auth/login', { email, password })
     return response.data
   },
 
   async signup(name, email, password) {
-    const response = await api.post('/api/auth/signup', { name, email, password })
+    const response = await api.post('/auth/signup', { name, email, password })
     return response.data
   },
 
   // Dashboard
   async getDashboardStats() {
-    const response = await api.get('/api/dashboard/stats')
+    const response = await api.get('/dashboard/stats')
     return response.data
   },
 
   async getUserChecklist() {
-    const response = await api.get('/api/user/checklist')
+    const response = await api.get('/user/checklist')
     return response.data
   },
 
   // Workflows
   async getWorkflows(page = 1, limit = 20) {
-    const response = await api.get(`/api/workflows?page=${page}&limit=${limit}`)
+    const response = await api.get(`/workflows?page=${page}&limit=${limit}`)
     return response.data
   },
 
   async createWorkflow(workflowData) {
-    const response = await api.post('/api/workflows', workflowData)
+    const response = await api.post('/workflows', workflowData)
     return response.data
   },
 
   async getWorkflow(workflowId) {
-    const response = await api.get(`/api/workflows/${workflowId}`)
+    const response = await api.get(`/workflows/${workflowId}`)
     return response.data
   },
 
   async updateWorkflow(workflowId, workflowData) {
-    const response = await api.put(`/api/workflows/${workflowId}`, workflowData)
+    const response = await api.put(`/workflows/${workflowId}`, workflowData)
     return response.data
   },
 
   async deleteWorkflow(workflowId) {
-    const response = await api.delete(`/api/workflows/${workflowId}`)
+    const response = await api.delete(`/workflows/${workflowId}`)
     return response.data
   },
 
   async autosaveWorkflow(workflowId, workflowData) {
-    const response = await api.post(`/api/workflows/${workflowId}/autosave`, workflowData)
+    const response = await api.post(`/workflows/${workflowId}/autosave`, workflowData)
     return response.data
   },
 
@@ -139,28 +139,28 @@ export const apiMethods = {
     if (idempotencyKey) {
       headers['idempotency-key'] = idempotencyKey
     }
-    const response = await api.post(`/api/workflows/${workflowId}/execute`, {}, { headers })
+    const response = await api.post(`/workflows/${workflowId}/execute`, {}, { headers })
     return response.data
   },
 
   // Integrations
   async getIntegrations(page = 1, limit = 20) {
-    const response = await api.get(`/api/integrations?page=${page}&limit=${limit}`)
+    const response = await api.get(`/integrations?page=${page}&limit=${limit}`)
     return response.data
   },
 
   async getAvailableIntegrations() {
-    const response = await api.get('/api/integrations/available')
+    const response = await api.get('/integrations/available')
     return response.data
   },
 
   async createIntegration(integrationData) {
-    const response = await api.post('/api/integrations', integrationData)
+    const response = await api.post('/integrations', integrationData)
     return response.data
   },
 
   async deleteIntegration(integrationId) {
-    const response = await api.delete(`/api/integrations/${integrationId}`)
+    const response = await api.delete(`/integrations/${integrationId}`)
     return response.data
   },
 
